@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 // import LoginPage from "./pages/Auth/LoginPage";
 import Main from "./pages/Main/Main";
 import BottomNav from "./components/Layout/BottomNav";
+import LoginPage from "./pages/Auth/LoginPage";
 // import Main from "./pages/Main/Main";
 // import Recommend from "./pages/Recommend/RecommendPage";
 // import BottomNav from "./components/Layout/BottomNav";
@@ -47,12 +48,12 @@ function App(): JSX.Element {
   };
 
   const routes: RouteConfig[] = [
-    // { path: "/", element: <LoginPage setIsAuthenticated={setIsAuthenticated} /> },
+    { path: "/", element: <LoginPage setIsAuthenticated={setIsAuthenticated} /> },
     // { path: "/recommend", element: <Recommend />, private: true },
     // { path: "/addpost", element: <AddPost />, private: true },
     // { path: "/like", element: <MyLike />, private: true },
     // { path: "/mypage", element: <MyPage />, private: true },
-    { path: "/main", element: <Main />, private: false },
+    { path: "/main", element: <Main />, private: true },
     // { path: "/post/:id", element: <Post />, private: true },
     // { path: "/search", element: <Search />, private: true },
     // { path: "/signup", element: <SignUp /> },
