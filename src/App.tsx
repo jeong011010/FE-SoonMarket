@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { createTheme, ThemeProvider } from "@mui/material";
 import { useEffect } from "react";
 import { Cookies } from "react-cookie";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 //페이지 컴포넌트
 import LoginPage from "./pages/Auth/LoginPage";
@@ -18,7 +18,6 @@ import BottomNav from "./components/Layout/BottomNav";
 // import SignUp from "./pages/Auth/SignUpPage";
 
 //Redux
-import { RootState } from "./redux/store";
 import { setIsAuthenticated } from "./redux/modules/auth";
 
 const theme = createTheme({
