@@ -4,7 +4,7 @@ import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
 import { Button, IconButton, TextField } from "@mui/material";
 
 
-const SignUpForm: FC = () => {
-    return(<></>);
+const SignUpForm: React.FC = () => {
+	return (<></>);
 }
 export default SignUpForm;

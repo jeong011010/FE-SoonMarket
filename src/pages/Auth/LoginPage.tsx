@@ -1,24 +1,22 @@
 import React from "react";
 import styled from "styled-components";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import LoginForm from "./components/LoginForm";
 
 const LoginPage: React.FC = () => {
-    const navigate = useNavigate();
-
-    return (
-        <LoginContainer>
-            <Header>
-                <Title>Soon-Market</Title>
-            </Header>
-            <LoginForm />
-            <Footer>
-                <StyledLink to="/findid">아이디 찾기</StyledLink>ㅣ
-                <StyledLink to="/findpassword">비밀번호 찾기</StyledLink>ㅣ
-                <StyledLink to="/signup">가입하기</StyledLink>
-            </Footer>
-        </LoginContainer>
-    );
+	return (
+		<LoginContainer>
+			<Header>
+				<Title>Soon-Market</Title>
+			</Header>
+			<LoginForm />
+			<Footer>
+				<StyledLink to="/findid">아이디 찾기</StyledLink>ㅣ
+				<StyledLink to="/findpassword">비밀번호 찾기</StyledLink>ㅣ
+				<StyledLink to="/signup">가입하기</StyledLink>
+			</Footer>
+		</LoginContainer>
+	);
 };
 
 // Styled Components
