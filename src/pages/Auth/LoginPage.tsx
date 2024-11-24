@@ -1,13 +1,9 @@
-import React, { FC } from "react";
+import React from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import LoginForm from "./components/LoginForm";
 
-interface LoginPageProps {
-    setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const LoginPage: FC<LoginPageProps> = ({ setIsAuthenticated }) => {
+const LoginPage: React.FC = () => {
     const navigate = useNavigate();
 
     return (
@@ -15,7 +11,7 @@ const LoginPage: FC<LoginPageProps> = ({ setIsAuthenticated }) => {
             <Header>
                 <Title>Soon-Market</Title>
             </Header>
-            <LoginForm setIsAuthenticated={setIsAuthenticated} />
+            <LoginForm />
             <Footer>
                 <StyledLink to="/findid">아이디 찾기</StyledLink>ㅣ
                 <StyledLink to="/findpassword">비밀번호 찾기</StyledLink>ㅣ
