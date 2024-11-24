@@ -39,7 +39,7 @@ interface RouteConfig {
 
 function App(): JSX.Element {
   const dispatch = useDispatch();
-  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  // const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
 
   useEffect(() => {
     const token = document.cookie.includes("access_token");
