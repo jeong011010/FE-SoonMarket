@@ -26,8 +26,6 @@ interface PostProps {
 const PostCard: React.FC<PostProps> = ({ post }) => {
   const navigate = useNavigate();
 
-  console.log(post);
-
   return (
     <CardContainer onClick={() => { navigate(`/post/${post.postId}`) }}>
       <Dot />

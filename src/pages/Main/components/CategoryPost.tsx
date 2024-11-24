@@ -11,8 +11,6 @@ const CategoryPost: React.FC = () => {
     selectedCategory === "전체" ? getSearchPostList("", "", 10, 0) : getSearchPostList("", selectedCategory, 10, 0);
   }, [getSearchPostList, selectedCategory]);
 
-  console.log(searchPostList);
-
   return (
     <>
       <CategoryBtnGroup selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />

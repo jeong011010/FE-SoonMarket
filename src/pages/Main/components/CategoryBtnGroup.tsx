@@ -21,7 +21,7 @@ const CategoryBtnGroup: React.FC<CategoryBtnGroupProps> = ({ selectedCategory, s
           label={category}
           variant="outlined"
           onClick={() => handleCategoryClick(category)}
-          isSelected={selectedCategory === category}
+          isselected={selectedCategory === category}
         />
       ))}
     </CategoryBox>
@@ -42,15 +42,17 @@ const CategoryBox = styled.div`
 `;
 
 interface CategoryProps {
-  isSelected: boolean;
+  isselected: boolean;
 }
 
-const Category = styled(Chip) <CategoryProps>`
+const Category = styled(Chip).withConfig({
+  shouldForwardProp: (prop) => prop !== 'isselected', // 'isselected'는 DOM으로 전달되지 않음
+}) <CategoryProps>`
   && {
     margin-right: 8px;
     flex-shrink: 0;
-    border-color: ${props => props.isSelected ? '#2D61A6' : 'rgba(0, 0, 0, 0.23)'};
-    border-width: ${props => props.isSelected ? '1px' : '1px'};
+    border-color: ${props => props.isselected ? '#2D61A6' : 'rgba(0, 0, 0, 0.23)'};
+    border-width: ${props => props.isselected ? '1px' : '1px'};
   }
 `;
 
