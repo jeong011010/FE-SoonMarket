@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import schoolImg from "../../assets/soonchunhyangUniversity.jpg";
-import TopBar from "./components/TopBar";
+import TopBar from "../../components/Layout/TopBar";
 import CategoryPost from "./components/CategoryPost";
 
 const Main: React.FC = () => {
