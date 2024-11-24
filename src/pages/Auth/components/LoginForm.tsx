@@ -1,36 +1,22 @@
-import React, { useState, FC, FormEvent } from "react";
+import React, { useState, FormEvent } from "react";
 import styled from "styled-components";
 import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
 import { Button, IconButton, TextField } from "@mui/material";
 import useLogin from "../../../api/Auth/useLogin";
+import { useDispatch } from "react-redux";
+import { setIsAuthenticated } from "../../../redux/modules/auth";
 
-interface LoginFormProps{
-    setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const LoginForm: FC<LoginFormProps> = ({ setIsAuthenticated }) => {
+const LoginForm: React.FC = () => {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
-
   const login = useLogin();
+  const dispatch = useDispatch();
 
-  const validateEmail = (value: string) => {
-    const schDomainRegex = /^[a-zA-Z0-9._%+-]+@sch\.ac\.kr$/;
-    return schDomainRegex.test(value);
-  }
+  const validateEmail = (value: string) => /^[a-zA-Z0-9._%+-]+@sch\.ac\.kr$/.test(value);
 
   const handleEmailBlur = () => {
-    if (!id) {
-      // 필드가 비어있으면 에러 초기화
-      setEmailError("");
-      return;
-    }
-    if (!validateEmail(id)) {
-      setEmailError("이메일은 @sch.ac.kr 도메인만 허용됩니다.");
-    } else {
-      setEmailError("");
-    }
+    setEmailError(!id ? "" : !validateEmail(id) ? "이메일은 @sch.ac.kr 도메인만 허용됩니다." : "");
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -39,12 +25,11 @@ const LoginForm: FC<LoginFormProps> = ({ setIsAuthenticated }) => {
       setEmailError("이메일은 @sch.ac.kr 도메인만 허용됩니다.");
       return;
     }
-
     try {
         await login(id, password);
-        setIsAuthenticated(true);
+        dispatch(setIsAuthenticated(true));
       } catch {
-        setIsAuthenticated(false);
+        dispatch(setIsAuthenticated(false));
       }
   };
 
