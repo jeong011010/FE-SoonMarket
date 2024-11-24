@@ -70,26 +70,24 @@ function App(): JSX.Element {
 
   return (
     <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <Container>
-          {shouldShowBottomNav() ? <BottomNav /> : null}
-          <Routes>
-            {
-              routes.map((route) =>
-                route.private ? (
-                  <Route
-                    key={route.path}
-                    path={route.path}
-                    element={<PrivateRoute element={route.element} />}
-                  />
-                ) : (
-                  <Route key={route.path} path={route.path} element={route.element} />
-                )
+      <Container>
+        {shouldShowBottomNav() ? <BottomNav /> : null}
+        <Routes>
+          {
+            routes.map((route) =>
+              route.private ? (
+                <Route
+                  key={route.path}
+                  path={route.path}
+                  element={<PrivateRoute element={route.element} />}
+                />
+              ) : (
+                <Route key={route.path} path={route.path} element={route.element} />
               )
-            }
-          </Routes>
-        </Container>
-      </BrowserRouter>
+            )
+          }
+        </Routes>
+      </Container>
     </ThemeProvider>
   );
 }
