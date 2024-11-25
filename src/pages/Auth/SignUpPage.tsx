@@ -1,20 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
-import SignUpForm from "./components/SignUpForm";
+import { IconButton, Typography } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useNavigate } from "react-router-dom";
+import SignUpEmailForm from "./components/SignUpEmailForm";
+import SignUpDetailsForm from "./components/SignUpDetailForm";
 
 const SignUpPage: React.FC = () => {
+  const [currentStep, setCurrentStep] = useState(0); // 0: 이메일 인증, 1: 비밀번호/닉네임
+  const navigate = useNavigate();
+
+  const handleNextStep = () => {
+    setCurrentStep(1);
+  };
+
   return (
     <SignUpContainer>
       <Header>
+				<BackButton>
+          <IconButton onClick={() => navigate("/")}>
+            <ArrowBackIcon />
+          </IconButton>
+        </BackButton>
         <Title>Soon-Market</Title>
       </Header>
-      <SignUpForm />
-      <Footer>
-        <StyledLink to="/findid">아이디 찾기</StyledLink>ㅣ
-        <StyledLink to="/findpassword">비밀번호 찾기</StyledLink>ㅣ
-        <StyledLink to="/signup">가입하기</StyledLink>
-      </Footer>
+      <SlideWrapper>
+        <SlideContainer currentStep={currentStep}>
+          <Slide>
+            <SignUpEmailForm onNext={handleNextStep} />
+          </Slide>
+
+          <Slide>
+            <SignUpDetailsForm />
+          </Slide>
+        </SlideContainer>
+      </SlideWrapper>
     </SignUpContainer>
   );
 };
@@ -35,22 +55,43 @@ const Header = styled.div`
     align-items: center;
 `;
 
+const BackButton = styled.div`
+  position: absolute;
+  left: 16px;
+  top: 16px;
+`;
+
 const Title = styled.h1`
     margin: 100px; /* 원하는 margin 값으로 설정 */
     font-family: 'SUIT', sans-serif; /* 폰트 설정 */
 `;
 
-const Footer = styled.div`
-    font-size: 15px;
-    color: gray;
-    text-align: center;
-    margin-top: 20px;
+const SlideWrapper = styled.div`
+  width: 100%;
+  max-width: 390px; /* 로그인 페이지와 동일한 최대 너비 */
+  height: calc(100% - 160px); /* 헤더와 여백을 제외한 높이 */
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
 `;
 
-const StyledLink = styled(Link)`
-    text-decoration: none;
-    color: black;
-    margin: 0 5px;
+const SlideContainer = styled.div<{ currentStep: number }>`
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  transform: ${({ currentStep }) => `translateX(-${currentStep * 100}%)`};
+  width: 200%; /* 두 개의 슬라이드를 포함하므로 200% */
+  height: 100%;
+`;
+
+const Slide = styled.div`
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export default SignUpPage;

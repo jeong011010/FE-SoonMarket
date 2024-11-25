@@ -15,7 +15,7 @@ import BottomNav from "./components/Layout/BottomNav";
 // import MyPage from "./pages/MyPage/MyPage";
 // import Post from "./pages/Post/PostPage";
 // import Search from "./pages/Search/SearchPage";
-// import SignUp from "./pages/Auth/SignUpPage";
+import SignUp from "./pages/Auth/SignUpPage";
 
 //Redux
 import { setIsAuthenticated } from "./redux/modules/auth";
@@ -65,7 +65,7 @@ function App(): JSX.Element {
     { path: "/main", element: <Main />, private: true },
     // { path: "/post/:id", element: <Post />, private: true },
     // { path: "/search", element: <Search />, private: true },
-    // { path: "/signup", element: <SignUp /> },
+    { path: "/signup", element: <SignUp /> },
   ];
 
   return (
