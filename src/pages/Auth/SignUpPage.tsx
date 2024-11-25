@@ -17,6 +17,11 @@ const SignUpPage: React.FC = () => {
   return (
     <SignUpContainer>
       <Header>
+				<BackButton>
+          <IconButton onClick={() => navigate("/")}>
+            <ArrowBackIcon />
+          </IconButton>
+        </BackButton>
         <Title>Soon-Market</Title>
       </Header>
       <SlideWrapper>
@@ -48,6 +53,12 @@ const Header = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+`;
+
+const BackButton = styled.div`
+  position: absolute;
+  left: 16px;
+  top: 16px;
 `;
 
 const Title = styled.h1`

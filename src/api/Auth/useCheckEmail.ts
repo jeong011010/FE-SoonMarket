@@ -1,18 +1,17 @@
 import axios from "axios";
 
 // API 응답 타입 정의
-interface LoginResponse {
-    accessToken: string;
+interface CheckEmailRequest {
+    email: string;
 }
 
-const useSendCode = () => {
+const useCheckEmail = () => {
     const apiUrl = import.meta.env.VITE_API_URL as string;
-    const sendCode = async (email: string, authCode: string): Promise<number> => {
+    const checkEmail = async (email: string): Promise<number> => {
         try {
             // API 요청
-            const response = await axios.post<LoginResponse>(`${apiUrl}/auth/auth-code`, {
+            const response = await axios.post<CheckEmailRequest>(`${apiUrl}/auth/check-email`, {
               email,  
-              code: authCode,
             });
             return response.status;
         } catch (error) {
@@ -25,7 +24,7 @@ const useSendCode = () => {
         }
     };
 
-    return sendCode;
+    return checkEmail;
 };
 
-export default useSendCode;
+export default useCheckEmail;

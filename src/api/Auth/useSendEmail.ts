@@ -14,10 +14,7 @@ const useSendEmail = () => {
                 email,
             });
 
-
-            console.log("이메일 전송 성공");
         } catch (error) {
-            console.error("이메일 전송 중 오류 발생", error);
 
             // 에러 메시지 사용자에게 표시 (선택 사항)
             if (axios.isAxiosError(error)) {
