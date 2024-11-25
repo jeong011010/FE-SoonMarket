@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { createTheme, ThemeProvider } from "@mui/material";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Cookies } from "react-cookie";
 import { useDispatch } from "react-redux";
 
@@ -20,6 +20,8 @@ import SignUp from "./pages/Auth/SignUpPage";
 
 //Redux
 import { setIsAuthenticated } from "./redux/modules/auth";
+import { useSelector } from "react-redux";
+import { RootState } from "./redux/store";
 
 const theme = createTheme({
   typography: {
@@ -39,7 +41,7 @@ interface RouteConfig {
 
 function App(): JSX.Element {
   const dispatch = useDispatch();
-  // const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  const location = useLocation();
 
   useEffect(() => {
     const token = document.cookie.includes("access_token");
@@ -47,9 +49,14 @@ function App(): JSX.Element {
   }, [dispatch]);
 
   const PrivateRoute = ({ element }: { element: JSX.Element }): JSX.Element => {
-    const token = cookies.get("access_token"); // 토큰 존재 여부 확인
-    console.log("토큰있음");
-    return token ? element : <Navigate to="/" replace />; // 토큰 없으면 로그인 페이지로 리다이렉트
+    const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+
+    if (isAuthenticated === undefined) {
+      // 인증 상태가 결정되지 않으면 로딩 화면 표시
+      return <div>Loading...</div>;
+    }
+
+    return isAuthenticated ? element : <Navigate to="/" replace />;
   };
 
   const shouldShowBottomNav = (): boolean => {

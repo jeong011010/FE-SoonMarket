@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
-import { Button, TextField, IconButton} from "@mui/material";
+import { Button, TextField, IconButton } from "@mui/material";
 import { useSelector } from "react-redux";
 import useSignUp from "../../../api/Auth/useSignUp";
 import { RootState } from "../../../redux/store";
@@ -19,19 +19,19 @@ const SignUpDetailForm: React.FC = () => {
 
   const email = useSelector((state: RootState) => state.auth.email);
 
-  const validatePassword = (value: string): boolean => 
+  const validatePassword = (value: string): boolean =>
     /^(?=.*[a-z])(?=.*[\W])(?=.*\d)[a-zA-Z\d\W]{8,16}$/.test(value);
 
   const handleSubmit = async () => {
     if (isSubmitting) return;
-  
+
     setIsSubmitting(true);
     setNicknameError("");
     setPasswordError("");
     setConfirmPasswordError("");
-  
+
     let hasError = false;
-  
+
     if (!nickname) {
       setNicknameError("닉네임을 입력해주세요.");
       hasError = true;
@@ -39,7 +39,7 @@ const SignUpDetailForm: React.FC = () => {
       setNicknameError("닉네임은 2~8자로 설정해주세요.");
       hasError = true;
     }
-  
+
     if (!password) {
       setPasswordError("비밀번호를 입력해주세요.");
       hasError = true;
@@ -47,17 +47,17 @@ const SignUpDetailForm: React.FC = () => {
       setPasswordError("영문, 숫자, 특수문자를 포함 8~16자로 설정해주세요.");
       hasError = true;
     }
-  
+
     if (password !== confirmPassword) {
       setConfirmPasswordError("비밀번호가 일치하지 않습니다.");
       hasError = true;
     }
-  
+
     if (hasError) {
       setIsSubmitting(false);
       return;
     }
-  
+
     try {
       await signUp(email, password, nickname);
     } catch (error) {
@@ -118,7 +118,6 @@ const SignUpDetailForm: React.FC = () => {
           type="password"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
-          
         />
         <IconButton onClick={() => setConfirmPassword("")}>
           <HighlightOffOutlinedIcon />

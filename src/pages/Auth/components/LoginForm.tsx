@@ -21,31 +21,31 @@ const LoginForm: React.FC = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if(!validateEmail(id)) {
+    if (!validateEmail(id)) {
       setEmailError("이메일은 @sch.ac.kr 도메인만 허용됩니다.");
       return;
     }
     try {
-        await login(id, password);
-        dispatch(setIsAuthenticated(true));
-      } catch {
-        dispatch(setIsAuthenticated(false));
-      }
+      await login(id, password);
+      dispatch(setIsAuthenticated(true));
+    } catch {
+      dispatch(setIsAuthenticated(false));
+    }
   };
 
   return (
     <LoginFormBox onSubmit={handleSubmit}>
       <TextFieldContainer>
         <LoginTextField
-            type="email"
-            variant="filled"
-            label="아이디"
-            value={id}
-            onChange={(e) => setId(e.target.value)}
-            onBlur={handleEmailBlur}
-            error={!!emailError}
-            helperText={emailError}
-          />
+          type="email"
+          variant="filled"
+          label="아이디"
+          value={id}
+          onChange={(e) => setId(e.target.value)}
+          onBlur={handleEmailBlur}
+          error={!!emailError}
+          helperText={emailError}
+        />
         <IconButton onClick={() => setId("")}>
           <HighlightOffOutlinedIcon />
         </IconButton>

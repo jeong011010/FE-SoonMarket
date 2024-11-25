@@ -1,12 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface AuthState {
-  isAuthenticated: boolean;
+  isAuthenticated: boolean | undefined;
   email: string;
 }
 
 const initialState: AuthState = {
-  isAuthenticated: false,
+  isAuthenticated: undefined,
   email: "",
 };
 
@@ -17,7 +17,7 @@ const auth = createSlice({
     setIsAuthenticated(state, action: PayloadAction<boolean>) {
       state.isAuthenticated = action.payload;
     },
-    setUserEmail(state, action: PayloadAction<string>){
+    setUserEmail(state, action: PayloadAction<string>) {
       state.email = action.payload;
     },
   },

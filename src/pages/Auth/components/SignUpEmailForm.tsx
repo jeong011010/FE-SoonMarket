@@ -34,8 +34,8 @@ const SignUpEmailForm: React.FC<SignUpEmailFormProps> = ({ onNext }) => {
     if (!validateEmail(email)) {
       setEmailError("이메일은 @sch.ac.kr 도메인만 허용됩니다.");
       return;
-    } 
-    if(email === "") {
+    }
+    if (email === "") {
       setEmailError("이메일을 입력해주세요.");
       return;
     }
@@ -45,7 +45,7 @@ const SignUpEmailForm: React.FC<SignUpEmailFormProps> = ({ onNext }) => {
 
     try {
       const statusCode = await checkEmail(email);
-      if(statusCode !== 200) {
+      if (statusCode !== 200) {
         setEmailError("이미 사용중인 이메일입니다.");
         setIsSending(false);
         return;
@@ -63,27 +63,27 @@ const SignUpEmailForm: React.FC<SignUpEmailFormProps> = ({ onNext }) => {
     if (!authCode) {
       setCodeError("인증 번호를 입력해주세요.");
       return;
-    } try{
+    } try {
       const statusCode = await sendCode(email, authCode);
-      if(statusCode === 200){
+      if (statusCode === 200) {
         dispatch(setUserEmail(email));
         onNext();
-      } else if (statusCode === 400){
+      } else if (statusCode === 400) {
         setCodeError("인증 번호를 입력해주세요.");
-      } else if (statusCode === 401){
+      } else if (statusCode === 401) {
         setCodeError("인증 번호가 틀렸습니다.");
       }
-    } catch(error) {
+    } catch (error) {
       setCodeError("예기치 못한 오류가 발생했습니다. 다시 시도해주세요");
     }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent, field: "email" | "authCode") => {
-    if(e.key === "Enter") {
+    if (e.key === "Enter") {
       e.preventDefault();
-      if(field === "email"){
+      if (field === "email") {
         handleSendEmail();
-      } else if (field === "authCode"){
+      } else if (field === "authCode") {
         handleVerifyCode();
       }
     }
@@ -129,7 +129,7 @@ const SignUpEmailForm: React.FC<SignUpEmailFormProps> = ({ onNext }) => {
               <HighlightOffOutlinedIcon />
             </IconButton>
           </TextFieldContainer>
-        {codeError && <ErrorText>{codeError}</ErrorText>}
+          {codeError && <ErrorText>{codeError}</ErrorText>}
         </AnimatedContainer>
       )}
 
@@ -173,7 +173,7 @@ const StyledTextField = styled(TextField)`
   }
 `;
 
-const ButtonContainer = styled.div<{isEmailSent: boolean}>`
+const ButtonContainer = styled.div<{ isEmailSent: boolean }>`
   display: flex;
   justify-content: space-between;
   width: 80%;

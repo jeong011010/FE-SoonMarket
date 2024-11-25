@@ -17,7 +17,7 @@ const SignUpPage: React.FC = () => {
   return (
     <SignUpContainer>
       <Header>
-				<BackButton>
+        <BackButton>
           <IconButton onClick={() => navigate("/")}>
             <ArrowBackIcon />
           </IconButton>
