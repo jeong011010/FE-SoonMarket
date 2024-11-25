@@ -16,7 +16,6 @@ import Search from "./pages/Search/Search";
 // import MyLike from "./pages/LikePost/LikePage";
 // import MyPage from "./pages/MyPage/MyPage";
 // import Post from "./pages/Post/PostPage";
-import Search from "./pages/Search/Search";
 import SignUp from "./pages/Auth/SignUpPage";
 
 //Redux
