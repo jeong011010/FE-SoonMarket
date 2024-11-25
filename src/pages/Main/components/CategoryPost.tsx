@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import useGetSearchPostList from "../../../api/Post/useGetSearchPostList";
-import CategoryBtnGroup from "./CategoryBtnGroup";
 import PostCard from "./PostCard";
+import CategoryBtnGroup from "../../../components/Post/CategoryBtnGroup";
 
 const CategoryPost: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("전체");
@@ -15,7 +15,7 @@ const CategoryPost: React.FC = () => {
     <>
       <CategoryBtnGroup selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
       {
-        searchPostList?.posts ? (
+        searchPostList?.posts.length ? (
           searchPostList.posts.map((post) => (
             <div key={post.postId}>
               <PostCard post={post} />

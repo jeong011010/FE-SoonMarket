@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate, BrowserRouter } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { createTheme, ThemeProvider } from "@mui/material";
 import { useEffect } from "react";
@@ -9,12 +9,13 @@ import { useDispatch } from "react-redux";
 import LoginPage from "./pages/Auth/LoginPage";
 import Main from "./pages/Main/Main";
 import BottomNav from "./components/Layout/BottomNav";
+import Search from "./pages/Search/Search";
+// import Main from "./pages/Main/Main";
 // import Recommend from "./pages/Recommend/RecommendPage";
 // import AddPost from "./pages/AddPost/AddPostPage";
 // import MyLike from "./pages/LikePost/LikePage";
 // import MyPage from "./pages/MyPage/MyPage";
 // import Post from "./pages/Post/PostPage";
-// import Search from "./pages/Search/SearchPage";
 import SignUp from "./pages/Auth/SignUpPage";
 
 //Redux
@@ -52,7 +53,7 @@ function App(): JSX.Element {
   };
 
   const shouldShowBottomNav = (): boolean => {
-    const noBottomNavRoutes = ["/", "/signup", "/signup1", "/post/addpost"];
+    const noBottomNavRoutes = ["/", "/signup", "/signup1", "/post/addpost",];
     return !noBottomNavRoutes.includes(location.pathname);
   };
 
@@ -64,7 +65,7 @@ function App(): JSX.Element {
     // { path: "/mypage", element: <MyPage />, private: true },
     { path: "/main", element: <Main />, private: true },
     // { path: "/post/:id", element: <Post />, private: true },
-    // { path: "/search", element: <Search />, private: true },
+    { path: "/search", element: <Search />, private: true },
     { path: "/signup", element: <SignUp /> },
   ];
 
