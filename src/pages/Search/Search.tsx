@@ -1,10 +1,12 @@
 import styled from "styled-components"
 import TopBar from "../../components/Layout/TopBar";
+import SearchPost from "./components/SearchPost";
 
 const Search: React.FC = () => {
   return (
     <SearchPageContainer>
       <TopBar />
+      <SearchPost />
     </SearchPageContainer>
   )
 }

@@ -9,7 +9,6 @@ import { useDispatch } from "react-redux";
 import LoginPage from "./pages/Auth/LoginPage";
 import Main from "./pages/Main/Main";
 import BottomNav from "./components/Layout/BottomNav";
-import LoginPage from "./pages/Auth/LoginPage";
 import Search from "./pages/Search/Search";
 // import Main from "./pages/Main/Main";
 // import Recommend from "./pages/Recommend/RecommendPage";

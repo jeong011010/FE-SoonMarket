@@ -45,12 +45,19 @@ interface CategoryProps {
   isSelected: boolean;
 }
 
-const Category = styled(Chip) <CategoryProps>`
+interface CategoryProps {
+  isSelected: boolean; // 수정: PascalCase로 변경
+}
+
+// 'shouldForwardProp'로 isSelected 전달 방지
+const Category = styled(Chip).withConfig({
+  shouldForwardProp: (prop) => prop !== "isSelected",
+}) <CategoryProps>`
   && {
     margin-right: 8px;
     flex-shrink: 0;
-    border-color: ${props => props.isSelected ? '#2D61A6' : 'rgba(0, 0, 0, 0.23)'};
-    border-width: ${props => props.isSelected ? '1px' : '1px'};
+    border-color: ${(props) => (props.isSelected ? "#2D61A6" : "rgba(0, 0, 0, 0.23)")};
+    border-width: 1px;
   }
 `;
 
