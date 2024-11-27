@@ -1,8 +1,7 @@
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { createTheme, ThemeProvider } from "@mui/material";
-import { useEffect, useState } from "react";
-import { Cookies } from "react-cookie";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 //페이지 컴포넌트
@@ -30,9 +29,6 @@ const theme = createTheme({
   },
 });
 
-const cookies = new Cookies();
-
-
 //RouteConfig type정의
 interface RouteConfig {
   element: JSX.Element;
@@ -43,6 +39,7 @@ interface RouteConfig {
 function App(): JSX.Element {
   const dispatch = useDispatch();
   const location = useLocation();
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
 
   useEffect(() => {
     const token = document.cookie.includes("access_token");
@@ -50,8 +47,6 @@ function App(): JSX.Element {
   }, [dispatch]);
 
   const PrivateRoute = ({ element }: { element: JSX.Element }): JSX.Element => {
-    const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
-
     if (isAuthenticated === undefined) {
       // 인증 상태가 결정되지 않으면 로딩 화면 표시
       return <div>Loading...</div>;
@@ -66,7 +61,10 @@ function App(): JSX.Element {
   };
 
   const routes: RouteConfig[] = [
-    { path: "/", element: <LoginPage /> },
+    {
+      path: "/",
+      element: isAuthenticated ? <Navigate to="/main" replace /> : <LoginPage />,
+    },
     // { path: "/recommend", element: <Recommend />, private: true },
     { path: "/addpost", element: <AddPostPage />, private: true },
     // { path: "/like", element: <MyLike />, private: true },
