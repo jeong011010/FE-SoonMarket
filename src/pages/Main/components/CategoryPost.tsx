@@ -15,19 +15,19 @@ const CategoryPost: React.FC = () => {
   return (
     <>
       <CategoryBtnGroup selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
-      <PostContainer>
-        {
-          searchPostList?.posts.length ? (
-            searchPostList.posts.map((post) => (
-              <div key={post.postId}>
-                <PostCard post={post} />
-              </div>
-            ))
-          ) : (
-            <p>게시물이 없습니다.</p>
-          )
-        }
-      </PostContainer>
+      {
+        searchPostList?.posts.length ? (
+          <PostContainer>
+            {
+              searchPostList.posts.map((post) => (
+                <PostCard post={post} key={post.postId} />
+              ))
+            }
+          </PostContainer>
+        ) : (
+          <p>게시물이 없습니다.</p>
+        )
+      }
     </>
   )
 }
