@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import CategoryBtnGroup from "../../../components/Post/CategoryBtnGroup"
 import useGetSearchPostList from "../../../api/Post/useGetSearchPostList";
 import WidePostCard from "../../../components/Post/WidePostCard";
@@ -24,10 +24,10 @@ const SearchPost: React.FC = () => {
       <CategoryBtnGroup selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
       {
         searchPostList?.posts.length ? searchPostList?.posts.map((post) => (
-          <>
+          <React.Fragment key={post.postId}>
             <WidePostCard post={post} />
             <Divider style={{ width: "95%" }} />
-          </>
+          </React.Fragment>
         )) : (
           <p>해당하는 게시물을 찾을 수 없습니다.</p>
         )
