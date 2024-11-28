@@ -1,8 +1,7 @@
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { createTheme, ThemeProvider } from "@mui/material";
-import { useEffect, useState } from "react";
-import { Cookies } from "react-cookie";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 //페이지 컴포넌트
@@ -22,15 +21,13 @@ import SignUp from "./pages/Auth/SignUpPage";
 import { setIsAuthenticated } from "./redux/modules/auth";
 import { useSelector } from "react-redux";
 import { RootState } from "./redux/store";
+import AddPostPage from "./pages/AddPost/AddPostPage";
 
 const theme = createTheme({
   typography: {
     fontFamily: "SUIT-Regular",
   },
 });
-
-const cookies = new Cookies();
-
 
 //RouteConfig type정의
 interface RouteConfig {
@@ -42,6 +39,7 @@ interface RouteConfig {
 function App(): JSX.Element {
   const dispatch = useDispatch();
   const location = useLocation();
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
 
   useEffect(() => {
     const token = document.cookie.includes("access_token");
@@ -49,8 +47,6 @@ function App(): JSX.Element {
   }, [dispatch]);
 
   const PrivateRoute = ({ element }: { element: JSX.Element }): JSX.Element => {
-    const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
-
     if (isAuthenticated === undefined) {
       // 인증 상태가 결정되지 않으면 로딩 화면 표시
       return <div>Loading...</div>;
@@ -60,14 +56,17 @@ function App(): JSX.Element {
   };
 
   const shouldShowBottomNav = (): boolean => {
-    const noBottomNavRoutes = ["/", "/signup", "/signup1", "/post/addpost",];
+    const noBottomNavRoutes = ["/", "/signup", "/signup1", "/addpost",];
     return !noBottomNavRoutes.includes(location.pathname);
   };
 
   const routes: RouteConfig[] = [
-    { path: "/", element: <LoginPage /> },
+    {
+      path: "/",
+      element: isAuthenticated ? <Navigate to="/main" replace /> : <LoginPage />,
+    },
     // { path: "/recommend", element: <Recommend />, private: true },
-    // { path: "/addpost", element: <AddPost />, private: true },
+    { path: "/addpost", element: <AddPostPage />, private: true },
     // { path: "/like", element: <MyLike />, private: true },
     // { path: "/mypage", element: <MyPage />, private: true },
     { path: "/main", element: <Main />, private: true },
