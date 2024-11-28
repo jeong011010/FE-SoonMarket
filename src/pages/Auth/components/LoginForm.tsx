@@ -3,15 +3,12 @@ import styled from "styled-components";
 import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
 import { Button, IconButton, TextField } from "@mui/material";
 import useLogin from "../../../api/Auth/useLogin";
-import { useDispatch } from "react-redux";
-import { setIsAuthenticated } from "../../../redux/modules/auth";
 
 const LoginForm: React.FC = () => {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const login = useLogin();
-  const dispatch = useDispatch();
 
   const validateEmail = (value: string) => /^[a-zA-Z0-9._%+-]+@sch\.ac\.kr$/.test(value);
 
@@ -25,12 +22,7 @@ const LoginForm: React.FC = () => {
       setEmailError("이메일은 @sch.ac.kr 도메인만 허용됩니다.");
       return;
     }
-    try {
-      await login(id, password);
-      dispatch(setIsAuthenticated(true));
-    } catch {
-      dispatch(setIsAuthenticated(false));
-    }
+    await login(id, password);
   };
 
   return (

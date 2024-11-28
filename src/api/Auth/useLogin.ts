@@ -1,44 +1,33 @@
 import axios from "axios";
 import { Cookies } from "react-cookie";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
-// API 응답 타입 정의
-interface LoginResponse {
-	accessToken: string;
-}
+import { setIsAuthenticated } from "../../redux/modules/auth";
 
 const useLogin = () => {
 	const apiUrl = import.meta.env.VITE_API_URL as string; // 환경 변수가 존재한다고 가정
 	const cookies = new Cookies();
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
+
 	const login = async (email: string, password: string): Promise<void> => {
-
-		try {
-			// API 요청
-			const response = await axios.post<LoginResponse>(`${apiUrl}/users/login`, {
-				email,
-				password,
-			});
-
-			// 토큰 저장
+		await axios.post(`${apiUrl}/users/login`, {
+			email,
+			password,
+		}).then(response => {
 			const token = response.data.accessToken;
 			cookies.set("access_token", token, {
 				path: "/",
-				httpOnly: false, // 브라우저 자바스크립트에서 접근 가능
-				secure: true, // HTTPS 환경에서만 작동
-				//sameSite: "Strict", // 동일 사이트에서만 쿠키 전송
-				maxAge: 1800, // 30분 (초 단위)
-			});
-
-			navigate("/main"); // 로그인 성공 후 메인 페이지로 이동
-		} catch (error) {
-
-			// 에러 메시지 사용자에게 표시 (선택 사항)
-			if (axios.isAxiosError(error)) {
-				const message = error.response?.data?.message || "로그인에 실패했습니다.";
-				alert(message);
-			}
-		}
+				httpOnly: false,
+				secure: true,
+				sameSite: "strict",
+			})
+			dispatch(setIsAuthenticated(true));
+			navigate("/main");
+		}).catch(error => {
+			dispatch(setIsAuthenticated(false));
+			alert("로그인 실패" + error);
+		})
 	};
 
 	return login;

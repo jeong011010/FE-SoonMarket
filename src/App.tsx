@@ -22,6 +22,7 @@ import { setIsAuthenticated } from "./redux/modules/auth";
 import { useSelector } from "react-redux";
 import { RootState } from "./redux/store";
 import AddPostPage from "./pages/AddPost/AddPostPage";
+import { useCookies } from "react-cookie";
 
 const theme = createTheme({
   typography: {
@@ -40,11 +41,14 @@ function App(): JSX.Element {
   const dispatch = useDispatch();
   const location = useLocation();
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  const [cookies] = useCookies(["access_token"]);
+  const token = cookies.access_token;
 
   useEffect(() => {
-    const token = document.cookie.includes("access_token");
-    dispatch(setIsAuthenticated(!!token));
-  }, [dispatch]);
+    if (token !== undefined) {
+      dispatch(setIsAuthenticated(true))
+    }
+  }, [dispatch, token]);
 
   const PrivateRoute = ({ element }: { element: JSX.Element }): JSX.Element => {
     if (isAuthenticated === undefined) {
@@ -63,7 +67,7 @@ function App(): JSX.Element {
   const routes: RouteConfig[] = [
     {
       path: "/",
-      element: isAuthenticated ? <Navigate to="/main" replace /> : <LoginPage />,
+      element: isAuthenticated ? <Navigate to="/main" /> : <LoginPage />,
     },
     // { path: "/recommend", element: <Recommend />, private: true },
     { path: "/addpost", element: <AddPostPage />, private: true },

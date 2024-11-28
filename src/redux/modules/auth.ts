@@ -1,12 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface AuthState {
-  isAuthenticated: boolean | undefined;
+  isAuthenticated: boolean;
   email: string;
 }
 
 const initialState: AuthState = {
-  isAuthenticated: undefined,
+  isAuthenticated: false,
   email: "",
 };
 
