@@ -18,7 +18,7 @@ const useLogin = () => {
 			const token = response.data.accessToken;
 			cookies.set("access_token", token, {
 				path: "/",
-				httpOnly: false,
+				httpOnly: true,
 				secure: true,
 				sameSite: "strict",
 			})
