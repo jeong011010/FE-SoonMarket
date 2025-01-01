@@ -23,6 +23,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "./redux/store";
 import AddPostPage from "./pages/AddPost/AddPostPage";
 import { useCookies } from "react-cookie";
+import PostPage from "./pages/Post/PostPage";
 
 const theme = createTheme({
   typography: {
@@ -74,7 +75,7 @@ function App(): JSX.Element {
      { path: "/like", element: <LikePost />, private: true },
     // { path: "/mypage", element: <MyPage />, private: true },
     { path: "/main", element: <Main />, private: true },
-    // { path: "/post/:id", element: <Post />, private: true },
+    { path: "/post/:id", element: <PostPage />, private: true },
     { path: "/search", element: <Search />, private: true },
     { path: "/signup", element: <SignUp /> },
   ];
