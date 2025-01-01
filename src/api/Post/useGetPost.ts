@@ -4,7 +4,7 @@ import { useCallback, useState } from "react"
 const useGetPost = () => {
   const [post, setPost] = useState({});
 
-  const getPost = useCallback(async (postId: number) => {
+  const getPost = useCallback(async (postId: string) => {
     const apiUrl = import.meta.env.VITE_API_URL;
     try {
       const response = await axios.get(`${apiUrl}/posts/${postId}`)
