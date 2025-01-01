@@ -26,4 +26,4 @@ const useAddPost = () => {
   return addPost;
 }
 
-export default useAddPost
+export default useAddPost;

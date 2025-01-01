@@ -21,7 +21,7 @@ type Post = {
 
 type PostListResponse = {
   posts: Post[];
-  last: boolean; // 페이지네이션의 마지막 여부
+  last: boolean;
 };
 
 const useGetSearchPostList = () => {
