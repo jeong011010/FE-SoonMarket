@@ -10,7 +10,7 @@ import Main from "./pages/Main/Main";
 import BottomNav from "./components/Layout/BottomNav";
 import Search from "./pages/Search/Search";
 // import Main from "./pages/Main/Main";
-// import Recommend from "./pages/Recommend/RecommendPage";
+import Recommend from "./pages/Recommend/RecommendPage";
 // import AddPost from "./pages/AddPost/AddPostPage";
  import LikePost from "./pages/LikePost/LikePage";
 // import MyPage from "./pages/MyPage/MyPage";
@@ -69,7 +69,7 @@ function App(): JSX.Element {
       path: "/",
       element: isAuthenticated ? <Navigate to="/main" /> : <LoginPage />,
     },
-    // { path: "/recommend", element: <Recommend />, private: true },
+    { path: "/recommend", element: <Recommend />, private: true },
     { path: "/addpost", element: <AddPostPage />, private: true },
      { path: "/like", element: <LikePost />, private: true },
     // { path: "/mypage", element: <MyPage />, private: true },
