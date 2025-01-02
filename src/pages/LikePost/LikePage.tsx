@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import TopBar from "./components/TopBar";
 import { useEffect } from "react";
-import useGetLikePost from "./useGetLikePost";
+import useGetLikePost from "../../api/Post/useGetLikePost";
 import WidePostCard from "../../components/Post/WidePostCard";
 import { Divider } from "@mui/material";
 
