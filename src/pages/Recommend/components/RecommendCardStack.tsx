@@ -4,6 +4,7 @@ import styled from "styled-components";
 import useGetRecommendPost from "../../../api/Post/useGetRecommendPost";
 import TinderCard from "react-tinder-card";
 import { v4 as uuidv4 } from "uuid";
+import useLikePost from "../../../api/Post/useLikePost";
 
 interface RecommendPost {
   postId: string;
@@ -13,6 +14,7 @@ interface RecommendPost {
 }
 
 const RecommendCardStack: React.FC = () => {
+  const likePost = useLikePost();
   const { recommendPosts, getRecommendPosts } = useGetRecommendPost();
   const [currentCards, setCurrentCards] = useState<RecommendPost[]>([]);
 
@@ -47,7 +49,11 @@ const RecommendCardStack: React.FC = () => {
   }, [recommendPosts, currentCards]);
 
   const handleSwipe = (direction: string, cardIndex: number) => {
-    console.log(`Swiped ${direction} on card ${cardIndex}`);
+    const card = currentCards[cardIndex];
+    console.log(`Swiped ${direction} on card ${cardIndex}, ${card.postId}`);
+    if (direction === "right") {
+      likePost(card.postId); // 카드 오른쪽 스와이프 시 호출
+    }
   };
 
   const handleCardLeftScreen = (cardId: string) => {
