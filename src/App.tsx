@@ -13,6 +13,7 @@ import Recommend from "./pages/Recommend/RecommendPage";
 import MyPage from "./pages/MyPage/MyPage";
 import EditProfilePage from "./pages/MyPage/EditProfilePage";
 import SignUp from "./pages/Auth/SignUpPage";
+import FindPw from "./pages/Auth/FindPwPage"
 
 //Redux
 import { setIsAuthenticated, setRole, setUserId } from "./redux/modules/auth";
@@ -115,6 +116,7 @@ function App(): JSX.Element {
     { path: "/post/:id", element: <PostPage />, private: true },
     { path: "/search", element: <Search />, private: true },
     { path: "/signup", element: <SignUp /> },
+    { path: "/findpassword", element: <FindPw />},
   ];
 
   return (
