@@ -1,36 +1,33 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
 import { Button, TextField, IconButton } from "@mui/material";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { useNavigate } from "react-router-dom";
-import useChangePassword from "../../../api/Auth/useChangepassword";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import { RootState } from "../../../redux/store";
 
-const FindPwDetailForm: React.FC = () => {
+const ResetPasswordForm: React.FC = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isCapsLockOn, setIsCapsLockOn] = useState(false);
-  const navigate = useNavigate();
-  const resetPassword = useChangePassword();
-  
-  useEffect(() => {
-  }, [navigate]);
+
+  const email = useSelector((state: RootState) => state.auth.email);
 
   const validatePassword = (value: string): boolean =>
     /^(?=.*[a-z])(?=.*[\W])(?=.*\d)[a-zA-Z\d\W]{8,16}$/.test(value);
 
   const handleSubmit = async () => {
     if (isSubmitting) return;
-  
+
     setIsSubmitting(true);
     setPasswordError("");
     setConfirmPasswordError("");
-  
+
     let hasError = false;
-  
+
     if (!password) {
       setPasswordError("비밀번호를 입력해주세요.");
       hasError = true;
@@ -38,29 +35,26 @@ const FindPwDetailForm: React.FC = () => {
       setPasswordError("영문, 숫자, 특수문자를 포함 8~16자로 설정해주세요.");
       hasError = true;
     }
-  
+
     if (password !== confirmPassword) {
       setConfirmPasswordError("비밀번호가 일치하지 않습니다.");
       hasError = true;
     }
-  
+
     if (hasError) {
       setIsSubmitting(false);
       return;
     }
-  
-    try {
-      const urlParams = new URLSearchParams(window.location.search);
-      const token = urlParams.get("token");
-      if (!token) {
-        throw new Error("토큰이 제공되지 않았습니다.");
-      }
 
-      // 올바른 요청 데이터 형식으로 전달
-      const message = await resetPassword(token, password);
-      console.log("비밀번호 재설정 성공:", message);
+    try {
+      const response = await axios.patch(`users/reset-password`, {
+        email,
+        passwordUpdateRequest: {
+          newPassword: password,
+        },
+      });
+      console.log("비밀번호 재설정 성공:", response.data);
       alert("비밀번호가 성공적으로 변경되었습니다.");
-      navigate("/");
     } catch (error) {
       console.error("비밀번호 재설정 중 오류 발생:", error);
       alert("비밀번호 재설정 중 오류가 발생했습니다. 다시 시도해주세요.");
@@ -80,17 +74,8 @@ const FindPwDetailForm: React.FC = () => {
 
   return (
     <FormContainer>
-      <Header>
-        <BackButton>
-          <IconButton onClick={() => navigate("/")}>
-            <ArrowBackIcon />
-          </IconButton>
-        </BackButton>
-        <Title>Soon-Market</Title>
-      </Header>
-      <SubTitle>새로운 비밀 번호를 입력해주세요.</SubTitle>
       {/* 비밀번호 입력 */}
-      <TextFieldContainer1>
+      <TextFieldContainer>
         <StyledTextField
           label="비밀번호"
           variant="filled"
@@ -102,7 +87,7 @@ const FindPwDetailForm: React.FC = () => {
         <IconButton onClick={() => setPassword("")}>
           <HighlightOffOutlinedIcon />
         </IconButton>
-      </TextFieldContainer1>
+      </TextFieldContainer>
       {isCapsLockOn && <StatusText>Caps Lock이 켜져있습니다.</StatusText>}
       {passwordError && <ErrorText>{passwordError}</ErrorText>}
 
@@ -127,39 +112,12 @@ const FindPwDetailForm: React.FC = () => {
   );
 };
 
-export default FindPwDetailForm;
+export default ResetPasswordForm;
 
-/* 스타일 코드 */
 const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-family: 'SUIT', sans-serif;
-`;
-
-const SubTitle = styled.div`
-  font-size: 14px;
-  margin-bottom: 0px;
-`;
-
-const Header = styled.div`
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-`;
-
-const BackButton = styled.div`
-  position: absolute;
-  left: 16px;
-  top: 16px;
-`;
-
-const Title = styled.h1`
-  margin: 100px;
-  font-family: 'SUIT', sans-serif;
 `;
 
 const TextFieldContainer = styled.div`
@@ -169,16 +127,6 @@ const TextFieldContainer = styled.div`
   width: 350px;
   margin: 20px;
   border-radius: 4px;
-`;
-
-const TextFieldContainer1 = styled.div`
-  display: flex;
-  align-items: center;
-  background: #bdd9f2;
-  width: 350px;
-  margin: 20px;
-  border-radius: 4px;
-  margin-top: 0px;
 `;
 
 const StyledTextField = styled(TextField)`
@@ -193,7 +141,7 @@ const StyledTextField = styled(TextField)`
 `;
 
 const SubmitButton = styled(Button)`
-  && {
+  && {    
     border-radius: 20px;
     width: 350px;
     background: #d9e9f9;
@@ -204,9 +152,9 @@ const ErrorText = styled.div`
   color: red;
   font-size: 0.75rem;
   text-align: left;
-  margin-top: -10px;
-  margin-bottom: 10px;
-  width: 350px;
+  margin-top: -10px; /* 필드와의 간격 조정 */
+  margin-bottom: 10px; /* 아래 콘텐츠와의 간격 조정 */
+  width: 350px; /* 필드와 동일한 너비로 확장 */
 `;
 
 const StatusText = styled.div`

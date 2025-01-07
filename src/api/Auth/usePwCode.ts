@@ -1,26 +1,27 @@
-// (비밀번호 재설정)이메일을 보내는 api를 다루는 컴포넌트
 import axios from "axios";
 
+// API 응답 타입 정의
 interface LoginResponse {
-  message: string;
+  accessToken: string;
 }
 
 const usePwCode = () => {
   const apiUrl = import.meta.env.VITE_API_URL as string;
-
   const sendEmail = async (email: string): Promise<void> => {
     try {
-      const response = await axios.post<LoginResponse>(`${apiUrl}/auth/password-reset`, {
+      // API 요청
+      await axios.post<LoginResponse>(`${apiUrl}/auth/password-send-code`, {
         email,
       });
-      alert(response.data || "이메일 전송 요청이 성공적으로 처리되었습니다.");
     } catch (error) {
-      const message = axios.isAxiosError(error) ? error.response?.data?.message : "이메일 발송 실패";
-      alert(message);
+      if (axios.isAxiosError(error)) {
+        const message = error.response?.data?.message || "로그인에 실패했습니다.";
+        alert(message);
+      }
     }
   };
 
-  return { sendEmail };
+  return sendEmail;
 };
 
 export default usePwCode;
