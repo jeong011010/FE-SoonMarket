@@ -3,8 +3,12 @@ import RecommendCard from "./RecommendCard";
 import styled from "styled-components";
 import useGetRecommendPost from "../../../api/Post/useGetRecommendPost";
 import TinderCard from "react-tinder-card";
-import { v4 as uuidv4 } from "uuid";
 import useLikePost from "../../../api/Post/useLikePost";
+
+interface TinderCardAPI {
+  swipe: (direction: "left" | "right") => Promise<void>;
+  restoreCard: () => Promise<void>;
+}
 
 interface RecommendPost {
   postId: string;
@@ -18,7 +22,7 @@ const RecommendCardStack: React.FC = () => {
   const { recommendPosts, getRecommendPosts } = useGetRecommendPost();
   const [currentCards, setCurrentCards] = useState<RecommendPost[]>([]);
 
-  const tinderCardRefs = useRef<(React.RefObject<TinderCard>)[]>([]);
+  const tinderCardRefs = useRef<(React.RefObject<TinderCardAPI>)[]>([]);
 
   console.log(currentCards);
 
@@ -42,7 +46,7 @@ const RecommendCardStack: React.FC = () => {
       const newCards = [...recommendPosts];
       setCurrentCards((prevCards) => [...newCards, ...prevCards]); // 기존 카드 아래에 추가
       tinderCardRefs.current = [
-        ...newCards.map(() => React.createRef()),
+        ...newCards.map(() => React.createRef<TinderCardAPI>()),
         ...tinderCardRefs.current,
       ];
     }
@@ -79,6 +83,7 @@ const RecommendCardStack: React.FC = () => {
       {currentCards.map((card, index) => (
         <div
           key={card.postId}
+          onTouchStart={(ev) => ev.stopPropagation()}
           style={{
             pointerEvents: isTopCard(index) ? "auto" : "none", // 하위 카드 상호작용 차단
           }}

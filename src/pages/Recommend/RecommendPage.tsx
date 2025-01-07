@@ -1,5 +1,4 @@
 import styled from "styled-components"
-import TopBar from "../../components/Layout/TopBar";
 import RecommendCardStack from "./components/RecommendCardStack"
 
 const RecommendPage: React.FC = () => {
