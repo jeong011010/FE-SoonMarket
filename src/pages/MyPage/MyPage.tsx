@@ -11,7 +11,7 @@ const MyPage: React.FC = () => {
   const [value, setValue] = useState<number>(0);
   const { userInfo, getUserInfo } = useGetUserInfo();
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 

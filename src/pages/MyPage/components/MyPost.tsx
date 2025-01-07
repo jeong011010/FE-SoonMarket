@@ -29,7 +29,7 @@ const MyPost: React.FC = () => {
     <MyPostContainer>
       {myPosts && myPosts.length > 0 ? (
         myPosts
-          .reduce<Post[][]>((rows, post, index) => {
+          .reduce<Post[][]>((rows, _, index) => {
             if (index % 2 === 0) rows.push(myPosts.slice(index, index + 2));
             return rows;
           }, [])

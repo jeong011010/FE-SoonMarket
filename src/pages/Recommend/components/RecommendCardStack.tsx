@@ -10,11 +10,17 @@ interface TinderCardAPI {
   restoreCard: () => Promise<void>;
 }
 
+type PostImage = {
+  imageUrl: string;
+  originalName: string;
+};
+
+
 interface RecommendPost {
-  postId: string;
+  postId: number;
   title: string;
-  price: string;
-  images: { imageUrl: string }[];
+  price: number;
+  images: PostImage[];
 }
 
 const RecommendCardStack: React.FC = () => {
@@ -56,13 +62,13 @@ const RecommendCardStack: React.FC = () => {
     const card = currentCards[cardIndex];
     console.log(`Swiped ${direction} on card ${cardIndex}, ${card.postId}`);
     if (direction === "right") {
-      likePost(card.postId); // 카드 오른쪽 스와이프 시 호출
+      likePost(card.postId.toString()); // 카드 오른쪽 스와이프 시 호출
     }
   };
 
   const handleCardLeftScreen = (cardId: string) => {
     setCurrentCards((prevCards) =>
-      prevCards.filter((card) => card.postId !== cardId)
+      prevCards.filter((card) => card.postId.toString() !== cardId)
     );
   };
 
@@ -94,7 +100,7 @@ const RecommendCardStack: React.FC = () => {
             preventSwipe={["up", "down"]}
             onSwipe={(dir) => isTopCard(index) && handleSwipe(dir, index)}
             onCardLeftScreen={() =>
-              isTopCard(index) && handleCardLeftScreen(card.postId)
+              isTopCard(index) && handleCardLeftScreen(card.postId.toString())
             }
           >
             <RecommendCard

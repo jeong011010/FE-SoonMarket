@@ -6,7 +6,7 @@ import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
 interface RecommendCardProps {
   img: string; // 이미지 경로
   title: string; // 제목
-  price: string; // 가격
+  price: number; // 가격
   style?: React.CSSProperties; // 스타일(선택적)
   onThumbUp: () => void;
   onThumbDown: () => void;
