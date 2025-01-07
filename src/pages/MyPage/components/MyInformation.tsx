@@ -3,7 +3,7 @@ import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { UserInfo } from "../../../api/Auth/useGetUserInfo";
 import { Cookies } from "react-cookie";
-import { setIsAuthenticated } from "../../../redux/modules/auth";
+import { setIsAuthenticated, setRole, setUserId } from "../../../redux/modules/auth";
 import { useDispatch } from "react-redux";
 
 interface MyInformationProps {
@@ -24,6 +24,8 @@ const MyInformation: React.FC<MyInformationProps> = ({ userInfo }) => {
   const handleLogout = () => {
     cookies.remove("access_token", { path: "/" });
     dispatch(setIsAuthenticated(false));
+    dispatch(setUserId(''));
+    dispatch(setRole(''));
     navigate("/");
   };
 

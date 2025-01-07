@@ -14,6 +14,7 @@ import Recommend from "./pages/Recommend/RecommendPage";
 // import AddPost from "./pages/AddPost/AddPostPage";
 import LikePost from "./pages/LikePost/LikePage";
 import MyPage from "./pages/MyPage/MyPage";
+import EditProfilePage from "./pages/MyPage/EditProfilePage";
 // import Post from "./pages/Post/PostPage";
 import SignUp from "./pages/Auth/SignUpPage";
 
@@ -73,6 +74,8 @@ function App(): JSX.Element {
     { path: "/addpost", element: <AddPostPage />, private: true },
     { path: "/like", element: <LikePost />, private: true },
     { path: "/mypage", element: <MyPage />, private: true },
+    { path: "/edit-profile", element: <EditProfilePage />, private: true },
+    
     { path: "/main", element: <Main />, private: true },
     // { path: "/post/:id", element: <Post />, private: true },
     { path: "/search", element: <Search />, private: true },

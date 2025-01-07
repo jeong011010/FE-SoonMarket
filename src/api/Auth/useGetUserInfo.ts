@@ -5,14 +5,19 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 
 export interface UserInfo {
-  id?: string;
-  nickname?: string;
-  name?: string;
-  phone?: string;
-  openchatUrl?: string;
-  image?: {
+  id: number;
+  name: string;
+  phone: string;
+  email: string;
+  password: string;
+  nickname: string;
+  image: {
     imageUrl: string;
+    originalName: string;
   };
+  preferredCategories: number[];
+  openchatUrl: string;
+  reportCount: number;
 }
 
 const useGetUserInfo = () => {
@@ -42,7 +47,7 @@ const useGetUserInfo = () => {
       console.error("Error fetching user information:", error);
     }
   }, [token]);
-
+  console.log(userInfo);
   return { userInfo, getUserInfo };
 };
 
