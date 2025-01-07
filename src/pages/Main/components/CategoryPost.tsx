@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import useGetSearchPostList from "../../../api/Post/useGetSearchPostList";
-import PostCard from "./PostCard";
 import CategoryBtnGroup from "../../../components/Post/CategoryBtnGroup";
 import styled from "styled-components";
+import PostCard from "../../../components/Post/PostCard";
 
 const CategoryPost: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("전체");
