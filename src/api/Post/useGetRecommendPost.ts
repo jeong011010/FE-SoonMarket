@@ -21,7 +21,7 @@ type Post = {
 };
 
 const useGetRecommendPost = () => {
-  const [recommendPosts, setRecommendPosts] = useState([])
+  const [recommendPosts, setRecommendPosts] = useState<Post[]>([])
 
   const getRecommendPosts = useCallback(async () => {
     const apiUrl = import.meta.env.VITE_API_URL;
