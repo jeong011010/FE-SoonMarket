@@ -4,16 +4,14 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { Button, IconButton } from "@mui/material";
 import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { useEffect, useState, TouchEvent } from "react";
+import { useEffect } from "react";
 import useGetPost from "../../api/Post/useGetPost";
+import PostImgBox from "./components/PostImgBox";
 
 const PostPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { post, getPost } = useGetPost();
-  const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
-  const [touchStartX, setTouchStartX] = useState<number>(0);
-  const [touchEndX, setTouchEndX] = useState<number>(0);
 
   useEffect(() => {
     if (id) {
@@ -21,27 +19,6 @@ const PostPage = () => {
     }
   }, [getPost, id]);
 
-  const handleTouchStart = (e: TouchEvent<HTMLDivElement>) => {
-    setTouchStartX(e.touches[0].clientX);
-  };
-
-  const handleTouchMove = (e: TouchEvent<HTMLDivElement>) => {
-    setTouchEndX(e.touches[0].clientX);
-  };
-
-  const handleTouchEnd = () => {
-    if (touchStartX - touchEndX > 50) {
-      // Next image
-      if (post?.images && currentImageIndex < post.images.length - 1) {
-        setCurrentImageIndex(currentImageIndex + 1);
-      }
-    } else if (touchStartX - touchEndX < -50) {
-      // Previous image
-      if (currentImageIndex > 0) {
-        setCurrentImageIndex(currentImageIndex - 1);
-      }
-    }
-  };
   return (
     <PostContainer>
       <IconButton
@@ -50,36 +27,9 @@ const PostPage = () => {
       >
         <ArrowBackIcon />
       </IconButton>
-      <ImageContainer
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-      >
-        {
-          post && post?.images?.length > 0 ? (
-            post.images.length > 1 ? (
-              <SliderWrapper currentIndex={currentImageIndex}>
-                {post.images.map((image, index) => (
-                  <img
-                    key={index}
-                    src={image.imageUrl}
-                    alt={`게시글 사진 ${index + 1}`}
-                    style={{ width: 390, height: 400 }}
-                  />
-                ))}
-              </SliderWrapper>
-            ) : (
-              <img
-                src={post.images[0].imageUrl}
-                alt="게시글 사진"
-                style={{ width: "100%", height: "100%" }}
-              />
-            )
-          ) : (
-            <div style={{ width: "100%", height: "100%" }}>Soon-Market</div>
-          )
-        }
-      </ImageContainer>
+      {
+        post?.images && <PostImgBox images={post.images} />
+      }
       <UserBox>
         <ProfileImg />
         <ProfileText>
@@ -118,19 +68,6 @@ const PostPage = () => {
     </PostContainer>
   );
 };
-
-const ImageContainer = styled.div`
-  position: relative;
-  width: 390px;
-  height: 400px;
-  overflow: hidden;
-`;
-
-const SliderWrapper = styled.div<{ currentIndex: number }>`
-  display: flex;
-  transition: transform 0.5s ease-in-out;
-  transform: ${({ currentIndex }) => `translateX(-${currentIndex * 100}%)`};
-`;
 
 const PostContainer = styled.div`
   position: relative;
