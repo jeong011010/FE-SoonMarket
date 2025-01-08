@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import useGetPost from "../../api/Post/useGetPost";
 import PostImgBox from "./components/PostImgBox";
 import PostMaster from "./components/PostMaster";
+import PostContent from "./components/PostContent";
 
 const PostPage = () => {
   const navigate = useNavigate();
@@ -30,18 +31,9 @@ const PostPage = () => {
         post?.images && <PostImgBox images={post.images} />
       }
       <PostMaster />
-      <ContentBox>
-        <TitleBox>
-          <Title>
-            <h2 style={{ margin: 0 }}>{post?.title}</h2>
-            <p style={{ margin: 0 }}>{post?.createAt}</p>
-          </Title>
-          <Price>
-            <h2 style={{ margin: 10 }}>{post?.price}</h2>
-          </Price>
-        </TitleBox>
-        <p>{post?.content}</p>
-      </ContentBox>
+      {
+        post && <PostContent post={post} />
+      }
       <BottomBtnBox>
         <BottomBtn
           variant="contained"
@@ -59,38 +51,6 @@ const PostContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding-bottom: 60px;
-`;
-
-const ContentBox = styled.div`
-  width: 380px;
-  display: flex;
-  flex-direction: column;
-  margin: 10px;
-`;
-
-const TitleBox = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0px;
-`;
-
-const Title = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin: 0;
-`;
-
-const Price = styled.div`
-  width: auto;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #bdd9f2;
-  border-radius: 30px;
-  margin: 10px;
 `;
 
 const BottomBtnBox = styled.div`
