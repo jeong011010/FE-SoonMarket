@@ -47,13 +47,16 @@ const RecommendCardStack: React.FC = () => {
       tinderCardRefs.current = newCards.map(() => React.createRef());
     }
 
+    console.log(currentCards);
+    console.log(currentCards.length);
     // 남은 카드가 1장 이하일 때 새로운 카드를 추가
-    if (currentCards.length === 1 && recommendPosts.length > 0) {
+    if (currentCards.length < 2 && recommendPosts.length > 0) {
       const newCards = [...recommendPosts];
       setCurrentCards((prevCards) => [...newCards, ...prevCards]); // 기존 카드 아래에 추가
       tinderCardRefs.current = [
         ...newCards.map(() => React.createRef<TinderCardAPI>()),
         ...tinderCardRefs.current,
+        
       ];
     }
   }, [recommendPosts, currentCards]);
