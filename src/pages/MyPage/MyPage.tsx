@@ -41,17 +41,40 @@ const MyPage: React.FC = () => {
               <StyledTab label="내가 올린 게시물" {...a11yProps(1)} />
             </StyledTabs>
           </TabBox>
-          <CustomTabPanel value={value} index={0}>
-            <MyInformation userInfo={userInfo} />
-          </CustomTabPanel>
-          <CustomTabPanel value={value} index={1}>
-            <MyPost />
-          </CustomTabPanel>
+          <SlidingContainer value={value}>
+            <SlidingPanel>
+              <MyInformation userInfo={userInfo} />
+            </SlidingPanel>
+            <SlidingPanel>
+              <MyPost />
+            </SlidingPanel>
+          </SlidingContainer>
         </Body>
       </MyPageContainer>
     </StyledBackground>
   );
 };
+
+const Body = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow: hidden; /* 슬라이드 애니메이션을 위한 숨김 처리 */
+`;
+
+const SlidingContainer = styled.div<{ value: number }>`
+  display: flex;
+  width: 200%; /* 두 컴포넌트를 나란히 배치 */
+  transform: translateX(${(props) => props.value * -50}%); /* 슬라이딩 */
+  transition: transform 0.5s ease-in-out; /* 부드러운 애니메이션 */
+`;
+
+const SlidingPanel = styled.div`
+  width: 50%; /* 각 패널이 전체의 절반 차지 */
+  flex-shrink: 0;
+  padding: 16px;
+  box-sizing: border-box;
+`;
 
 const StyledBackground = styled.div`
   background: #ffffff;
@@ -87,13 +110,6 @@ const ProfileSection = styled.div`
   margin: 20px 0;
 `;
 
-const Body = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  overflow-y: auto;
-`;
-
 const ProfileImg = styled.div<{ imageUrl?: string }>`
   background: ${(props) => (props.imageUrl ? `url(${props.imageUrl})` : "#ddd")};
   background-size: cover;
@@ -118,6 +134,7 @@ const StyledTabs = styled(Tabs)`
 `;
 
 const StyledTab = styled(Tab)`
+  width: 50%;
   font-weight: 600;
   color: #666;
   &:hover {
@@ -128,20 +145,6 @@ const StyledTab = styled(Tab)`
     font-weight: bold;
   }
 `;
-
-type CustomTabPanelProps = {
-  children: React.ReactNode;
-  value: number;
-  index: number;
-};
-
-const CustomTabPanel: React.FC<CustomTabPanelProps> = ({ children, value, index }) => {
-  return (
-    <div style={{ width: "100%", justifyItems: "center" }}>
-      {value === index && <Box sx={{ p: 2 }}>{children}</Box>}
-    </div>
-  );
-};
 
 function a11yProps(index: number) {
   return {

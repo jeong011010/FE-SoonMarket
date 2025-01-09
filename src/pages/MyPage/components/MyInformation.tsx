@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { UserInfo } from "../../../api/Auth/useGetUserInfo";
 import { Cookies } from "react-cookie";
@@ -37,26 +36,11 @@ const MyInformation: React.FC<MyInformationProps> = ({ userInfo }) => {
       <InfoText>
         <strong>전화번호:</strong> {userInfo?.phone || "정보 없음"}
       </InfoText>
-      <Button
-        variant="outlined"
-        color="primary"
-        onClick={handleOpenChat}
-        style={{ margin: "20px 0" }}
-      >
-        오픈채팅방으로 이동
-      </Button>
-      <BottomButtonContainer>
-        <Button
-          variant="outlined"
-          color="secondary"
-          onClick={() => navigate("/edit-profile")}
-        >
-          내 정보 수정
-        </Button>
-        <Button variant="contained" color="error" onClick={handleLogout}>
-          로그아웃
-        </Button>
-      </BottomButtonContainer>
+      <ButtonContainer>
+        <Button onClick={handleOpenChat}>오픈채팅방으로 이동</Button>
+        <Button onClick={() => navigate("/edit-profile")}>내 정보 수정</Button>
+        <Button variant="danger" onClick={handleLogout}>로그아웃</Button>
+      </ButtonContainer>
     </InformationBox>
   );
 };
@@ -64,20 +48,49 @@ const MyInformation: React.FC<MyInformationProps> = ({ userInfo }) => {
 const InformationBox = styled.div`
   display: flex;
   flex-direction: column;
+  padding: 0 60px;
 `;
 
 const InfoText = styled.p`
   font-size: 18px;
   color: #333;
-  margin: 10px 0;
+  margin: 10px 10px;
   line-height: 1.6;
 `;
 
-const BottomButtonContainer = styled.div`
+
+const ButtonContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  flex-direction: column; /* 수직 정렬 */
+  gap: 15px; /* 버튼 간격 추가 */
   margin-top: auto;
   padding-top: 20px;
+`;
+
+const Button = styled.button<{ variant?: "primary" | "danger" }>`
+  padding: 12px 20px; /* 버튼 내부 여백 조정 */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  border: 2px solid
+    ${(props) => (props.variant === "danger" ? "#d32f2f" : "#5a5a5a")};
+  background-color: transparent;
+  color: ${(props) => (props.variant === "danger" ? "#d32f2f" : "#5a5a5a")};
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  width: 100%; /* 버튼이 컨테이너 너비를 채우도록 설정 */
+
+  &:hover {
+    background-color: ${(props) =>
+      props.variant === "danger" ? "#d32f2f" : "#5a5a5a"};
+    color: white;
+  }
+
 `;
 
 export default MyInformation;
