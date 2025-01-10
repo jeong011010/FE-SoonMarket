@@ -8,6 +8,7 @@ import PostImgBox from "./components/PostImgBox";
 import PostMaster from "./components/PostMaster";
 import PostContent from "./components/PostContent";
 import ChatBtn from "./components/ChatBtn";
+import ReportPopup from "./components/ReportPopup";
 
 const PostPage = () => {
   const navigate = useNavigate();
@@ -37,6 +38,7 @@ const PostPage = () => {
       {
         post && <PostContent post={post} />
       }
+      <ReportPopup />
       <ChatBtn />
     </PostContainer>
   );
