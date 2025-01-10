@@ -2,8 +2,11 @@ import { IconButton } from "@mui/material";
 import styled from "styled-components";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred';
+import useLikePost from "../../../api/Post/useLikePost";
 
-const PostMaster: React.FC = () => {
+const PostMaster: React.FC<{ id: string }> = ({ id }) => {
+  const likePost = useLikePost();
+
   return (
     <UserBox>
       <ProfileImg />
@@ -12,7 +15,7 @@ const PostMaster: React.FC = () => {
         <p style={{ margin: 1 }}>신고 횟수 0</p>
       </ProfileText>
       <BtnBox>
-        <IconButton>
+        <IconButton onClick={() => likePost(id)}>
           <FavoriteBorderIcon fontSize="large" />
         </IconButton>
         <IconButton>
