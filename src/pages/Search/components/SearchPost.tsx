@@ -17,8 +17,6 @@ const SearchPost: React.FC = () => {
     selectedCategory === "전체" ? getSearchPostList(searchQuery, "", 10, 0) : getSearchPostList(searchQuery, selectedCategory, 10, 0);
   }, [getSearchPostList, selectedCategory, searchQuery]);
 
-  console.log(searchPostList?.posts);
-
   return (
     <>
       <CategoryBtnGroup selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />

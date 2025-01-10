@@ -1,6 +1,6 @@
 import { TouchEvent, useState } from "react";
 import styled from "styled-components";
-import { PostImage } from "../../../api/Post/useGetPost";
+import { PostImage } from "../../../type/postType";
 
 // 컴포넌트 Props 타입 정의
 interface PostImgBoxProps {

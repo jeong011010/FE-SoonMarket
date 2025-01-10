@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Post } from "../../../api/Post/useGetPost";
+import { Post } from "../../../type/postType";
 
 const PostContent: React.FC<{ post: Post }> = ({ post }) => {
   return (

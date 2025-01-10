@@ -5,7 +5,6 @@ import useGetLikePost from "../../api/Post/useGetLikePost";
 import WidePostCard from "../../components/Post/WidePostCard";
 import { Divider } from "@mui/material";
 
-
 const LikePage = () => {
   const { likePosts, getLikePost } = useGetLikePost();
 
@@ -20,7 +19,7 @@ const LikePage = () => {
       {likePosts && likePosts.length > 0 ? (
         likePosts.map((data) => (
           <>
-            <WidePostCard key={data.postId} post={data}/>
+            <WidePostCard key={data.postId} post={data} />
             <Divider style={{ width: "95%" }} />
           </>
         ))

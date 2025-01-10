@@ -4,29 +4,17 @@ import styled from "styled-components";
 import useGetRecommendPost from "../../../api/Post/useGetRecommendPost";
 import TinderCard from "react-tinder-card";
 import useLikePost from "../../../api/Post/useLikePost";
+import { Post } from "../../../type/postType";
 
 interface TinderCardAPI {
   swipe: (direction: "left" | "right") => Promise<void>;
   restoreCard: () => Promise<void>;
 }
 
-type PostImage = {
-  imageUrl: string;
-  originalName: string;
-};
-
-
-interface RecommendPost {
-  postId: number;
-  title: string;
-  price: number;
-  images: PostImage[];
-}
-
 const RecommendCardStack: React.FC = () => {
   const likePost = useLikePost();
   const { recommendPosts, getRecommendPosts } = useGetRecommendPost();
-  const [currentCards, setCurrentCards] = useState<RecommendPost[]>([]);
+  const [currentCards, setCurrentCards] = useState<Post[]>([]);
 
   const tinderCardRefs = useRef<(React.RefObject<TinderCardAPI>)[]>([]);
 
@@ -49,6 +37,7 @@ const RecommendCardStack: React.FC = () => {
       tinderCardRefs.current = [
         ...newCards.map(() => React.createRef<TinderCardAPI>()),
         ...tinderCardRefs.current,
+
       ];
     } 
 

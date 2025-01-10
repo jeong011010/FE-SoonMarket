@@ -1,24 +1,7 @@
 import axios from "axios";
 import { useCallback, useState } from "react";
 import { useCookies } from "react-cookie";
-
-type PostImage = {
-  imageUrl: string;
-  originalName: string;
-};
-
-type Post = {
-  title: string;
-  images: PostImage[];
-  postId: number;
-  price: number;
-  category: string;
-  countLike: number;
-  openchatUrl: string;
-  createAt: string;
-  updateAt: string;
-  deleteAt: string | null;
-};
+import { Post } from "../../type/postType";
 
 const useGetMyPosts = () => {
   const [myPosts, setMyPosts] = useState<Post[]>([]);

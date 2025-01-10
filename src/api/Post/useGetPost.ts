@@ -1,25 +1,6 @@
 import axios from "axios";
 import { useCallback, useState } from "react";
-
-// API 반환 타입 정의
-export interface PostImage {
-  imageUrl: string;
-  originalName: string;
-}
-
-export interface Post {
-  title: string;
-  images: PostImage[];
-  postId: number;
-  price: number;
-  category: string;
-  countLike: number;
-  openchatUrl: string;
-  createAt: string;
-  updateAt: string;
-  deleteAt: string;
-  content: string;
-}
+import { Post } from "../../type/postType";
 
 const useGetPost = () => {
   const [post, setPost] = useState<Post | null>(null);

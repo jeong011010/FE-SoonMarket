@@ -1,23 +1,6 @@
 import axios from "axios";
 import { useCallback, useState } from "react";
-
-type PostImage = {
-  imageUrl: string;
-  originalName: string;
-};
-
-type Post = {
-  title: string;
-  images: PostImage[];
-  postId: number;
-  price: number;
-  category: string;
-  countLike: number;
-  openchatUrl: string;
-  createAt: string;
-  updateAt: string;
-  deleteAt: string | null;
-};
+import { Post } from "../../type/postType";
 
 type PostListResponse = {
   posts: Post[];

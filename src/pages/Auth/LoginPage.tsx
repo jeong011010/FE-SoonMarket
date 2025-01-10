@@ -4,18 +4,19 @@ import { Link } from "react-router-dom";
 import LoginForm from "./components/LoginForm";
 
 const LoginPage: React.FC = () => {
-	return (
-		<LoginContainer>
-			<Header>
-				<Title>Soon-Market</Title>
-			</Header>
-			<LoginForm />
-			<Footer>
-				<StyledLink to="/findpassword">비밀번호 찾기</StyledLink>ㅣ
-				<StyledLink to="/signup">가입하기</StyledLink>
-			</Footer>
-		</LoginContainer>
-	);
+  return (
+    <LoginContainer>
+      <Header>
+        <Title>Soon-Market</Title>
+      </Header>
+      <LoginForm />
+      <Footer>
+        <StyledLink to="/findid">아이디 찾기</StyledLink>ㅣ
+        <StyledLink to="/findpassword">비밀번호 찾기</StyledLink>ㅣ
+        <StyledLink to="/signup">가입하기</StyledLink>
+      </Footer>
+    </LoginContainer>
+  );
 };
 
 // Styled Components

@@ -1,24 +1,7 @@
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import { useNavigate } from 'react-router-dom';
 import styled from "styled-components"
-
-type PostImage = {
-  imageUrl: string;
-  originalName: string;
-};
-
-type Post = {
-  title: string;
-  images: PostImage[];
-  postId: number;
-  price: number;
-  category: string;
-  countLike: number;
-  openchatUrl: string;
-  createAt: string;
-  updateAt: string;
-  deleteAt: string | null;
-};
+import { Post } from '../../type/postType';
 
 interface PostProps {
   post: Post

@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const TopBar: React.FC = () => {
-  const [searchQuery, setSearchQuery] = useState<string>(""); 
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const navigate = useNavigate();
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
@@ -20,7 +20,7 @@ const TopBar: React.FC = () => {
         <Input
           type="text"
           placeholder="검색어 입력"
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)} 
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
         />
         <IconButton type="submit">
           <SearchIcon />

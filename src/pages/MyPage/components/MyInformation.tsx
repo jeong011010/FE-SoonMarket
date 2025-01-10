@@ -1,18 +1,18 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { UserInfo } from "../../../api/Auth/useGetUserInfo";
 import { Cookies } from "react-cookie";
 import { setIsAuthenticated, setRole, setUserId } from "../../../redux/modules/auth";
 import { useDispatch } from "react-redux";
+import { User } from "../../../type/userType";
 
 interface MyInformationProps {
-  userInfo: UserInfo | null;
+  userInfo: User | null;
 }
 
 const MyInformation: React.FC<MyInformationProps> = ({ userInfo }) => {
   const navigate = useNavigate();
   const cookies = new Cookies();
-	const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const handleOpenChat = () => {
     if (userInfo?.openchatUrl) {
@@ -87,7 +87,7 @@ const Button = styled.button<{ variant?: "primary" | "danger" }>`
 
   &:hover {
     background-color: ${(props) =>
-      props.variant === "danger" ? "#d32f2f" : "#5a5a5a"};
+    props.variant === "danger" ? "#d32f2f" : "#5a5a5a"};
     color: white;
   }
 
