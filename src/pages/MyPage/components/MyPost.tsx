@@ -41,7 +41,13 @@ const MyPost: React.FC = () => {
             </Row>
           ))
       ) : (
-        <p>Loading...</p>
+      <>
+        {myPosts.length === 0 ? (
+          <></>
+        ) : (
+          <p>Loading...</p>
+        )}
+      </>
       )}
     </MyPostContainer>
   );

@@ -5,14 +5,19 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 
 export interface UserInfo {
-  id?: string;
-  nickname?: string;
-  name?: string;
-  phone?: string;
-  openchatUrl?: string;
-  image?: {
+  id: number;
+  name: string;
+  phone: string;
+  email: string;
+  password: string;
+  nickname: string;
+  image: {
     imageUrl: string;
+    originalName: string;
   };
+  preferredCategories: number[];
+  openchatUrl: string;
+  reportCount: number;
 }
 
 const useGetUserInfo = () => {
@@ -20,28 +25,27 @@ const useGetUserInfo = () => {
   const [cookies] = useCookies(["access_token"]);
   const token = cookies.access_token;
   const userId = useSelector((state: RootState) => state.auth.userId);
-
-  useEffect(() => {
-    if (!token) {
-      console.warn("Access token is missing!");
-    }
-  }, [token]);
-
+  console.log("userInfo 호출");
   const getUserInfo = useCallback(async () => {
-    const apiUrl = import.meta.env.VITE_API_URL as string;
-    if (!token) {
-      console.error("Cannot fetch user info without a valid token.");
+    if (!token || !userId) {
+      console.error("Missing token or userId");
       return;
     }
 
     try {
-      const response = await axios.get<UserInfo>(`${apiUrl}/users/${userId}`);
+      const response = await axios.get<UserInfo>(
+        `${import.meta.env.VITE_API_URL}/users/${userId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
       setUserInfo(response.data);
-      console.log("User information fetched successfully.");
     } catch (error) {
       console.error("Error fetching user information:", error);
     }
-  }, [token]);
+  }, [token, userId]);
+
+  useEffect(() => {
+    getUserInfo();
+  }, [getUserInfo]);
 
   return { userInfo, getUserInfo };
 };
