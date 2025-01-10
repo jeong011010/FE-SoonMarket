@@ -13,7 +13,7 @@ const useEditProfile = () => {
       // PUT 요청
       await axios.put(`${apiUrl}/users/me`, formData, {
         headers: {
-          Authorization: `Bearer ${token}`, // 토큰 포함
+          Authorization: `${token}`, // 토큰 포함
         },
       });
 

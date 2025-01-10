@@ -1,34 +1,45 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import { TextField, Button } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { useNavigate } from "react-router-dom";
-import useGetUserInfo, { UserInfo } from "../../api/Auth/useGetUserInfo";
+import useGetUserInfo from "../../api/Auth/useGetUserInfo";
 import useEditProfile from "../../api/Auth/useEditProfile";
 
 const EditProfilePage: React.FC = () => {
-  const { userInfo, getUserInfo } = useGetUserInfo();
-  const [name, setName] = useState<string>(userInfo?.name || "");
-  const [phone, setPhone] = useState<string>(userInfo?.phone || "");
-  const [openchatUrl, setOpenchatUrl] = useState<string>(userInfo?.openchatUrl || "");
-  const [nickname, setNickname] = useState<string>(userInfo?.nickname || "");
+  const { userInfo } = useGetUserInfo();
+  const [name, setName] = useState<string>("");
+  const [phone, setPhone] = useState<string>("");
+  const [openchatUrl, setOpenchatUrl] = useState<string>("");
+  const [nickname, setNickname] = useState<string>("");
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const navigate = useNavigate();
   const editProfile = useEditProfile();
 
   useEffect(() => {
-    if (!userInfo) {
-      getUserInfo(); // 사용자 정보를 초기 호출
-    } else {
-      // userInfo가 변경되면 상태 업데이트
+    const initializeImage = async () => {
+      if (userInfo?.image?.imageUrl) {
+        try {
+          const response = await fetch(userInfo.image.imageUrl);
+          const blob = await response.blob();
+          const file = new File([blob], "profile-image", { type: blob.type });
+          setSelectedImage(file); // File 객체로 설정
+          setPreviewImage(userInfo.image.imageUrl); // 미리보기 이미지 설정
+        } catch (error) {
+          console.error("Error converting image URL to File:", error);
+        }
+      }
+    };
+
+    if (userInfo) {
       setName(userInfo.name || "");
       setPhone(userInfo.phone || "");
       setOpenchatUrl(userInfo.openchatUrl || "");
       setNickname(userInfo.nickname || "");
-      setPreviewImage(userInfo.image?.imageUrl || null); // 기존 프로필 이미지
+      initializeImage();
     }
-  }, [userInfo, getUserInfo]);
+  }, [userInfo]);
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -40,12 +51,10 @@ const EditProfilePage: React.FC = () => {
 
   const handleSubmit = async () => {
     const requestData = {
-      name: name,
-      phone: phone,
-      email: userInfo?.email,
-      nickname: nickname,
-      categoryIds: [], // 선택된 카테고리가 없으면 기본값
-      openchatUrl: openchatUrl,
+      name,
+      phone,
+      nickname,
+      openchatUrl,
     };
 
     const formData = new FormData();
@@ -53,9 +62,10 @@ const EditProfilePage: React.FC = () => {
       "request",
       new Blob([JSON.stringify(requestData)], { type: "application/json" })
     );
-    if (selectedImage) {
-      formData.append("file", selectedImage); // 선택된 이미지 추가
-    }
+  // 파일이 선택되지 않은 경우 처리
+  if (selectedImage) {
+    formData.append("file", selectedImage);
+  }
 
     try {
       await editProfile(formData);
@@ -68,7 +78,7 @@ const EditProfilePage: React.FC = () => {
   };
 
   const handleCancel = () => {
-    navigate("/mypage"); // 취소 버튼 클릭 시 이전 페이지로 이동
+    navigate("/mypage");
   };
 
   return (
