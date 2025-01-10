@@ -1,5 +1,7 @@
 import { InputAdornment, MenuItem, Select, TextField } from "@mui/material";
 import styled from "styled-components"
+import React, { useEffect } from "react";
+import useGetUserInfo from "../../../api/Auth/useGetUserInfo";
 
 type Description = {
   title: string;
@@ -17,6 +19,16 @@ interface ProductDescriptionInputBoxProps {
 
 const ProductDescriptionInputBox: React.FC<ProductDescriptionInputBoxProps> = ({ description, setDescription }) => {
   const categories = ["여성 의류", "남성 의류", "신발", "가방 지갑", "시계", "악세서리", "전자제품", "스포츠/레저", "컬렉션", "취미", "가구", "주방 용품", "식품", "같이 해요", "같이 시켜요", "같이 먹어요", "같이 타요"];
+  const { userInfo } = useGetUserInfo();
+
+  useEffect(() => {
+    if (userInfo?.openchatUrl) {
+      setDescription((prev) => ({
+        ...prev,
+        openchatUrl: userInfo.openchatUrl, // 기본값 설정
+      }));
+    }
+  }, [userInfo, setDescription]);
 
   const handleInputChange = (field: string, value: string) => {
     setDescription((prev) => ({
@@ -54,6 +66,7 @@ const ProductDescriptionInputBox: React.FC<ProductDescriptionInputBoxProps> = ({
       <InputTitle>오픈채팅방 URL</InputTitle>
       <DescriptionInput
         variant="outlined"
+        value={description.openchatUrl}
         onChange={(e) => handleInputChange('openchatUrl', e.target.value)}
       />
       <InputTitle>카테고리</InputTitle>
