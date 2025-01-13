@@ -1,11 +1,11 @@
+import { Box, IconButton, Tab, Tabs, Typography } from "@mui/material";
 import styled from "styled-components";
-import { Box, Tab, Tabs, Typography, IconButton } from "@mui/material";
 
 import SettingsIcon from "@mui/icons-material/Settings";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import useGetUserInfo from "../../api/Auth/useGetUserInfo";
 import MyInformation from "./components/MyInformation";
 import MyPost from "./components/MyPost";
-import useGetUserInfo from "../../api/Auth/useGetUserInfo";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 

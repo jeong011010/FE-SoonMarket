@@ -4,6 +4,7 @@ import styled from "styled-components";
 import useGetRecommendPost from "../../../api/Post/useGetRecommendPost";
 import useLikePost from "../../../api/Post/useLikePost";
 import { Post } from "../../../type/postType";
+import RecommendCard from "./RecommendCard";
 
 interface TinderCardAPI {
   swipe: (direction: "left" | "right") => Promise<void>;
