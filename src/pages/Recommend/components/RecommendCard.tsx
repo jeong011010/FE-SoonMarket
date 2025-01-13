@@ -43,19 +43,6 @@ const RecommendCard: React.FC<RecommendCardProps> = ({ img, title, price, style,
 const RecommendCardWrapper = styled.div`
 `;
 
-const Clip = styled.div`
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 30px;
-  height: 30px;
-  background-image: url(${clipImg});
-  background-size: cover;
-  background-position: center;
-  z-index: 1;
-`;
-
 // Styled Components
 const RecommendCardBox = styled.div`
   border-radius: 2px;
