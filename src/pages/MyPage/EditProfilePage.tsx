@@ -62,10 +62,10 @@ const EditProfilePage: React.FC = () => {
       "request",
       new Blob([JSON.stringify(requestData)], { type: "application/json" })
     );
-  // 파일이 선택되지 않은 경우 처리
-  if (selectedImage) {
-    formData.append("file", selectedImage);
-  }
+    // 파일이 선택되지 않은 경우 처리
+    if (selectedImage) {
+      formData.append("file", selectedImage);
+    }
 
     try {
       await editProfile(formData);

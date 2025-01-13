@@ -3,19 +3,7 @@ import PostCard from "../../../components/Post/PostCard";
 import { useEffect } from "react";
 import { Box } from "@mui/material";
 import useGetMyPosts from "../../../api/Post/useGetMyPost";
-
-type Post = {
-  title: string;
-  images: { imageUrl: string; originalName: string }[];
-  postId: number;
-  price: number;
-  category: string;
-  countLike: number;
-  openchatUrl: string;
-  createAt: string;
-  updateAt: string;
-  deleteAt: string | null;
-};
+import { Post } from "../../../type/postType";
 
 const MyPost: React.FC = () => {
   const { myPosts, getMyPosts } = useGetMyPosts();
@@ -41,13 +29,13 @@ const MyPost: React.FC = () => {
             </Row>
           ))
       ) : (
-      <>
-        {myPosts.length === 0 ? (
-          <></>
-        ) : (
-          <p>Loading...</p>
-        )}
-      </>
+        <>
+          {myPosts.length === 0 ? (
+            <></>
+          ) : (
+            <p>Loading...</p>
+          )}
+        </>
       )}
     </MyPostContainer>
   );

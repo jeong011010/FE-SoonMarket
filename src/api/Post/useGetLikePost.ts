@@ -1,24 +1,8 @@
 import axios from "axios";
 import { useCallback, useState } from "react"
 import { useCookies } from "react-cookie";
+import { Post } from "../../type/postType";
 
-type PostImage = {
-  imageUrl: string;
-  originalName: string;
-};
-
-type Post = {
-  title: string;
-  images: PostImage[];
-  postId: number;
-  price: number;
-  category: string;
-  countLike: number;
-  openchatUrl: string;
-  createAt: string;
-  updateAt: string;
-  deleteAt: string | null;
-};
 const useGetLikePost = () => {
   const [likePosts, setLikePosts] = useState<Post[] | null>(null);
   const [cookies] = useCookies(['access_token']);

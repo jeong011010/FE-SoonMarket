@@ -9,13 +9,10 @@ import LoginPage from "./pages/Auth/LoginPage";
 import Main from "./pages/Main/Main";
 import BottomNav from "./components/Layout/BottomNav";
 import Search from "./pages/Search/Search";
-// import Main from "./pages/Main/Main";
 import Recommend from "./pages/Recommend/RecommendPage";
-// import AddPost from "./pages/AddPost/AddPostPage";
 import LikePost from "./pages/LikePost/LikePage";
 import MyPage from "./pages/MyPage/MyPage";
 import EditProfilePage from "./pages/MyPage/EditProfilePage";
-// import Post from "./pages/Post/PostPage";
 import SignUp from "./pages/Auth/SignUpPage";
 
 //Redux
@@ -24,6 +21,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "./redux/store";
 import AddPostPage from "./pages/AddPost/AddPostPage";
 import { useCookies } from "react-cookie";
+import PostPage from "./pages/Post/PostPage";
 
 const theme = createTheme({
   typography: {
@@ -61,7 +59,7 @@ function App(): JSX.Element {
   };
 
   const shouldShowBottomNav = (): boolean => {
-    const noBottomNavRoutes = ["/", "/signup", "/signup1", "/addpost",];
+    const noBottomNavRoutes = ["/", "/signup", "/signup1", "/addpost", "/post"];
     return !noBottomNavRoutes.includes(location.pathname);
   };
 
@@ -77,7 +75,7 @@ function App(): JSX.Element {
     { path: "/edit-profile", element: <EditProfilePage />, private: true },
     
     { path: "/main", element: <Main />, private: true },
-    // { path: "/post/:id", element: <Post />, private: true },
+    { path: "/post/:id", element: <PostPage />, private: true },
     { path: "/search", element: <Search />, private: true },
     { path: "/signup", element: <SignUp /> },
   ];
