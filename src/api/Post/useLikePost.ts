@@ -6,10 +6,10 @@ const useLikePost = () => {
   const [cookies] = useCookies(['access_token']);
   const token = cookies.access_token;
 
-  const likePost = async (postId: string) => {
+  const likePost = async (postId: string | number) => {
     try {
       console.log('게시물 좋아요 시도', postId);
-      await axios.put(`${apiUrl}/posts/${postId}/like`,{}, {
+      await axios.put(`${apiUrl}/posts/${postId}/like`, {}, {
         headers: {
           Authorization: `${token}`
         },
