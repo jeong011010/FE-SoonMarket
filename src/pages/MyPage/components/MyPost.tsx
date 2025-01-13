@@ -47,12 +47,18 @@ const MyPostContainer = styled(Box)`
   gap: 16px;
   background: white;
   padding-bottom: 60px;
-  align-items: flex-start;
+  align-items: center; /* 아이템을 가운데 정렬 */
+  overflow-y: auto; /* 상하 스크롤 가능 */
+  width: 100%; /* 컨테이너가 부모 요소를 꽉 채우도록 */
+  box-sizing: border-box; /* 패딩 포함 크기 계산 */
 `;
 
 const Row = styled(Box)`
   display: flex;
-  justify-content: space-around;
+  justify-content: center; /* 카드들이 가운데 정렬 */
+  flex-wrap: wrap; /* 화면이 작을 때 줄바꿈 허용 */
+  gap: 16px; /* 카드 간격 추가 */
+  width: 100%; /* 부모 요소 크기를 기준으로 정렬 */
 `;
 
 export default MyPost;

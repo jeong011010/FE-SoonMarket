@@ -60,28 +60,30 @@ const MyPageContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100vh; /* 전체 화면을 차지하도록 설정 */
+  height: 100vh; /* 화면 전체 높이를 차지 */
 `;
 
 const Body = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  overflow: auto; /* 스크롤 가능하도록 설정 */
+  overflow-y: auto; /* 수직 스크롤만 허용 */
+  overflow-x: hidden; /* 좌우 스크롤 방지 */
   padding: 20px; /* 컨텐츠와 경계 사이 여백 */
-  box-sizing: border-box; /* 패딩을 포함한 크기 계산 */
+  box-sizing: border-box; /* 패딩 포함 크기 계산 */
 `;
+
 
 const SlidingContainer = styled.div<{ value: number }>`
   display: flex;
-  width: 200%; /* 두 컴포넌트를 나란히 배치 */
-  transform: translateX(${(props) => props.value * -50}%); /* 슬라이딩 */
-  transition: transform 0.5s ease-in-out; /* 부드러운 애니메이션 */
+  width: 200%; /* 두 패널을 나란히 배치 */
+  transform: translateX(${(props) => props.value * -50}%); /* 활성화된 탭으로 이동 */
+  transition: transform 0.5s ease-in-out; /* 슬라이딩 애니메이션 */
 `;
 
 const SlidingPanel = styled.div`
-  width: 50%; /* 각 패널이 전체의 절반 차지 */
-  flex-shrink: 0;
+  width: 50%; /* 컨테이너의 절반 크기를 차지 */
+  flex-shrink: 0; /* 크기 고정 */
   padding: 16px;
   box-sizing: border-box;
 `;

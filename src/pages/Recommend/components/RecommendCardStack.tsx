@@ -139,7 +139,7 @@ const NoRecommendCard = styled.div`
   justify-content: center;
   text-align: center;
 
-  @media (max-width: 390px), (max-height: 850) {
+  @media (max-width: 400px) or (max-height: 850px) {
     padding: 10px;
     width: 200px;
     height: 320px;
