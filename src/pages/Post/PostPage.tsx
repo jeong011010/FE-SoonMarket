@@ -8,7 +8,6 @@ import PostImgBox from "./components/PostImgBox";
 import PostMaster from "./components/PostMaster";
 import PostContent from "./components/PostContent";
 import ChatBtn from "./components/ChatBtn";
-import ReportPopup from "./components/ReportPopup";
 
 const PostPage = () => {
   const navigate = useNavigate();
@@ -33,12 +32,11 @@ const PostPage = () => {
         post?.images && <PostImgBox images={post.images} />
       }
       {
-        id && <PostMaster id={id} />
+        post && <PostMaster postId={post.postId} userId={post.userId} />
       }
       {
         post && <PostContent post={post} />
       }
-      <ReportPopup />
       <ChatBtn />
     </PostContainer>
   );

@@ -3,19 +3,32 @@ import styled from "styled-components";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred';
 import useLikePost from "../../../api/Post/useLikePost";
+import useGetUserInfo from "../../../api/Auth/useGetUserInfo";
+import { useEffect } from "react";
 
-const PostMaster: React.FC<{ id: string }> = ({ id }) => {
+const PostMaster: React.FC<{ postId: number, userId: number }> = ({ postId, userId }) => {
   const likePost = useLikePost();
+  const { userInfo, getUserInfo } = useGetUserInfo();
+  console.log(userInfo);
+
+  useEffect(() => {
+    getUserInfo(userId);
+  }, [getUserInfo, userId])
 
   return (
     <UserBox>
-      <ProfileImg />
+      {
+        userInfo?.image.imageUrl.includes("default") ?
+          <DefaultProfileImg />
+          :
+          <ProfileImg src={userInfo?.image.imageUrl} alt="프로필사진" />
+      }
       <ProfileText>
-        <p style={{ margin: 1 }}>이름</p>
+        <p style={{ margin: 1 }}>{userInfo?.nickname}</p>
         <p style={{ margin: 1 }}>신고 횟수 0</p>
       </ProfileText>
       <BtnBox>
-        <IconButton onClick={() => likePost(id)}>
+        <IconButton onClick={() => likePost(postId)}>
           <FavoriteBorderIcon fontSize="large" />
         </IconButton>
         <IconButton>
@@ -33,10 +46,16 @@ const UserBox = styled.div`
   align-items: center;
 `;
 
-const ProfileImg = styled.div`
+const DefaultProfileImg = styled.div`
   width: 70px;
   height: 70px;
   background: gray;
+  margin: 10px;
+`
+
+const ProfileImg = styled.img`
+  width: 70px;
+  height: 70px;
   margin: 10px;
 `;
 
