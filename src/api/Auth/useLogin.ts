@@ -55,7 +55,7 @@ const useLogin = () => {
 			navigate("/main");
 		}).catch(error => {
 			dispatch(setIsAuthenticated(false));
-			alert("로그인 실패" + error);
+    	throw new Error("로그인 실패");
 		})
 	};
 

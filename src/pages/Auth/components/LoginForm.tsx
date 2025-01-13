@@ -2,41 +2,69 @@ import React, { useState, FormEvent } from "react";
 import styled from "styled-components";
 import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
 import { Button, IconButton, TextField } from "@mui/material";
+import InputAdornment from "@mui/material/InputAdornment";
 import useLogin from "../../../api/Auth/useLogin";
 
 const LoginForm: React.FC = () => {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
-  const [emailError, setEmailError] = useState("");
+  const [idError, setIdError] = useState("");
+  const [pwError, setPwError] = useState("");
+  const [loginError, setLoginError] = useState("");
   const login = useLogin();
-
-  const validateEmail = (value: string) => /^[a-zA-Z0-9._%+-]+@sch\.ac\.kr$/.test(value);
-
-  const handleEmailBlur = () => {
-    setEmailError(!id ? "" : !validateEmail(id) ? "이메일은 @sch.ac.kr 도메인만 허용됩니다." : "");
-  };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!validateEmail(id)) {
-      setEmailError("이메일은 @sch.ac.kr 도메인만 허용됩니다.");
-      return;
+    let err=0;
+    setLoginError(""); // 기존 로그인 에러 메시지 초기화
+    if (!id) {
+      setIdError("아이디를 입력해주세요");
+      err++;
+    } else {
+      setIdError("");
     }
-    await login(id, password);
+    if (!password) {
+      setPwError("비밀번호를 입력해주세요");
+      err++;
+    } else {
+      setPwError("");
+    }
+    if(err===0){
+      try {
+        const fullEmail = `${id}@sch.ac.kr`;
+        await login(fullEmail, password);
+      } catch (error) {
+        // 로그인 실패 시 에러 메시지 설정
+        setLoginError("아이디 또는 비밀번호가 정확하지 않습니다.");
+      }
+    }
   };
 
   return (
     <LoginFormBox onSubmit={handleSubmit}>
       <TextFieldContainer>
         <LoginTextField
-          type="email"
+          type="id"
           variant="filled"
           label="아이디"
           value={id}
           onChange={(e) => setId(e.target.value)}
-          onBlur={handleEmailBlur}
-          error={!!emailError}
-          helperText={emailError}
+          error={!!idError}
+          helperText={idError}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment 
+                position="end"
+                style={{
+                  color: "gray",
+                  display: "flex",
+                  alignItems: "center",
+                  marginBottom: "-15px", // 텍스트를 아래로 조금 내림
+                }}>
+                @sch.ac.kr
+              </InputAdornment>
+            ),
+          }}
         />
         <IconButton onClick={() => setId("")}>
           <HighlightOffOutlinedIcon />
@@ -48,15 +76,19 @@ const LoginForm: React.FC = () => {
           label="비밀번호"
           type="password"
           value={password}
+          error={!!pwError}
+          helperText={pwError}
           onChange={(e) => setPassword(e.target.value)}
         />
         <IconButton onClick={() => setPassword("")}>
           <HighlightOffOutlinedIcon />
         </IconButton>
       </TextFieldContainer>
+      
       <SubmitButton variant="contained" type="submit">
         로그인
       </SubmitButton>
+      {loginError ? <ErrorMessage>{loginError}</ErrorMessage> : <ErrorMessage></ErrorMessage>}
     </LoginFormBox>
   );
 };
@@ -94,6 +126,12 @@ const SubmitButton = styled(Button)`
     width: 350px;
     background: #2d61a6;
   }
+`;
+
+const ErrorMessage = styled.p`
+  color: red;
+  font-size: 14px;
+  margin: 10px 0;
 `;
 
 export default LoginForm;

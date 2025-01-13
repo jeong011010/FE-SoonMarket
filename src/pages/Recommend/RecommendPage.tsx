@@ -7,7 +7,7 @@ const RecommendPage: React.FC = () => {
     <PageContainer>
       <RectangleBackground />
       <Header>
-        <Title>Soon-Market</Title>
+        <Title>SWIPE!</Title>
       </Header>
       <RopeSVG viewBox="0 0 300 100" preserveAspectRatio="none">
         <path d="M0,50 Q150,100 300,50" />
@@ -68,7 +68,7 @@ path {
 
 const RectangleBackground = styled.div`
   position: absolute;
-  top: -300px;
+  top: -400px;
   left: 50%;
   transform: translateX(-50%);
   width: 800px;

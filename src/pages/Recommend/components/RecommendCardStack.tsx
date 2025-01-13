@@ -1,8 +1,7 @@
-import React, { useEffect, useState, useRef } from "react";
-import RecommendCard from "./RecommendCard";
+import React, { useEffect, useRef, useState } from "react";
+import TinderCard from "react-tinder-card";
 import styled from "styled-components";
 import useGetRecommendPost from "../../../api/Post/useGetRecommendPost";
-import TinderCard from "react-tinder-card";
 import useLikePost from "../../../api/Post/useLikePost";
 import { Post } from "../../../type/postType";
 
@@ -93,11 +92,7 @@ const RecommendCardStack: React.FC = () => {
                 img={card.images[0]?.imageUrl || ""}
                 title={card.title}
                 price={card.price}
-                style={{
-                  position: "absolute",
-                  left: "50%",
-                  marginLeft: "-150px",
-                }}
+                
                 onThumbUp={() => triggerSwipe("right", index)}
                 onThumbDown={() => triggerSwipe("left", index)}
               />
@@ -143,9 +138,10 @@ const NoRecommendCard = styled.div`
   justify-content: center;
   text-align: center;
 
-  @media (max-width: 380px) {
+  @media (max-width: 390px), (max-height: 850) {
+    padding: 10px;
     width: 200px;
-    height: 350px;
+    height: 320px;
   }
 `;
 

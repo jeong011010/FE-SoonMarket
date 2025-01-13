@@ -1,7 +1,7 @@
+import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
+import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import React from "react";
 import styled from "styled-components";
-import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
-import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
 
 interface RecommendCardProps {
   img: string; // 이미지 경로
@@ -17,7 +17,6 @@ const RecommendCard: React.FC<RecommendCardProps> = ({ img, title, price, style,
   return (
     <RecommendCardWrapper>
       <RecommendCardBox style={style}>
-        <Dot/>
         <ImgBox>
           <Img src={img} alt="게시글 사진"/>
         </ImgBox>
@@ -40,17 +39,23 @@ const RecommendCard: React.FC<RecommendCardProps> = ({ img, title, price, style,
 };
 
 const RecommendCardWrapper = styled.div`
+
+  position: absolute;
+  margin-left: -150px;
+  @media (max-width: 390px), (max-height: 850) {
+    margin-left:-115px;
+  }
 `;
 
 // Styled Components
 const RecommendCardBox = styled.div`
   border-radius: 2px;
   width: 260px;
-  height: 470px;
+  height: 400px;
   position: relative;
   display: flex;
   margin: 10px 5px;
-  padding: 0px 20px;
+  padding: 20px;
   flex-direction: column;
   align-items: center;
   background: white;
@@ -63,9 +68,10 @@ const RecommendCardBox = styled.div`
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   }
 
-  @media (max-width: 380px) {
+  @media (max-width: 390px), (max-height: 850) {
+    padding: 10px;
     width: 200px;
-    height: 350px;
+    height: 320px;
   }
 `;
 
@@ -88,19 +94,10 @@ const ImgBox = styled.div`
     pointer-events: none; /* 상호작용 차단 */
   }
 
-  @media (max-width: 380px) {
-    width: 130px;
-    height: 130px;
+  @media (max-width: 390px), (max-height: 850) {
+    width: 200px;
+    height: 200px;
   }
-`;
-
-const Dot = styled.div`
-  background: #d9d9d9;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  margin: 8px auto;
-  box-shadow: 1px 1px 1px 0px;
 `;
 
 const Img = styled.img`
@@ -109,29 +106,28 @@ const Img = styled.img`
   object-fit: cover; /* 이미지 비율을 유지하며 빈 부분 없이 채움 */
   background-color: #ffffff; /* 이미지가 없는 경우 대비 */
   position: relative; /* ImgBox 위에 위치 */
-
-  @media (max-width: 380px) {
-    width: 100%; /* ImgBox에 맞게 조정 */
-    height: 100%;
-  }
 `;
 
 const Separator = styled.div`
   width: 90%;
   height: 2px;
   background-color: #ddd;
-  margin: 10px 0;
+  margin: 10px 0 0 0;
   border-radius: 1px;
 `;
 
 const CardContent = styled.div`
   width: 80%;
-  padding: 20px 0px;
+  padding: 10px 0px;
   background: #ffffff;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @media (max-width: 390px), (max-height: 850) {
+    padding: 5px;
+  }
 `;
 
 const Title = styled.h2`
@@ -139,6 +135,9 @@ const Title = styled.h2`
   font-size: 18px;
   color: #333;
   text-align: center;
+  @media (max-width: 390px), (max-height: 850) {
+    font-size: 14px;
+  }
 `;
 
 const Price = styled.p`
@@ -146,6 +145,10 @@ const Price = styled.p`
   font-size: 16px;
   font-weight: bold;
   color: #555;
+  @media (max-width: 390px), (max-height: 850) {
+    margin: 5px 0 5px 0;
+    font-size: 12px;
+  }
 `;
 
 const LikeDislikeBtnBox = styled.div`
