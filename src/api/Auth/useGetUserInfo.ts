@@ -1,17 +1,14 @@
 import axios from "axios";
-import { useCallback, useState, useEffect } from "react";
+import { useCallback, useState } from "react";
 import { useCookies } from "react-cookie";
-import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
 import { User } from "../../type/userType";
 
 const useGetUserInfo = () => {
   const [userInfo, setUserInfo] = useState<User | null>(null);
   const [cookies] = useCookies(["access_token"]);
   const token = cookies.access_token;
-  const userId = useSelector((state: RootState) => state.auth.userId);
   console.log("userInfo 호출");
-  const getUserInfo = useCallback(async () => {
+  const getUserInfo = useCallback(async (userId: string | number) => {
     if (!token || !userId) {
       console.error("Missing token or userId");
       return;
@@ -26,11 +23,7 @@ const useGetUserInfo = () => {
     } catch (error) {
       console.error("Error fetching user information:", error);
     }
-  }, [token, userId]);
-
-  useEffect(() => {
-    getUserInfo();
-  }, [getUserInfo]);
+  }, [token]);
 
   return { userInfo, getUserInfo };
 };

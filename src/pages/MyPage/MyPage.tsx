@@ -6,18 +6,21 @@ import { useState, useEffect } from "react";
 import MyInformation from "./components/MyInformation";
 import MyPost from "./components/MyPost";
 import useGetUserInfo from "../../api/Auth/useGetUserInfo";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 const MyPage: React.FC = () => {
   const [value, setValue] = useState<number>(0);
   const { userInfo, getUserInfo } = useGetUserInfo();
+  const userId = useSelector((state: RootState) => state.auth.userId);
 
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
   useEffect(() => {
-    getUserInfo();
-  }, [getUserInfo]);
+    getUserInfo(userId);
+  }, [getUserInfo, userId]);
 
   return (
     <StyledBackground>
