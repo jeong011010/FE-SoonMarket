@@ -11,7 +11,6 @@ const LoginPage: React.FC = () => {
       </Header>
       <LoginForm />
       <Footer>
-        <StyledLink to="/findid">아이디 찾기</StyledLink>ㅣ
         <StyledLink to="/findpassword">비밀번호 찾기</StyledLink>ㅣ
         <StyledLink to="/signup">가입하기</StyledLink>
       </Footer>
@@ -29,15 +28,18 @@ const LoginContainer = styled.div`
 `;
 
 const Header = styled.div`
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  position: relative;
+  z-index: 1; /* 헤더를 배경 위로 올림 */
+  text-align: center;
+  margin-top: 50px;
+  margin-bottom: 105px;
 `;
 
 const Title = styled.h1`
-    margin: 100px; /* 원하는 margin 값으로 설정 */
-    font-family: 'SUIT', sans-serif; /* 폰트 설정 */
+  font-family: 'SUIT', sans-serif;
+  font-size: 36px;
+  font-weight: bold;
+  color: black;
 `;
 
 const Footer = styled.div`

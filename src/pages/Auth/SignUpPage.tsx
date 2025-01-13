@@ -16,12 +16,12 @@ const SignUpPage: React.FC = () => {
 
   return (
     <SignUpContainer>
+      <BackButton>
+        <IconButton onClick={() => navigate("/")}>
+          <ArrowBackIcon />
+        </IconButton>
+      </BackButton>
       <Header>
-        <BackButton>
-          <IconButton onClick={() => navigate("/")}>
-            <ArrowBackIcon />
-          </IconButton>
-        </BackButton>
         <Title>Soon-Market</Title>
       </Header>
       <SlideWrapper>
@@ -48,22 +48,25 @@ const SignUpContainer = styled.div`
     font-family: 'SUIT', sans-serif;
 `;
 
-const Header = styled.div`
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-`;
-
 const BackButton = styled.div`
   position: absolute;
   left: 16px;
   top: 16px;
 `;
 
+const Header = styled.div`
+  position: relative;
+  z-index: 1; /* 헤더를 배경 위로 올림 */
+  text-align: center;
+  margin-top: 50px;
+  margin-bottom: 10px;
+`;
+
 const Title = styled.h1`
-    margin: 100px; /* 원하는 margin 값으로 설정 */
-    font-family: 'SUIT', sans-serif; /* 폰트 설정 */
+  font-family: 'SUIT', sans-serif;
+  font-size: 36px;
+  font-weight: bold;
+  color: black;
 `;
 
 const SlideWrapper = styled.div`

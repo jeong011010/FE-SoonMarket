@@ -42,7 +42,7 @@ const RecommendCardWrapper = styled.div`
 
   position: absolute;
   margin-left: -150px;
-  @media (max-width: 390px), (max-height: 850) {
+  @media (max-width: 400px) or (max-height: 850px) {
     margin-left:-115px;
   }
 `;
@@ -68,7 +68,7 @@ const RecommendCardBox = styled.div`
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   }
 
-  @media (max-width: 390px), (max-height: 850) {
+  @media (max-width: 400px) or (max-height: 850px) {
     padding: 10px;
     width: 200px;
     height: 320px;
@@ -94,7 +94,7 @@ const ImgBox = styled.div`
     pointer-events: none; /* 상호작용 차단 */
   }
 
-  @media (max-width: 390px), (max-height: 850) {
+  @media (max-width: 400px) or (max-height: 850px) {
     width: 200px;
     height: 200px;
   }
@@ -125,7 +125,7 @@ const CardContent = styled.div`
   flex-direction: column;
   align-items: center;
 
-  @media (max-width: 390px), (max-height: 850) {
+  @media (max-width: 400px) or (max-height: 850px) {
     padding: 5px;
   }
 `;
@@ -135,7 +135,7 @@ const Title = styled.h2`
   font-size: 18px;
   color: #333;
   text-align: center;
-  @media (max-width: 390px), (max-height: 850) {
+  @media (max-width: 400px) or (max-height: 850px) {
     font-size: 14px;
   }
 `;
@@ -145,7 +145,7 @@ const Price = styled.p`
   font-size: 16px;
   font-weight: bold;
   color: #555;
-  @media (max-width: 390px), (max-height: 850) {
+  @media (max-width: 400px) or (max-height: 850px) {
     margin: 5px 0 5px 0;
     font-size: 12px;
   }

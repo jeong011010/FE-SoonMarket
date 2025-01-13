@@ -31,13 +31,11 @@ const MyPage: React.FC = () => {
             <SettingsIcon />
           </IconButton>
         </Header>
-
-        <ProfileSection>
-          <ProfileImg imageUrl={userInfo?.image?.imageUrl} />
-          <Typography variant="h6">{userInfo?.nickname || "순붕이"}</Typography>
-        </ProfileSection>
-
         <Body>
+          <ProfileSection>
+            <ProfileImg imageUrl={userInfo?.image?.imageUrl} />
+            <Typography variant="h6">{userInfo?.nickname || "순붕이"}</Typography>
+          </ProfileSection>
           <TabBox>
             <StyledTabs value={value} onChange={handleChange} centered>
               <StyledTab label="내 정보" {...a11yProps(0)} />
@@ -58,11 +56,20 @@ const MyPage: React.FC = () => {
   );
 };
 
+const MyPageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh; /* 전체 화면을 차지하도록 설정 */
+`;
+
 const Body = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  overflow: hidden; /* 슬라이드 애니메이션을 위한 숨김 처리 */
+  overflow: auto; /* 스크롤 가능하도록 설정 */
+  padding: 20px; /* 컨텐츠와 경계 사이 여백 */
+  box-sizing: border-box; /* 패딩을 포함한 크기 계산 */
 `;
 
 const SlidingContainer = styled.div<{ value: number }>`
@@ -86,12 +93,6 @@ const StyledBackground = styled.div`
   min-height: 100vh;
 `;
 
-const MyPageContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100vh;
-`;
 
 const Header = styled.div`
   display: flex;
