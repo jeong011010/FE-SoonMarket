@@ -27,25 +27,18 @@ const useGetRecommendPost = () => {
   const token = cookies.access_token;
 
   const getRecommendPosts = useCallback(async () => {
-    const apiUrl = import.meta.env.VITE_API_URL as string;
-    if (!token) {
-      console.error("Cannot fetch posts without a valid token.");
-      return;
-    }
-
-    try {
-      const response = await axios.get<Post[]>(`${apiUrl}/posts/random`, {
-        headers: {
-          Authorization: `${token}`,
-        },
-      });
-      console.log(response.data);
-      setRecommendPosts(response.data);
-      console.log("My posts fetched successfully.");
-    } catch (error) {
-      console.error("Error fetching my posts:", error);
-    }
-  }, [token]);
+    const apiUrl = import.meta.env.VITE_API_URL;
+    
+    await axios.get(`${apiUrl}/posts/random`,{
+      headers:{
+        Authorization: `${token}`,
+      },
+    })
+    .then(response => setRecommendPosts(response.data))
+    .catch(error => console.error(error));
+    console.log(recommendPosts);
+  }, [])
+  
   
 
   return { getRecommendPosts, recommendPosts }

@@ -71,14 +71,15 @@ const BottomNav = () => {
 
 const FixedBottomNavigation = styled(BottomNavigation)`
   border-top: 2px solid #F1F1F1;
-  position: fixed;
+  position: absolute; /* 부모 컨테이너(AppContainer)의 기준으로 고정 */
   bottom: 0;
-  width: 100%;
+  left: 0;
+  width: 100%; /* AppContainer의 너비에 맞춤 */
   z-index: 1000;
 
   && {
     backdrop-filter: blur(10px);
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(255, 255, 255, 0.8);
   }
 `;
 

@@ -29,10 +29,12 @@ const CategoryBtnGroup: React.FC<CategoryBtnGroupProps> = ({ selectedCategory, s
 };
 
 const CategoryBox = styled.div`
+  border-radius: 50px;
   display: inline-flex;
   flex-wrap: nowrap;
+  margin: 0px 10px;
   padding: 8px 0px;
-  width: 90%;
+  width: 85%;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 
@@ -49,16 +51,15 @@ interface CategoryProps {
   isSelected: boolean; // 수정: PascalCase로 변경
 }
 
-// 'shouldForwardProp'로 isSelected 전달 방지
 const Category = styled(Chip).withConfig({
   shouldForwardProp: (prop) => prop !== "isSelected",
-}) <CategoryProps>`
+})<CategoryProps>`
   && {
     margin-right: 8px;
     flex-shrink: 0;
+    background-color: ${(props) => (props.isSelected ? "lightgray" : "white")} !important;
     border-color: ${(props) => (props.isSelected ? "#2D61A6" : "rgba(0, 0, 0, 0.23)")};
     border-width: 1px;
   }
 `;
-
 export default CategoryBtnGroup;

@@ -30,8 +30,6 @@ const RecommendCardStack: React.FC = () => {
 
   const tinderCardRefs = useRef<(React.RefObject<TinderCardAPI>)[]>([]);
 
-  console.log(currentCards);
-
   // 초기 데이터 로드
   useEffect(() => {
     getRecommendPosts();
@@ -45,20 +43,15 @@ const RecommendCardStack: React.FC = () => {
 
       // `tinderCardRefs`를 새로 초기화
       tinderCardRefs.current = newCards.map(() => React.createRef());
-    }
-
-    console.log(currentCards);
-    console.log(currentCards.length);
-    // 남은 카드가 1장 이하일 때 새로운 카드를 추가
-    if (currentCards.length < 2 && recommendPosts.length > 0) {
+    } else if (currentCards.length < 2 && recommendPosts.length > 1) {
       const newCards = [...recommendPosts];
       setCurrentCards((prevCards) => [...newCards, ...prevCards]); // 기존 카드 아래에 추가
       tinderCardRefs.current = [
         ...newCards.map(() => React.createRef<TinderCardAPI>()),
         ...tinderCardRefs.current,
-        
       ];
-    }
+    } 
+
   }, [recommendPosts, currentCards]);
 
   const handleSwipe = (direction: string, cardIndex: number) => {
@@ -89,53 +82,84 @@ const RecommendCardStack: React.FC = () => {
 
   return (
     <CardStack>
-      {currentCards.map((card, index) => (
-        <div
-          key={card.postId}
-          onTouchStart={(ev) => ev.stopPropagation()}
-          style={{
-            pointerEvents: isTopCard(index) ? "auto" : "none", // 하위 카드 상호작용 차단
-          }}
-        >
-          <TinderCard
-            ref={tinderCardRefs.current[index]} // 각 카드에 올바른 ref 전달
-            className="swipe"
-            preventSwipe={["up", "down"]}
-            onSwipe={(dir) => isTopCard(index) && handleSwipe(dir, index)}
-            onCardLeftScreen={() =>
-              isTopCard(index) && handleCardLeftScreen(card.postId.toString())
-            }
+      {currentCards.length > 0 ? (
+        currentCards.map((card, index) => (
+          <div
+            key={card.postId}
+            onTouchStart={(ev) => ev.stopPropagation()}
+            style={{
+              pointerEvents: isTopCard(index) ? "auto" : "none",
+            }}
           >
-            <RecommendCard
-              img={card.images[0]?.imageUrl || ""}
-              title={card.title}
-              price={card.price}
-              style={{
-                position: "absolute",
-                left: "50%",
-                marginLeft: "-150px",
-              }}
-              onThumbUp={() => triggerSwipe("right", index)} // Right swipe
-              onThumbDown={() => triggerSwipe("left", index)} // Left swipe
-            />
-          </TinderCard>
-        </div>
-      ))}
+            <TinderCard
+              ref={tinderCardRefs.current[index]}
+              className="swipe"
+              preventSwipe={["up", "down"]}
+              onSwipe={(dir) => isTopCard(index) && handleSwipe(dir, index)}
+              onCardLeftScreen={() =>
+                isTopCard(index) && handleCardLeftScreen(card.postId.toString())
+              }
+            >
+              <RecommendCard
+                img={card.images[0]?.imageUrl || ""}
+                title={card.title}
+                price={card.price}
+                style={{
+                  position: "absolute",
+                  left: "50%",
+                  marginLeft: "-150px",
+                }}
+                onThumbUp={() => triggerSwipe("right", index)}
+                onThumbDown={() => triggerSwipe("left", index)}
+              />
+            </TinderCard>
+          </div>
+        ))
+      ) : (
+        <NoRecommendCard>
+          추천해 드릴 게시글이 없어요.
+        </NoRecommendCard>
+      )}
     </CardStack>
   );
 };
 
 // Styled Components
 const CardStack = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 350px;
-  height: 70%;
-  overflow: hidden;
+  position: relative;
+  z-index: 2; /* 카드가 배경 위로 보이도록 설정 */
   display: flex;
-  justify-content: center;
-  padding: 190px 20px 0px 20px;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 70%;
+  padding: 20px;
+  overflow: hidden;
 `;
+
+const NoRecommendCard = styled.div`
+  border-radius: 2px;
+  width: 260px;
+  height: 470px;
+  position: relative;
+  display: flex;
+  margin: 10px 5px;
+  padding: 0px 20px;
+  flex-direction: column;
+  align-items: center;
+  background: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  transition: transform 0.2s ease-in-out;
+  justify-content: center;
+  text-align: center;
+
+  @media (max-width: 380px) {
+    width: 200px;
+    height: 350px;
+  }
+`;
+
+
 
 export default RecommendCardStack;

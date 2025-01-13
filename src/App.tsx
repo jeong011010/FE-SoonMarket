@@ -85,7 +85,6 @@ function App(): JSX.Element {
   return (
     <ThemeProvider theme={theme}>
       <Container>
-        {shouldShowBottomNav() ? <BottomNav /> : null}
         <Routes>
           {
             routes.map((route) =>
@@ -101,14 +100,25 @@ function App(): JSX.Element {
             )
           }
         </Routes>
+        {shouldShowBottomNav() ? <BottomNav /> : null}
       </Container>
     </ThemeProvider>
   );
 }
 
 const Container = styled.div`
-  width: 390px;
-  height: 844px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  max-width: 430px; /* 최대 크기 제한 */
+  min-width: 320px; /* 최소 너비 제한 */
+  min-height: 568px; /* 최소 높이 제한 */
+  margin: 0 auto; /* 가운데 정렬 */
+  position: relative;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 데스크톱에서 구분을 위한 그림자 */
+  background-color: white;
+  overflow: hidden;
 `;
 
 export default App;

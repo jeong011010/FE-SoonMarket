@@ -11,7 +11,6 @@ const LoginPage: React.FC = () => {
 			</Header>
 			<LoginForm />
 			<Footer>
-				<StyledLink to="/findid">아이디 찾기</StyledLink>ㅣ
 				<StyledLink to="/findpassword">비밀번호 찾기</StyledLink>ㅣ
 				<StyledLink to="/signup">가입하기</StyledLink>
 			</Footer>
