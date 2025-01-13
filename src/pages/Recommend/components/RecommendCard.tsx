@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import ThumbDownOffAltIcon from "@mui/icons-material/ThumbDownOffAlt";
-import clipImg from "../../../assets/clip.png";
 
 interface RecommendCardProps {
   img: string; // 이미지 경로
