@@ -15,4 +15,5 @@ export interface Post {
   updateAt: string;
   deleteAt: string | null;
   content: string;
+  userId: number
 }
