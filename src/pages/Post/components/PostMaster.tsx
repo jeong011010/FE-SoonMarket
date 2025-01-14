@@ -4,16 +4,23 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred';
 import useLikePost from "../../../api/Post/useLikePost";
 import useGetUserInfo from "../../../api/Auth/useGetUserInfo";
-import { useEffect } from "react";
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import { useEffect, useState } from "react";
 
-const PostMaster: React.FC<{ postId: number, userId: number }> = ({ postId, userId }) => {
+const PostMaster: React.FC<{ postId: number, userId: number, like: boolean }> = ({ postId, userId, like }) => {
   const likePost = useLikePost();
   const { userInfo, getUserInfo } = useGetUserInfo();
+  const [likeState, setLikeState] = useState<boolean>(like);
   console.log(userInfo);
 
   useEffect(() => {
     getUserInfo(userId);
   }, [getUserInfo, userId])
+
+  const likeBtnClick = () => {
+    setLikeState(prev => !prev);
+    likePost(postId)
+  }
 
   return (
     <UserBox>
@@ -28,14 +35,16 @@ const PostMaster: React.FC<{ postId: number, userId: number }> = ({ postId, user
         <p style={{ margin: 1 }}>신고 횟수 0</p>
       </ProfileText>
       <BtnBox>
-        <IconButton onClick={() => likePost(postId)}>
-          <FavoriteBorderIcon fontSize="large" />
+        <IconButton onClick={likeBtnClick}>
+          {
+            likeState ? <FavoriteIcon fontSize="large" /> : <FavoriteBorderIcon fontSize="large" />
+          }
         </IconButton>
         <IconButton>
           <ReportGmailerrorredIcon fontSize="large" />
         </IconButton>
       </BtnBox>
-    </UserBox>
+    </UserBox >
   )
 }
 

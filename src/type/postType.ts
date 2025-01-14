@@ -15,5 +15,6 @@ export interface Post {
   updateAt: string;
   deleteAt: string | null;
   content: string;
-  userId: number
+  userId: number;
+  like: boolean | null;
 }

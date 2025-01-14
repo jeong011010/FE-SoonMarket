@@ -20,6 +20,11 @@ const PostPage = () => {
     }
   }, [getPost, id]);
 
+  useEffect(() => {
+    if (post?.like !== null) {
+    }
+  }, [post]);
+
   return (
     <PostContainer>
       <IconButton
@@ -32,7 +37,7 @@ const PostPage = () => {
         post?.images && <PostImgBox images={post.images} />
       }
       {
-        post && <PostMaster postId={post.postId} userId={post.userId} />
+        post && post.like !== null && <PostMaster postId={post.postId} userId={post.userId} like={post.like} />
       }
       {
         post && <PostContent post={post} />
