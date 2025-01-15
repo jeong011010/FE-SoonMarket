@@ -42,6 +42,7 @@ const LoginForm: React.FC = () => {
 
   return (
     <LoginFormBox onSubmit={handleSubmit}>
+
       <TextFieldContainer>
         <LoginTextField
           type="id"
@@ -70,6 +71,8 @@ const LoginForm: React.FC = () => {
           <HighlightOffOutlinedIcon />
         </IconButton>
       </TextFieldContainer>
+      <StatusMessage>아이디는 <b>순천향대학교 이메일</b> 형식입니다.</StatusMessage>
+      
       <TextFieldContainer>
         <LoginTextField
           variant="filled"
@@ -105,7 +108,7 @@ const TextFieldContainer = styled.div`
   align-items: center;
   background: #bdd9f2;
   width: 350px;
-  margin: 20px;
+  margin: 20px 0px 0px 0px;
   border-radius: 4px;
 `;
 
@@ -122,6 +125,7 @@ const LoginTextField = styled(TextField)`
 
 const SubmitButton = styled(Button)`
   && {
+    margin: 20px 0px 0px 0px;
     border-radius: 20px;
     width: 350px;
     background: #2d61a6;
@@ -132,6 +136,12 @@ const ErrorMessage = styled.p`
   color: red;
   font-size: 14px;
   margin: 10px 0;
+`;
+
+const StatusMessage = styled.p`
+  color: black;
+  font-size: 14px;
+  margin-right: auto;
 `;
 
 export default LoginForm;
