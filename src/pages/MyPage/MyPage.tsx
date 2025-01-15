@@ -69,7 +69,6 @@ const Body = styled.div`
   flex-grow: 1;
   overflow-y: auto; /* 수직 스크롤만 허용 */
   overflow-x: hidden; /* 좌우 스크롤 방지 */
-  padding: 20px; /* 컨텐츠와 경계 사이 여백 */
   box-sizing: border-box; /* 패딩 포함 크기 계산 */
 `;
 
@@ -100,16 +99,18 @@ const Header = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
+  padding: 5px;
   border-bottom: solid 1px gray;
 `;
 
 const Title = styled.div`
   font-weight: bold;
-  font-size: 1.85rem;
+  font-size: 1.5rem;
+  padding: 10px;
 `;
 
 const ProfileSection = styled.div`
+  margin: 10px 0 0 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -128,7 +129,6 @@ const ProfileImg = styled.div<{ imageUrl?: string }>`
 
 const TabBox = styled(Box)`
   width: 100%;
-  margin-top: 16px;
   border-bottom: 1px solid #ddd;
 `;
 

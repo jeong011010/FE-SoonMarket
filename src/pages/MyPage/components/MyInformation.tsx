@@ -54,7 +54,7 @@ const InformationBox = styled.div`
 const InfoText = styled.p`
   font-size: 18px;
   color: #333;
-  margin: 10px 10px;
+  margin: 5px 0px;
   line-height: 1.6;
 `;
 
