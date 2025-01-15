@@ -1,11 +1,20 @@
-import styled from "styled-components"
+import React, { useState } from "react";
+import styled from "styled-components";
 import RecommendCardStack from "./components/RecommendCardStack"
 import clipImg from "../../assets/clip.png";
+import { Help } from "@mui/icons-material";
 
 const RecommendPage: React.FC = () => {
+  const [isHelpVisible, setHelpVisible] = useState(false);
+
+  const toggleHelpPopup = () => {
+    setHelpVisible(!isHelpVisible);
+  };
+
   return (
     <PageContainer>
       <RectangleBackground />
+      <HelpButton onClick={toggleHelpPopup}>도움말</HelpButton>
       <Header>
         <Title>SWIPE!</Title>
       </Header>
@@ -15,9 +24,20 @@ const RecommendPage: React.FC = () => {
       </RopeSVG>
       <Clip/>
       <RecommendCardStack />
+      <HelpPopup isVisible={isHelpVisible}>
+        <HelpButton onClick={toggleHelpPopup}>도움말 닫기</HelpButton>
+        <PopupContent style={{top:"250px"}}>
+          <HelpText>이 페이지는 랜덤으로 추천 상품을 제시합니다.<br/> <b>버튼</b> 을 누르거나 <b>스와이프</b> 하여 <br/>간단하게 상품들을 둘러보세요</HelpText>
+        </PopupContent>
+
+        <PopupContent style={{top:"400px"}}>
+          <HelpText>좋아요 버튼을 누르거나 <br/>오른쪽으로 스와이프 하면<br/><b>관심목록</b> 에 해당 게시글이 추가됩니다</HelpText>
+        </PopupContent>
+      </HelpPopup>
     </PageContainer>
   )
 }
+
 const PageContainer = styled.div`
   position: relative;
   display: flex;
@@ -92,6 +112,59 @@ const Title = styled.h1`
   font-size: 36px;
   font-weight: bold;
   color: white;
+`;
+
+const HelpButton = styled.button`
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: #2575fc;
+  color: white;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  z-index: 5;
+  transition: background 0.3s;
+
+  &:hover {
+    background: #1a5cb7;
+  }
+`;
+
+const HelpPopup = styled.div<{ isVisible: boolean }>`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;  
+  max-width: 430px; /* 최대 크기 제한 */
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  opacity: ${(props) => (props.isVisible ? 1 : 0)};
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+  transform: translateY(${(props) => (props.isVisible ? "0" : "-100%")});
+  pointer-events: ${(props) => (props.isVisible ? "auto" : "none")}; /* 팝업이 보이지 않을 때 클릭 방지 */
+`;
+
+const PopupContent = styled.div`
+  position: absolute;
+  width: 80%;
+  max-width: 400px;
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+`;
+
+const HelpText = styled.p`
+  font-size: 18px;
+  color: white;
+  line-height: 150%;
 `;
 
 export default RecommendPage;

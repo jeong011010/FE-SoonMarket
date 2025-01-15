@@ -90,7 +90,7 @@ const ImgBox = styled.div`
     content: "";
     position: absolute;
     inset: 0; /* 부모 크기에 맞춤 */
-    box-shadow: inset 0px 4px 8px rgba(0, 0, 0, 0.15); /* 안쪽 그림자 */
+    box-shadow: inset 0px 4px 8px rgba(0, 0, 0, 0.3); /* 안쪽 그림자 */
     pointer-events: none; /* 상호작용 차단 */
   }
 
@@ -103,8 +103,8 @@ const ImgBox = styled.div`
 const Img = styled.img`
   width: 100%; /* ImgBox의 크기에 맞춤 */
   height: 100%;
-  object-fit: cover; /* 이미지 비율을 유지하며 빈 부분 없이 채움 */
-  background-color: #ffffff; /* 이미지가 없는 경우 대비 */
+  object-fit: contain; /* 이미지 비율을 유지하며 빈 부분 없이 채움 */
+  background-color: #f0f0f0; /* 이미지가 없는 경우 대비 */
   position: relative; /* ImgBox 위에 위치 */
 `;
 
