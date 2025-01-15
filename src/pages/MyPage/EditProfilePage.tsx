@@ -5,10 +5,11 @@ import EditIcon from "@mui/icons-material/Edit";
 import { useNavigate } from "react-router-dom";
 import useGetUserInfo from "../../api/Auth/useGetUserInfo";
 import useEditProfile from "../../api/Auth/useEditProfile";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 const EditProfilePage: React.FC = () => {
-  const { userInfo } = useGetUserInfo();
-  const [name, setName] = useState<string>("");
+  const { userInfo, getUserInfo } = useGetUserInfo();
   const [phone, setPhone] = useState<string>("");
   const [openchatUrl, setOpenchatUrl] = useState<string>("");
   const [nickname, setNickname] = useState<string>("");
@@ -16,7 +17,12 @@ const EditProfilePage: React.FC = () => {
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const navigate = useNavigate();
   const editProfile = useEditProfile();
+  const userId = useSelector((state: RootState) => state.auth.userId);
 
+
+  useEffect(() => {
+    getUserInfo(userId);
+  }, [getUserInfo, userId]);
   useEffect(() => {
     const initializeImage = async () => {
       if (userInfo?.image?.imageUrl) {
@@ -33,7 +39,6 @@ const EditProfilePage: React.FC = () => {
     };
 
     if (userInfo) {
-      setName(userInfo.name || "");
       setPhone(userInfo.phone || "");
       setOpenchatUrl(userInfo.openchatUrl || "");
       setNickname(userInfo.nickname || "");
@@ -83,7 +88,9 @@ const EditProfilePage: React.FC = () => {
 
   return (
     <EditProfileContainer>
-      <h2>프로필 수정</h2>
+      <Header>
+        <Title>회원정보</Title>
+      </Header>
       <Form>
         <ProfileSection>
           <ProfileImgContainer>
@@ -101,32 +108,25 @@ const EditProfilePage: React.FC = () => {
           </ProfileImgContainer>
         </ProfileSection>
         <TextField
-          label="이름"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          fullWidth
-          margin="normal"
-        />
-        <TextField
           label="닉네임"
           value={nickname}
           onChange={(e) => setNickname(e.target.value)}
           fullWidth
-          margin="normal"
+          margin="dense"
         />
         <TextField
           label="전화번호"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
           fullWidth
-          margin="normal"
+          margin="dense"
         />
         <TextField
           label="오픈채팅 URL"
           value={openchatUrl}
           onChange={(e) => setOpenchatUrl(e.target.value)}
           fullWidth
-          margin="normal"
+          margin="dense"
         />
         <ButtonGroup>
           <Button variant="contained" color="primary" onClick={handleSubmit}>
@@ -151,7 +151,20 @@ const EditProfileContainer = styled.div`
 
 const Form = styled.form`
   width: 100%;
-  max-width: 400px;
+  max-width: 350px;
+`;
+
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+`;
+
+const Title = styled.div`
+  font-weight: bold;
+  font-size: 1.5rem;
+  padding: 10px;
 `;
 
 const ButtonGroup = styled.div`
@@ -164,13 +177,13 @@ const ProfileSection = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 30px; /* 텍스트 필드와 간격 조정 */
+  margin-bottom: 10px; /* 텍스트 필드와 간격 조정 */
 `;
 
 const ProfileImgContainer = styled.div`
   position: relative;
-  width: 140px;
-  height: 140px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   border: 3px solid black;
 `;

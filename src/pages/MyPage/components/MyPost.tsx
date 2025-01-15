@@ -31,7 +31,7 @@ const MyPost: React.FC = () => {
       ) : (
         <>
           {myPosts.length === 0 ? (
-            <></>
+            <p>작성한 게시글이 없습니다.</p>
           ) : (
             <p>Loading...</p>
           )}

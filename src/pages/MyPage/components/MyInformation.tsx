@@ -30,8 +30,8 @@ const MyInformation: React.FC<MyInformationProps> = ({ userInfo }) => {
 
   return (
     <InformationBox>
-      <InfoText>
-        <strong>이름:</strong> {userInfo?.name || "정보 없음"}
+      <InfoText style={{margin:"15px"}}>
+        <strong>{userInfo?.nickname}님의 프로필</strong>
       </InfoText>
       <InfoText>
         <strong>전화번호:</strong> {userInfo?.phone || "정보 없음"}
@@ -54,7 +54,7 @@ const InformationBox = styled.div`
 const InfoText = styled.p`
   font-size: 18px;
   color: #333;
-  margin: 5px 0px;
+  margin: 0px;
   line-height: 1.6;
 `;
 

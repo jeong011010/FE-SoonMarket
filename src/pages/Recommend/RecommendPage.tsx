@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import RecommendCardStack from "./components/RecommendCardStack"
 import clipImg from "../../assets/clip.png";
-import { Help } from "@mui/icons-material";
 
 const RecommendPage: React.FC = () => {
   const [isHelpVisible, setHelpVisible] = useState(false);

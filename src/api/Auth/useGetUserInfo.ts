@@ -17,9 +17,10 @@ const useGetUserInfo = () => {
     try {
       const response = await axios.get<User>(
         `${import.meta.env.VITE_API_URL}/users/${userId}`,
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `${token}` } }
       );
       setUserInfo(response.data);
+      console.log(response.data);
     } catch (error) {
       console.error("Error fetching user information:", error);
     }
