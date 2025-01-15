@@ -26,21 +26,26 @@ const RecommendCardStack: React.FC = () => {
   useEffect(() => {
     // 추천 게시물이 존재할 경우 새 카드 설정
     if (recommendPosts.length > 0 && currentCards.length === 0) {
-      const newCards = [...recommendPosts];
-      setCurrentCards(newCards);
+      const uniqueCards = recommendPosts.filter(
+        (newCard) => !currentCards.some((card) => card.postId === newCard.postId)
+      );
+      setCurrentCards(uniqueCards);
 
       // `tinderCardRefs`를 새로 초기화
-      tinderCardRefs.current = newCards.map(() => React.createRef());
+      tinderCardRefs.current = uniqueCards.map(() => React.createRef());
     } else if (currentCards.length < 2 && recommendPosts.length > 1) {
-      const newCards = [...recommendPosts];
-      setCurrentCards((prevCards) => [...newCards, ...prevCards]); // 기존 카드 아래에 추가
+      const uniqueCards = recommendPosts.filter(
+        (newCard) => !currentCards.some((card) => card.postId === newCard.postId)
+      );
+      console.log(uniqueCards);
+      console.log(tinderCardRefs.current);
+      setCurrentCards((prevCards) => [...uniqueCards, ...prevCards]); // 기존 카드 아래에 추가
       tinderCardRefs.current = [
-        ...newCards.map(() => React.createRef<TinderCardAPI>()),
+        ...uniqueCards.map(() => React.createRef<TinderCardAPI>()),
         ...tinderCardRefs.current,
-
       ];
-    } 
-
+    }
+    console.log(tinderCardRefs);
   }, [recommendPosts, currentCards]);
 
   const handleSwipe = (direction: string, cardIndex: number) => {

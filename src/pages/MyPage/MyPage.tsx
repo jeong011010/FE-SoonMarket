@@ -113,16 +113,15 @@ const ProfileSection = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 20px 0;
 `;
 
 const ProfileImg = styled.div<{ imageUrl?: string }>`
   background: ${(props) => (props.imageUrl ? `url(${props.imageUrl})` : "#ddd")};
   background-size: cover;
   background-position: center;
-  width: 140px;
-  height: 140px;
-  margin-top: 16px;
+  width: 120px;
+  height: 120px;
+  margin-top: 5px;
   border-radius: 50%;
   border: 3px solid black;
 `;

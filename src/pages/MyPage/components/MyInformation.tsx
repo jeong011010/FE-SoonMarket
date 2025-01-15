@@ -48,7 +48,7 @@ const MyInformation: React.FC<MyInformationProps> = ({ userInfo }) => {
 const InformationBox = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 0 60px;
+  align-items: center;
 `;
 
 const InfoText = styled.p`
