@@ -42,7 +42,7 @@ const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 100vh;
+  min-height: 100dvh;
   overflow: hidden; /* 페이지를 넘어가는 요소 숨김 */
   background: white;
 `;
@@ -108,7 +108,6 @@ const Header = styled.div`
 
 const Title = styled.h1`
   font-family: 'SUIT', sans-serif;
-  font-size: 36px;
   font-weight: bold;
   color: white;
 `;
