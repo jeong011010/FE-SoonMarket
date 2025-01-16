@@ -60,7 +60,7 @@ const MyPageContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100vh; /* 화면 전체 높이를 차지 */
+  height: 100dvh; /* 화면 전체 높이를 차지 */
 `;
 
 const Body = styled.div`
@@ -91,7 +91,7 @@ const StyledBackground = styled.div`
   background: #ffffff;
   display: flex;
   justify-content: center;
-  min-height: 100vh;
+  min-height: 100dvh;
 `;
 
 

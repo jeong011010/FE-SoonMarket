@@ -95,7 +95,7 @@ const AddPostContainer = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  height: 100vh;
+  height: 100dvh;
 `;
 
 const Header = styled.div`
@@ -125,7 +125,7 @@ const Title = styled.div`
 `;
 
 const ContentContainer = styled.div`
-  justify-items: center;
+  text-align: -webkit-center;
   flex-grow: 1;
   width: 100%;
   max-width: 430px;
