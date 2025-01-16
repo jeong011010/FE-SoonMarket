@@ -54,9 +54,21 @@ const EditProfilePage: React.FC = () => {
     }
   };
 
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const rawValue = e.target.value.replace(/[^0-9]/g, ""); // 숫자만 남김
+    let formattedValue = rawValue;
+  
+    if (rawValue.length > 3 && rawValue.length <= 7) {
+      formattedValue = `${rawValue.slice(0, 3)}-${rawValue.slice(3)}`;
+    } else if (rawValue.length > 7) {
+      formattedValue = `${rawValue.slice(0, 3)}-${rawValue.slice(3, 7)}-${rawValue.slice(7, 11)}`;
+    }
+  
+    setPhone(formattedValue);
+  };
+
   const handleSubmit = async () => {
     const requestData = {
-      name,
       phone,
       nickname,
       openchatUrl,
@@ -117,7 +129,7 @@ const EditProfilePage: React.FC = () => {
         <TextField
           label="전화번호"
           value={phone}
-          onChange={(e) => setPhone(e.target.value)}
+          onChange={handlePhoneChange}
           fullWidth
           margin="dense"
         />
