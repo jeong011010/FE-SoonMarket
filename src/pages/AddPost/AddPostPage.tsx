@@ -65,53 +65,83 @@ const AddPostPage: React.FC = () => {
 
   return (
     <AddPostContainer>
-      <AddPostTitleBox>
-        <BackBtn onClick={() => navigate(-1)}>
+      <Header>
+        <IconButton onClick={() => navigate(-1)}>
           <ArrowBackIcon />
-        </BackBtn>
-        <h3>물건 등록</h3>
-      </AddPostTitleBox>
-      <UploadImgBox uploadImg={uploadImg} setUploadImg={setUploadImg} />
-      <ProductDescriptionInputBox
-        description={description}
-        setDescription={setDescription}
-      />
-      <Button
-        variant="contained"
-        style={{ margin: 15, width: 360 }}
-        onClick={handleAddPost}
-        disabled={!isFormComplete()} // 모든 필드와 업로드 이미지 조건이 충족되지 않으면 비활성화
-      >
-        게시물 등록
-      </Button>
+        </IconButton>
+        <Title>물건 등록</Title>
+      </Header>
+      <ContentContainer>
+        <UploadImgBox uploadImg={uploadImg} setUploadImg={setUploadImg} />
+        <ProductDescriptionInputBox
+          description={description}
+          setDescription={setDescription}
+        />
+        <StyledButton
+          variant="contained"
+          onClick={handleAddPost}
+          disabled={!isFormComplete()} // 모든 필드와 업로드 이미지 조건이 충족되지 않으면 비활성화
+        >
+          게시물 등록
+        </StyledButton>
+      </ContentContainer>
     </AddPostContainer>
   );
 };
+
 
 const AddPostContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 70px;
-`;
-
-const AddPostTitleBox = styled.div`
-  display: flex;
-  position: fixed;
-  top: 0px;
-  justify-content: center;
-  z-index: 1000;
-  border-bottom: 1px solid gray;
   width: 100%;
+  height: 100vh;
 `;
 
-const BackBtn = styled(IconButton)`
-  && {
-    position: fixed;
-    left: 0; 
-    margin: 10.72px;
-    z-index: 1100;
+const Header = styled.div`
+  display: flex;
+  align-items: center; 
+  position: relative; 
+  padding: 5px 0;
+  border-bottom: solid 1px gray; 
+  width: 100%; 
+  background-color: white;
+  z-index: 10;
+
+  & > button {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
   }
 `;
 
+const Title = styled.div`
+  flex-grow: 1;
+  font-weight: bold;
+  font-size: 1.5rem;
+  text-align: center;
+  padding: 10px;
+`;
+
+const ContentContainer = styled.div`
+  justify-items: center;
+  flex-grow: 1;
+  width: 100%;
+  max-width: 430px;
+  margin: 0 auto;
+  overflow-y: auto; /* 세로 스크롤 허용 */
+  overflow-x: hidden; /* 좌우 스크롤 방지 */
+  padding: 0 40px; /* 좌우 여백 */
+  box-sizing: border-box; /* 패딩을 포함한 크기 계산 */
+`;
+
+const StyledButton = styled(Button)`
+  && {
+    width: 100%;
+    max-width: 430px; /* 텍스트 필드와 동일한 최대 너비 */
+    margin: 15px 0; /* 위아래 간격 */
+    box-sizing: border-box; /* 패딩 포함 크기 계산 */
+  }
+`;
 export default AddPostPage;

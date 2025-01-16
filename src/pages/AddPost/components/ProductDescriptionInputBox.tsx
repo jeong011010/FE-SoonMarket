@@ -2,6 +2,8 @@ import { InputAdornment, MenuItem, Select, TextField } from "@mui/material";
 import styled from "styled-components"
 import React, { useEffect } from "react";
 import useGetUserInfo from "../../../api/Auth/useGetUserInfo";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/store";
 
 type Description = {
   title: string;
@@ -19,7 +21,11 @@ interface ProductDescriptionInputBoxProps {
 
 const ProductDescriptionInputBox: React.FC<ProductDescriptionInputBoxProps> = ({ description, setDescription }) => {
   const categories = ["여성 의류", "남성 의류", "신발", "가방 지갑", "시계", "악세서리", "전자제품", "스포츠/레저", "컬렉션", "취미", "가구", "주방 용품", "식품", "같이 해요", "같이 시켜요", "같이 먹어요", "같이 타요"];
-  const { userInfo } = useGetUserInfo();
+  const userId = useSelector((state: RootState) => state.auth.userId);
+  const { userInfo, getUserInfo } = useGetUserInfo();
+  useEffect(() => {
+    getUserInfo(userId);
+  }, [getUserInfo, userId]);
 
   useEffect(() => {
     if (userInfo?.openchatUrl) {
@@ -75,7 +81,7 @@ const ProductDescriptionInputBox: React.FC<ProductDescriptionInputBoxProps> = ({
         onChange={(e) =>
           handleInputChange('category', e.target.value)
         }
-        style={{ marginLeft: 15, width: 360 }}
+        style={{ width: "100%" }}
       >
         {
           categories.map((data) => (
@@ -89,8 +95,7 @@ const ProductDescriptionInputBox: React.FC<ProductDescriptionInputBoxProps> = ({
 
 const DescriptionInput = styled(TextField)`
   &&{
-    margin-left: 15px;
-    width: 360px;
+    width: 100%
   }
 `
 
@@ -100,7 +105,9 @@ const ContentsBox = styled.div`
 `;
 
 const InputTitle = styled.h3`
-  margin: 5px 0px 5px 20px;
+  margin: 5px 0;
+  text-align: left;
+  box-sizing: border-box;
 `
 
 export default ProductDescriptionInputBox;
