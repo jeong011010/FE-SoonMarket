@@ -25,11 +25,11 @@ const RecommendPage: React.FC = () => {
       <RecommendCardStack />
       <HelpPopup isVisible={isHelpVisible}>
         <HelpButton onClick={toggleHelpPopup}>도움말 닫기</HelpButton>
-        <PopupContent style={{top:"250px"}}>
+        <PopupContent top={250}>
           <HelpText>이 페이지는 랜덤으로 추천 상품을 제시합니다.<br/> <b>버튼</b> 을 누르거나 <b>스와이프</b> 하여 <br/>간단하게 상품들을 둘러보세요</HelpText>
         </PopupContent>
 
-        <PopupContent style={{top:"400px"}}>
+        <PopupContent top={400}>
           <HelpText>좋아요 버튼을 누르거나 <br/>오른쪽으로 스와이프 하면<br/><b>관심목록</b> 에 해당 게시글이 추가됩니다</HelpText>
         </PopupContent>
       </HelpPopup>
@@ -151,19 +151,34 @@ const HelpPopup = styled.div<{ isVisible: boolean }>`
   pointer-events: ${(props) => (props.isVisible ? "auto" : "none")}; /* 팝업이 보이지 않을 때 클릭 방지 */
 `;
 
-const PopupContent = styled.div`
+const PopupContent = styled.div<{ top?: number }>`
   position: absolute;
   width: 80%;
   max-width: 400px;
   border-radius: 16px;
   padding: 20px;
   text-align: center;
+
+  top: ${(props) => props.top || 0}px;
+
+  @media (max-width: 400px) {
+    top: ${(props) => (props.top ? props.top - 50 : 200)}px; /* 작은 화면에서는 top 값 조정 */
+  }
+
+  @media (max-height: 850px) {
+    top: ${(props) => (props.top ? props.top - 30 : 220)}px; /* 작은 높이에서는 top 값 조정 */
+  }
 `;
 
 const HelpText = styled.p`
-  font-size: 18px;
+  font-family: 'SUIT', sans-serif;
+  font-size: 17px;
   color: white;
   line-height: 150%;
+
+  @media (max-width: 400px) or (max-height: 850px) {
+    font-size: 14px;
+  }
 `;
 
 export default RecommendPage;
