@@ -74,10 +74,12 @@ const ImageContainer = styled.div`
   position: relative;
   background: #f0f0f0;
   margin: 20px;
-  width: 100%;
+  width: 90%;
   max-width: 390px;
   aspect-ratio: 1 / 1;
   position: relative;
+
+
 
   &::after {
     content: "";
