@@ -52,13 +52,6 @@ const UserBox = styled.div`
   padding: 10px;
 `;
 
-const DefaultProfileImg = styled.div`
-  width: 70px;
-  height: 70px;
-  background: gray;
-  margin: 10px;
-`
-
 const ProfileImg = styled.div<{ imageUrl?: string }>`
   background: ${(props) => (props.imageUrl ? `url(${props.imageUrl})` : "#ddd")};
   background-size: cover;
