@@ -24,12 +24,7 @@ const PostMaster: React.FC<{ postId: number, userId: number, like: boolean }> = 
 
   return (
     <UserBox>
-      {
-        userInfo?.image.imageUrl.includes("default") ?
-          <DefaultProfileImg />
-          :
-          <ProfileImg src={userInfo?.image.imageUrl} alt="프로필사진" />
-      }
+      <ProfileImg imageUrl={userInfo?.image?.imageUrl} />
       <ProfileText>
         <p style={{ margin: 1 }}>{userInfo?.nickname}</p>
         <p style={{ margin: 1 }}>신고 횟수 0</p>
@@ -53,6 +48,8 @@ const UserBox = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-bottom: solid 1px gray;
+  padding: 10px;
 `;
 
 const DefaultProfileImg = styled.div`
@@ -62,10 +59,14 @@ const DefaultProfileImg = styled.div`
   margin: 10px;
 `
 
-const ProfileImg = styled.img`
-  width: 70px;
-  height: 70px;
-  margin: 10px;
+const ProfileImg = styled.div<{ imageUrl?: string }>`
+  background: ${(props) => (props.imageUrl ? `url(${props.imageUrl})` : "#ddd")};
+  background-size: cover;
+  background-position: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid black;
 `;
 
 const ProfileText = styled.div`
@@ -73,7 +74,7 @@ const ProfileText = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin: 10px 0px;
+  margin: 0px 10px;
 `;
 
 const BtnBox = styled.div`

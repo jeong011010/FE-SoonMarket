@@ -7,7 +7,7 @@ import useGetPost from "../../api/Post/useGetPost";
 import PostImgBox from "./components/PostImgBox";
 import PostMaster from "./components/PostMaster";
 import PostContent from "./components/PostContent";
-import ChatBtn from "./components/ChatBtn";
+import BottomBar from "./components/BottomBar";
 
 const PostPage = () => {
   const navigate = useNavigate();
@@ -26,32 +26,53 @@ const PostPage = () => {
   }, [post]);
 
   return (
-    <PostContainer>
-      <IconButton
-        onClick={() => navigate(-1)}
-        style={{ position: "fixed", top: 0, left: 0, margin: "10px", zIndex: 100 }}
-      >
-        <ArrowBackIcon />
-      </IconButton>
-      {
-        post?.images && <PostImgBox images={post.images} />
-      }
-      {
-        post && post.like !== null && <PostMaster postId={post.postId} userId={post.userId} like={post.like} />
-      }
-      {
-        post && <PostContent post={post} />
-      }
-      <ChatBtn />
-    </PostContainer>
+    <PageContainer>
+      <Header>
+        <IconButton color="default" onClick={() => navigate(-1)}>
+          <ArrowBackIcon />
+        </IconButton>
+      </Header>
+      <ContentContainer>
+        {post?.images && <PostImgBox images={post.images} />}
+        <PostContentWrapper>
+          {post && post.like !== null && <PostMaster postId={post.postId} userId={post.userId} like={post.like} />}
+          {post && <PostContent post={post} />}
+        </PostContentWrapper>
+      </ContentContainer>
+      {post && <BottomBar price={post?.price} />}
+    </PageContainer>
   );
 };
 
-const PostContainer = styled.div`
-  position: relative;
+const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding-bottom: 60px;
+  width: 100%;
+  height: 100dvh; /* 화면 전체 높이 */
+  position: relative;
+`;
+
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+`;
+
+const ContentContainer = styled.div`
+  flex-grow: 1; /* 남은 공간을 차지하도록 설정 */
+  overflow-y: auto; /* 세로 스크롤 허용 */
+  overflow-x: hidden; /* 가로 스크롤 방지 */
+  justify-items: center;
+    padding-bottom: 60px; /* 하단바 높이만큼 패딩 추가 */
+`;
+
+const PostContentWrapper = styled.div`
+  padding-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
 `;
 
 export default PostPage;
