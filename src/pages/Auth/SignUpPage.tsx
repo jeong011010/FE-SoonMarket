@@ -45,7 +45,6 @@ const SignUpContainer = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-family: 'SUIT', sans-serif;
 `;
 
 const BackButton = styled.div`
@@ -63,7 +62,6 @@ const Header = styled.div`
 `;
 
 const Title = styled.h1`
-  font-family: 'SUIT', sans-serif;
   font-size: 36px;
   font-weight: bold;
   color: black;

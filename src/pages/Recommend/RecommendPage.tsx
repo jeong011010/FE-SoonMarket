@@ -107,7 +107,6 @@ const Header = styled.div`
 `;
 
 const Title = styled.h1`
-  font-family: 'SUIT', sans-serif;
   font-weight: bold;
   color: white;
 `;
@@ -170,7 +169,6 @@ const PopupContent = styled.div<{ top?: number }>`
 `;
 
 const HelpText = styled.p`
-  font-family: 'SUIT', sans-serif;
   font-size: 17px;
   color: white;
   line-height: 150%;

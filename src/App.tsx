@@ -25,7 +25,7 @@ import PostPage from "./pages/Post/PostPage";
 
 const theme = createTheme({
   typography: {
-    fontFamily: "SUIT-Regular",
+    fontFamily: "SUIT",
   },
 });
 
