@@ -143,11 +143,13 @@ const NoRecommendCard = styled.div`
   transition: transform 0.2s ease-in-out;
   justify-content: center;
   text-align: center;
+  font-size: 16px;
 
   @media (max-width: 400px) or (max-height: 850px) {
     padding: 10px;
     width: 200px;
     height: 320px;
+    font-size: 12px;
   }
 `;
 

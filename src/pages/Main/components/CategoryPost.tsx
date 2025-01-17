@@ -27,9 +27,9 @@ const CategoryPost: React.FC = () => {
             }
           </PostContainer>
         ) : (
-          <PostContainer>
+          <StatusMessage>
             게시물이 없습니다.
-          </PostContainer>
+          </StatusMessage>
         )
       }
     </>
@@ -49,6 +49,15 @@ const CategoryGroupWrapper = styled.div`
   justify-content: center; /* 가로 중앙 정렬 */
   width: 100%;
 `;
+
+
+const StatusMessage = styled.p`
+  text-align: center;
+  color: black;
+  font-size: 14px;
+  margin-right: auto;
+`;
+
 
 
 

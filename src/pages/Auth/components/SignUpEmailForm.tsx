@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import styled from "styled-components";
 import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
-import { Button, TextField, IconButton } from "@mui/material";
-import useSendEmail from "../../../api/Auth/useSendEmail";
-import useSendCode from "../../../api/Auth/useSendCode";
+import { Button, IconButton, TextField } from "@mui/material";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setUserEmail } from "../../../redux/modules/auth";
+import styled from "styled-components";
 import useCheckEmail from "../../../api/Auth/useCheckEmail";
+import useSendCode from "../../../api/Auth/useSendCode";
+import useSendEmail from "../../../api/Auth/useSendEmail";
+import { setUserEmail } from "../../../redux/modules/auth";
 
 interface SignUpEmailFormProps {
   onNext: () => void;
@@ -183,6 +183,7 @@ const StyledTextField = styled(TextField)`
 const ButtonContainer = styled.div<{ isEmailSent: boolean }>`
   display: flex;
   justify-content: space-between;
+  margin-top: 20px;
   width: 80%;
   gap: 10px;
   animation: fadeInSlide 0.5s forwards;
