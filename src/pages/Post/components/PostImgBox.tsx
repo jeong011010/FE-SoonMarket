@@ -67,12 +67,17 @@ const PostImgBox: React.FC<PostImgBoxProps> = ({ images }) => {
 }
 
 const ImageContainer = styled.div`
-  width: 90%; /* 화면 너비를 기준 */
-  aspect-ratio: 1 / 1; /* 정사각형 비율 */
-  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   overflow: hidden;
-  background: #f0f0f0; /* 이미지 없는 경우 대비 */
-
+  position: relative;
+  background: #f0f0f0;
+  margin: 20px;
+  width: 100%;
+  max-width: 390px;
+  aspect-ratio: 1 / 1;
+  position: relative;
 
   &::after {
     content: "";
@@ -87,22 +92,22 @@ const ImageContainer = styled.div`
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 80px; /* 그림자 높이 */
+    height: 80px;
     background: linear-gradient(
       to top,
-      rgba(0, 0, 0, 0.3), /* 진한 그림자 */
-      rgba(0, 0, 0, 0.0) /* 투명 */
+      rgba(0, 0, 0, 0.3),
+      rgba(0, 0, 0, 0.0)
     );
-    z-index: 1; /* 점보다 뒤에 오도록 설정 */
+    z-index: 1; 
   }
 `;
 
 const Img = styled.img`
   width: 100%;
   height: 100%;
-  object-fit: contain; /* 이미지 비율을 유지하며 빈 부분 없이 채움 */
-  background-color: #f0f0f0; /* 이미지가 없는 경우 대비 */
-  position: relative; /* ImgBox 위에 위치 */
+  object-fit: contain;
+  background-color: #f0f0f0;
+  position: relative;
 `;
 
 const SliderWrapper = styled.div<{ currentIndex: number }>`
@@ -115,11 +120,11 @@ const SliderWrapper = styled.div<{ currentIndex: number }>`
 
 const Pagination = styled.div`
   position: absolute;
-  bottom: 10px; /* 하단에 위치 */
+  bottom: 10px;
   display: flex;
   justify-content: center;
   width: 100%;
-  gap: 8px; /* 점들 사이 간격 */
+  gap: 8px;
   z-index: 2;
 `;
 
