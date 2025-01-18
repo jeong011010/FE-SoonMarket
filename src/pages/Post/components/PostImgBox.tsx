@@ -11,18 +11,24 @@ const PostImgBox: React.FC<PostImgBoxProps> = ({ images }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
   const [startX, setStartX] = useState<number>(0);
   const [dragDistance, setDragDistance] = useState<number>(0); // 드래그 거리
+  const [isDragging, setIsDragging] = useState<boolean>(false); // 드래그 상태
   const resistanceFactor = 5; // 감속 계수
 
   const handleTouchStart = (e: TouchEvent<HTMLDivElement>) => {
     if (images.length > 1) {
       setStartX(e.touches[0].clientX);
       setDragDistance(0); // 초기화
+      setIsDragging(true);
     }
   };
 
   const handleTouchMove = (e: TouchEvent<HTMLDivElement>) => {
     if (images.length > 1) {
       const distance = e.touches[0].clientX - startX;
+
+      if (Math.abs(distance) > Math.abs(e.touches[0].clientY - startX)) {
+        e.preventDefault();
+      }
 
       // 한계점 감속 효과 적용
       if (
@@ -37,15 +43,18 @@ const PostImgBox: React.FC<PostImgBoxProps> = ({ images }) => {
   };
 
   const handleTouchEnd = () => {
-    const threshold = 50; // 드래그 임계값
-    if (dragDistance > threshold && currentImageIndex > 0) {
-      // 이전 이미지로 이동
-      setCurrentImageIndex(currentImageIndex - 1);
-    } else if (dragDistance < -threshold && currentImageIndex < images.length - 1) {
-      // 다음 이미지로 이동
-      setCurrentImageIndex(currentImageIndex + 1);
+    if (images.length > 1) {
+      const threshold = 50; // 드래그 임계값
+      if (dragDistance > threshold && currentImageIndex > 0) {
+        // 이전 이미지로 이동
+        setCurrentImageIndex(currentImageIndex - 1);
+      } else if (dragDistance < -threshold && currentImageIndex < images.length - 1) {
+        // 다음 이미지로 이동
+        setCurrentImageIndex(currentImageIndex + 1);
+      }
+      setDragDistance(0); // 드래그 거리 초기화
+      setIsDragging(false); // 드래그 종료
     }
-    setDragDistance(0); // 드래그 거리 초기화
   };
 
   return (
