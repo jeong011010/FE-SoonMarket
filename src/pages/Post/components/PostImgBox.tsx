@@ -21,16 +21,18 @@ const PostImgBox: React.FC<PostImgBoxProps> = ({ images }) => {
   };
 
   const handleTouchMove = (e: TouchEvent<HTMLDivElement>) => {
-    const distance = e.touches[0].clientX - startX;
+    if (images.length > 1) {
+      const distance = e.touches[0].clientX - startX;
 
-    // 한계점에 도달했을 때 감속 효과 적용
-    if (
-      (currentImageIndex === 0 && distance > 0) || // 첫 이미지에서 왼쪽 드래그
-      (currentImageIndex === images.length - 1 && distance < 0) // 마지막 이미지에서 오른쪽 드래그
-    ) {
-      setDragDistance(distance / resistanceFactor); // 감속 적용
-    } else {
-      setDragDistance(distance / 1.5); // 일반 드래그
+      // 한계점 감속 효과 적용
+      if (
+        (currentImageIndex === 0 && distance > 0) || // 첫 이미지에서 왼쪽 드래그
+        (currentImageIndex === images.length - 1 && distance < 0) // 마지막 이미지에서 오른쪽 드래그
+      ) {
+        setDragDistance(distance / resistanceFactor); // 감속 적용
+      } else {
+        setDragDistance(distance); // 일반 드래그
+      }
     }
   };
 
