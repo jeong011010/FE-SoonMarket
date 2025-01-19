@@ -108,7 +108,7 @@ const ImageContainer = styled.div`
     content: "";
     position: absolute;
     inset: 0;
-    box-shadow: inset 0px 4px 8px rgba(0, 0, 0, 0.5);
+    box-shadow: inset 0px 4px 8px rgba(0, 0, 0, 0.15);
   }
 
   &::before {
@@ -117,10 +117,10 @@ const ImageContainer = styled.div`
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 80px;
+    height: 30px;
     background: linear-gradient(
       to top,
-      rgba(0, 0, 0, 0.3),
+      rgba(0, 0, 0, 0.2),
       rgba(0, 0, 0, 0.0)
     );
     z-index: 1; 

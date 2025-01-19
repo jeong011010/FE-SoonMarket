@@ -31,6 +31,8 @@ const PostPage = () => {
         <IconButton color="default" onClick={() => navigate(-1)}>
           <ArrowBackIcon />
         </IconButton>
+
+        <Dot/>
       </Header>
       <ContentContainer>
         {post?.images && <PostImgBox images={post.images} />}
@@ -58,6 +60,18 @@ const Header = styled.div`
   align-items: center;
   padding: 5px;
 `;
+
+const Dot = styled.div`
+  background: #d9d9d9;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  margin: 8px auto;
+  box-shadow: 1px 1px 1px 0px;
+  position: absolute;
+  left: 50%;
+`;
+
 
 const ContentContainer = styled.div`
   flex-grow: 1; /* 남은 공간을 차지하도록 설정 */

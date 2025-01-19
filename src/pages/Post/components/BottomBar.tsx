@@ -3,12 +3,8 @@ import styled from "styled-components";
 
 const BottomBar: React.FC<{ price: number }> = ({ price }) => {
 
-  const formattedPrice = new Intl.NumberFormat('ko-KR').format(price);
   return (
     <BottomBtnBox>
-      <Price>
-        {formattedPrice}원
-      </Price>
       <ChatBtn
         variant="contained"
         onClick={() => window.open("https://open.kakao.com/o/sftW1KOg")}
@@ -36,7 +32,7 @@ const BottomBtnBox = styled.div`
 `;
 
 const ChatBtn = styled(Button)`
-  width: 200px;
+  width: 100%;
   height: 40px;
   && {
     background-color: #bdd9f2;
@@ -45,9 +41,5 @@ const ChatBtn = styled(Button)`
   }
 `;
 
-const Price = styled.p`
-  padding: 0px 20px;
-  font-weight: bold;
-`
 
 export default BottomBar;
