@@ -41,7 +41,7 @@ const PostPage = () => {
           {post && <PostContent post={post} />}
         </PostContentWrapper>
       </ContentContainer>
-      {post && <BottomBar price={post?.price} />}
+      {post && <BottomBar/>}
     </PageContainer>
   );
 };
