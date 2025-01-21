@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import styled from "styled-components";
 
-const BottomBar: React.FC<{ price: number }> = ({ price }) => {
+const BottomBar = () => {
 
   return (
     <BottomBtnBox>
