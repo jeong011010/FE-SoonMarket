@@ -14,6 +14,7 @@ import MyPage from "./pages/MyPage/MyPage";
 import EditProfilePage from "./pages/MyPage/EditProfilePage";
 import SignUp from "./pages/Auth/SignUpPage";
 import FindPw from "./pages/Auth/FindPwPage"
+import ChangePassword from "./pages/Auth/components/FindPwDetailForm"
 
 //Redux
 import { setIsAuthenticated, setRole, setUserId } from "./redux/modules/auth";
@@ -117,6 +118,7 @@ function App(): JSX.Element {
     { path: "/search", element: <Search />, private: true },
     { path: "/signup", element: <SignUp /> },
     { path: "/findpassword", element: <FindPw />},
+    { path: "/api/v1/auth/confirm", element: <ChangePassword />},
   ];
 
   return (

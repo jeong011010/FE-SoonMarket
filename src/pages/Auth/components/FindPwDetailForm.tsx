@@ -1,20 +1,48 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
 import { Button, TextField, IconButton } from "@mui/material";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useNavigate } from "react-router-dom";
 import { RootState } from "../../../redux/store";
+import useConfirmToken from "../../../api/Auth/useConfirmToken";
+//import useChangePassword from "../../../api/Auth/useChangepassword"
 
-const ResetPasswordForm: React.FC = () => {
+const FindPwDetailForm: React.FC = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isCapsLockOn, setIsCapsLockOn] = useState(false);
-
+  const navigate = useNavigate();
   const email = useSelector((state: RootState) => state.auth.email);
+  const confirmToken = useConfirmToken();
+
+  useEffect(() => {
+    const validateToken = async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const token = urlParams.get("token");
+
+      if (!token) {
+        console.error("토큰이 제공되지 않았습니다.");
+        navigate("/findpassword");
+        return;
+      }
+
+      try {
+        const message = await confirmToken(token);
+        console.log("토큰 검증 성공:", message);
+      } catch (error) {
+        console.error("토큰 검증 실패:", error);
+        navigate("/findpassword");
+      }
+    };
+
+    validateToken();
+  }, [confirmToken, navigate]);
 
   const validatePassword = (value: string): boolean =>
     /^(?=.*[a-z])(?=.*[\W])(?=.*\d)[a-zA-Z\d\W]{8,16}$/.test(value);
@@ -55,6 +83,7 @@ const ResetPasswordForm: React.FC = () => {
       });
       console.log("비밀번호 재설정 성공:", response.data);
       alert("비밀번호가 성공적으로 변경되었습니다.");
+      navigate("/login");
     } catch (error) {
       console.error("비밀번호 재설정 중 오류 발생:", error);
       alert("비밀번호 재설정 중 오류가 발생했습니다. 다시 시도해주세요.");
@@ -71,9 +100,16 @@ const ResetPasswordForm: React.FC = () => {
       setIsCapsLockOn(false);
     }
   };
-
   return (
     <FormContainer>
+      <Header>
+        <BackButton>
+          <IconButton onClick={() => navigate("/")}>
+            <ArrowBackIcon />
+          </IconButton>
+        </BackButton>
+        <Title>Soon-Market</Title>
+      </Header>
       {/* 비밀번호 입력 */}
       <TextFieldContainer>
         <StyledTextField
@@ -112,12 +148,34 @@ const ResetPasswordForm: React.FC = () => {
   );
 };
 
-export default ResetPasswordForm;
+export default FindPwDetailForm;
 
+/* 스타일 코드 */
 const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  font-family: 'SUIT', sans-serif;
+`;
+
+const Header = styled.div`
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+`;
+
+const BackButton = styled.div`
+  position: absolute;
+  left: 16px;
+  top: 16px;
+`;
+
+const Title = styled.h1`
+  margin: 100px;
+  font-family: 'SUIT', sans-serif;
 `;
 
 const TextFieldContainer = styled.div`
@@ -141,7 +199,7 @@ const StyledTextField = styled(TextField)`
 `;
 
 const SubmitButton = styled(Button)`
-  && {    
+  && {
     border-radius: 20px;
     width: 350px;
     background: #d9e9f9;
@@ -152,9 +210,9 @@ const ErrorText = styled.div`
   color: red;
   font-size: 0.75rem;
   text-align: left;
-  margin-top: -10px; /* 필드와의 간격 조정 */
-  margin-bottom: 10px; /* 아래 콘텐츠와의 간격 조정 */
-  width: 350px; /* 필드와 동일한 너비로 확장 */
+  margin-top: -10px;
+  margin-bottom: 10px;
+  width: 350px;
 `;
 
 const StatusText = styled.div`
