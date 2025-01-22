@@ -70,6 +70,10 @@ const Body = styled.div`
   overflow-y: auto; /* 수직 스크롤만 허용 */
   overflow-x: hidden; /* 좌우 스크롤 방지 */
   box-sizing: border-box; /* 패딩 포함 크기 계산 */
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 

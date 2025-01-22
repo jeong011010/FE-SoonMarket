@@ -51,6 +51,10 @@ const MyPostContainer = styled(Box)`
   overflow-y: auto; /* 상하 스크롤 가능 */
   width: 100%; /* 컨테이너가 부모 요소를 꽉 채우도록 */
   box-sizing: border-box; /* 패딩 포함 크기 계산 */
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const Row = styled(Box)`

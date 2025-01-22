@@ -96,6 +96,7 @@ const AddPostContainer = styled.div`
   align-items: center;
   width: 100%;
   height: 100dvh;
+  
 `;
 
 const Header = styled.div`
@@ -134,6 +135,10 @@ const ContentContainer = styled.div`
   overflow-x: hidden; /* 좌우 스크롤 방지 */
   padding: 0 40px; /* 좌우 여백 */
   box-sizing: border-box; /* 패딩을 포함한 크기 계산 */
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const StyledButton = styled(Button)`

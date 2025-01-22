@@ -39,6 +39,10 @@ const Content = styled.div`
   max-width: 430px;
   overflow-y: auto; /* 콘텐츠 스크롤 가능 */
   background-color: #f6f6f6;
+  
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const SchoolImgWrapper = styled.div`

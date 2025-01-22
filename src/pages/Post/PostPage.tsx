@@ -76,7 +76,11 @@ const ContentContainer = styled.div`
   overflow-y: auto; /* 세로 스크롤 허용 */
   overflow-x: hidden; /* 가로 스크롤 방지 */
   justify-items: center;
-    padding-bottom: 60px; /* 하단바 높이만큼 패딩 추가 */
+  padding-bottom: 60px; /* 하단바 높이만큼 패딩 추가 */
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const PostContentWrapper = styled.div`
