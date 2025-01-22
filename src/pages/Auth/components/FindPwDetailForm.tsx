@@ -113,6 +113,7 @@ const FindPwDetailForm: React.FC = () => {
         </BackButton>
         <Title>Soon-Market</Title>
       </Header>
+      <SubTitle>새로운 비밀 번호를 입력해주세요.</SubTitle>
       {/* 비밀번호 입력 */}
       <TextFieldContainer1>
         <StyledTextField
@@ -160,6 +161,11 @@ const FormContainer = styled.div`
   align-items: center;
   justify-content: center;
   font-family: 'SUIT', sans-serif;
+`;
+
+const SubTitle = styled.div`
+  font-size: 14px;
+  margin-bottom: 0px;
 `;
 
 const Header = styled.div`
