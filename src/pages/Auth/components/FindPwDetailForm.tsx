@@ -110,8 +110,9 @@ const FindPwDetailForm: React.FC = () => {
         </BackButton>
         <Title>Soon-Market</Title>
       </Header>
+      <SubTitle>새로운 비밀 번호를 입력해주세요.</SubTitle>
       {/* 비밀번호 입력 */}
-      <TextFieldContainer>
+      <TextFieldContainer1>
         <StyledTextField
           label="비밀번호"
           variant="filled"
@@ -123,7 +124,7 @@ const FindPwDetailForm: React.FC = () => {
         <IconButton onClick={() => setPassword("")}>
           <HighlightOffOutlinedIcon />
         </IconButton>
-      </TextFieldContainer>
+      </TextFieldContainer1>
       {isCapsLockOn && <StatusText>Caps Lock이 켜져있습니다.</StatusText>}
       {passwordError && <ErrorText>{passwordError}</ErrorText>}
 
@@ -159,6 +160,11 @@ const FormContainer = styled.div`
   font-family: 'SUIT', sans-serif;
 `;
 
+const SubTitle = styled.div`
+  font-size: 14px;
+  margin-bottom: 0px;
+`;
+
 const Header = styled.div`
   text-align: center;
   display: flex;
@@ -187,6 +193,15 @@ const TextFieldContainer = styled.div`
   border-radius: 4px;
 `;
 
+const TextFieldContainer1 = styled.div`
+  display: flex;
+  align-items: center;
+  background: #bdd9f2;
+  width: 350px;
+  margin: 20px;
+  border-radius: 4px;
+  margin-top: 0px;
+`;
 const StyledTextField = styled(TextField)`
   width: 100%;
   && .MuiFilledInput-root {
