@@ -107,7 +107,7 @@ const FormContainer = styled.div`
 
 const SubTitle = styled.div`
   font-size: 14px;
-  margin-bottom: 10px;
+  margin-bottom: 0px;
 `;
 
 const TextFieldContainer = styled.div`
@@ -117,6 +117,7 @@ const TextFieldContainer = styled.div`
   width: 350px;
   margin: 20px;
   border-radius: 4px;
+  margin-top: 0px;
 `;
 
 const StyledTextField = styled(TextField)`
