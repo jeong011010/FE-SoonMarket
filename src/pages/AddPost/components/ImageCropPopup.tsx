@@ -59,8 +59,8 @@ const ImageCropPopup: React.FC<ImageCropPopupProps> = ({ src, onClose, onCropCom
       (blob) => {
         if (blob) {
           const file = new File([blob], "cropped-image.jpg", { type: "image/jpeg" });
-          onCropComplete(file); // 크롭된 파일 반환
-          onClose(); // 팝업 닫기
+          onCropComplete(file);
+          onClose();
         }
       },
       "image/jpeg",
@@ -72,14 +72,20 @@ const ImageCropPopup: React.FC<ImageCropPopupProps> = ({ src, onClose, onCropCom
     <PopupOverlay>
       <PopupContainer>
         <h2>이미지 자르기</h2>
-        <ReactCrop
-          crop={crop}
-          onChange={(newCrop) => setCrop(newCrop)}
-          onComplete={(newCrop) => setCompletedCrop(newCrop)}
-          aspect={1} // 1:1 비율 유지
-        >
-          <img src={src} onLoad={(e) => handleImageLoad(e.currentTarget)} alt="Crop preview" />
-        </ReactCrop>
+        <CropContainer>
+          <ReactCrop
+            crop={crop}
+            onChange={(newCrop) => setCrop(newCrop)}
+            onComplete={(newCrop) => setCompletedCrop(newCrop)}
+            aspect={1}
+          >
+            <CropImage
+              src={src}
+              onLoad={(e) => handleImageLoad(e.currentTarget)}
+              alt="Crop preview"
+            />
+          </ReactCrop>
+        </CropContainer>
         <CanvasPreview ref={previewCanvasRef} style={{ display: "none" }} />
         <ButtonContainer>
           <button onClick={onClose}>취소</button>
@@ -98,7 +104,7 @@ const PopupOverlay = styled.div`
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  height: 100dvh;
   background: rgba(0, 0, 0, 0.7);
   display: flex;
   align-items: center;
@@ -118,6 +124,23 @@ const PopupContainer = styled.div`
 const CanvasPreview = styled.canvas`
   display: none;
 `;
+
+const CropContainer = styled.div`
+  max-width: 350px;
+  max-height: 550px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: center;
+`;
+
+const CropImage = styled.img`
+  max-width: 90vw;
+  max-height: 70dvh;
+  object-fit: contain;
+`;
+
 
 const ButtonContainer = styled.div`
   margin-top: 20px;
