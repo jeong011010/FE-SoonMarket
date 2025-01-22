@@ -89,7 +89,7 @@ function App(): JSX.Element {
     { path: "/search", element: <Search />, private: true },
     { path: "/signup", element: <SignUp /> },
     { path: "/findpassword", element: <FindPw />},
-    { path: "/reset-password", element: <ChangePassword />},
+    { path: "/api/v1/auth/confirm", element: <ChangePassword />},
   ];
 
   return (
