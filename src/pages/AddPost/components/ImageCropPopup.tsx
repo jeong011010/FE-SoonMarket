@@ -128,7 +128,6 @@ const CanvasPreview = styled.canvas`
 
 const CropWrapper = styled.div`
   width: 100%; /* wrapper의 너비 */
-  height: 60vh; /* wrapper의 높이 */
   max-width: 90%; /* 팝업의 최대 너비 */
   max-height: 60vh; /* 팝업의 최대 높이 */
   display: flex;
