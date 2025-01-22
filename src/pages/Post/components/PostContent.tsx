@@ -11,7 +11,6 @@ const PostContent: React.FC<{ post: Post }> = ({ post }) => {
           <h2 style={{ margin: 0 }}>{post?.title}</h2>
           <p style={{ margin: 0 }}>{post?.createAt}</p>
         </Title>
-
         <Price>
           {formattedPrice}원
         </Price>

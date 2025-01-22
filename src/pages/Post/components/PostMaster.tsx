@@ -11,7 +11,6 @@ const PostMaster: React.FC<{ postId: number, userId: number, like: boolean }> = 
   const likePost = useLikePost();
   const { userInfo, getUserInfo } = useGetUserInfo();
   const [likeState, setLikeState] = useState<boolean>(like);
-  console.log(userInfo);
 
   useEffect(() => {
     getUserInfo(userId);

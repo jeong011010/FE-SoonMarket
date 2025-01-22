@@ -31,7 +31,6 @@ const PostPage = () => {
         <IconButton color="default" onClick={() => navigate(-1)}>
           <ArrowBackIcon />
         </IconButton>
-
         <Dot/>
       </Header>
       <ContentContainer>
@@ -71,7 +70,6 @@ const Dot = styled.div`
   position: absolute;
   left: 50%;
 `;
-
 
 const ContentContainer = styled.div`
   flex-grow: 1; /* 남은 공간을 차지하도록 설정 */

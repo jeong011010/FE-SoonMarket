@@ -2,7 +2,6 @@ import { TouchEvent, useState } from "react";
 import styled from "styled-components";
 import { PostImage } from "../../../type/postType";
 
-// 컴포넌트 Props 타입 정의
 interface PostImgBoxProps {
   images: PostImage[];
 }
@@ -10,8 +9,8 @@ interface PostImgBoxProps {
 const PostImgBox: React.FC<PostImgBoxProps> = ({ images }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
   const [startX, setStartX] = useState<number>(0);
-  const [dragDistance, setDragDistance] = useState<number>(0); // 드래그 거리
-  const resistanceFactor = 5; // 감속 계수
+  const [dragDistance, setDragDistance] = useState<number>(0);
+  const resistanceFactor = 5; 
 
   const handleTouchStart = (e: TouchEvent<HTMLDivElement>) => {
     if (images.length > 1) {

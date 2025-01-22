@@ -41,5 +41,4 @@ const ChatBtn = styled(Button)`
   }
 `;
 
-
 export default BottomBar;
