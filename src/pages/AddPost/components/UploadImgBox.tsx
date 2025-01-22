@@ -1,6 +1,8 @@
 import CameraAltOutlinedIcon from '@mui/icons-material/CameraAltOutlined';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import styled from 'styled-components';
+import CloseIcon from "@mui/icons-material/Close";
+import ImageCropPopup from "./ImageCropPopup";
 
 // 업로드된 이미지 타입 정의
 interface UploadedImage {
@@ -17,69 +19,70 @@ interface UploadImgBoxProps {
 
 const UploadImgBox: React.FC<UploadImgBoxProps> = ({ uploadImg, setUploadImg }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string>("");
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []); // 파일 배열로 변환
-    const imageFiles = files.map(file => ({
-      id: file.name + file.size,
-      url: URL.createObjectURL(file),
-      file: file, // 파일 객체 저장
-    }));
-
-    setUploadImg(prev => {
-      const newImages = [...prev];
-      imageFiles.forEach((imageFile) => {
-        if (!newImages.find(img => img.id === imageFile.id)) {
-          newImages.push(imageFile);
-        }
-      });
-      return newImages.slice(0, 10);
-    });
-
-    e.target.value = ''; // 파일 입력 초기화
+    const files = Array.from(e.target.files || []);
+    if (files.length > 0) {
+      const file = files[0];
+      setSelectedImage(file);
+      setPreviewUrl(URL.createObjectURL(file));
+    }
+    e.target.value = "";
   };
 
-  // ImageInputBox 클릭 시 파일 입력창을 열기 위한 핸들러
+  const handleCropComplete = (croppedFile: File) => {
+    const croppedImage = {
+      id: croppedFile.name + croppedFile.size,
+      url: URL.createObjectURL(croppedFile),
+      file: croppedFile,
+    };
+
+    setUploadImg((prev) => [...prev, croppedImage].slice(0, 10));
+    setSelectedImage(null);
+    setPreviewUrl("");
+  };
+
   const handleBoxClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
   };
 
+  const handleDeleteImage = (id: string) => {
+    setUploadImg((prev) => prev.filter((image) => image.id !== id)); // 이미지 삭제
+  };
+
   return (
     <>
-      {
-        uploadImg.length ? (
-          <ImageGrid>
-            {uploadImg.length < 10 && (
-              <ImageInputBox onClick={handleBoxClick}>
-                <CameraAltOutlinedIcon style={{ fontSize: "60px", margin: "30px 0px 5px 0px" }} />
-                <h4 style={{ margin: 0 }}>{uploadImg.length}/10</h4>
-                <input
-                  type="file"
-                  multiple
-                  onChange={handleFileChange}
-                  ref={fileInputRef}
-                />
-              </ImageInputBox>
-            )}
-            {uploadImg.map((imgFiles, index) => (
-              <ImagePreview key={index} src={imgFiles.url} alt={`upload-${index}`} />
-            ))}
-          </ImageGrid>
-        ) : (
+      {selectedImage && (
+        <ImageCropPopup
+        src={previewUrl}
+        onClose={() => {
+          setSelectedImage(null);
+          setPreviewUrl("");
+        }}
+        onCropComplete={handleCropComplete}
+      />
+      )}
+      <ImageGrid>
+        {uploadImg.length < 10 && (
           <ImageInputBox onClick={handleBoxClick}>
             <CameraAltOutlinedIcon style={{ fontSize: "60px", margin: "30px 0px 5px 0px" }} />
             <h4 style={{ margin: 0 }}>{uploadImg.length}/10</h4>
-            <input
-              type="file"
-              multiple
-              onChange={handleFileChange}
-              ref={fileInputRef}
-            />
+            <input type="file" accept="image/*" onChange={handleFileChange} ref={fileInputRef} />
           </ImageInputBox>
-        )
-      }
+        )}
+        {uploadImg.map((imgFiles) => (
+          <ImageWrapper key={imgFiles.id}>
+            <DeleteButton onClick={() => handleDeleteImage(imgFiles.id)}>
+              <CloseIcon style={{ fontSize: "14px" }} />
+            </DeleteButton>
+            <ImagePreview src={imgFiles.url} alt="uploaded-image" />
+          </ImageWrapper>
+        ))}
+      </ImageGrid>
     </>
   );
 };
@@ -92,12 +95,11 @@ const ImageGrid = styled.div`
   width: 100%;
   padding-bottom: 10px;
 
-  /* Hide scrollbar for WebKit and Firefox */
   &::-webkit-scrollbar {
     display: none;
   }
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 `;
 
 const ImagePreview = styled.img`
@@ -127,6 +129,36 @@ const ImageInputBox = styled.div`
     height: 100%;
     opacity: 0;
     cursor: pointer;
+  }
+`;
+
+const ImageWrapper = styled.div`
+  position: relative;
+  width: 150px;
+  height: 150px;
+`;
+
+const DeleteButton = styled.button`
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  background-color: rgba(200, 200, 200, 0.6);
+  border: none;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+
+  &:hover {
+    background-color: rgba(150, 150, 150, 0.8);
+  }
+
+  svg {
+    color: black;
   }
 `;
 
