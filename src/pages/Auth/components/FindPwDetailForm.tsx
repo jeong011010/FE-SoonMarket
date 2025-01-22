@@ -2,10 +2,13 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
 import { Button, TextField, IconButton } from "@mui/material";
+import { useSelector } from "react-redux";
+import axios from "axios";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router-dom";
+import { RootState } from "../../../redux/store";
 import useConfirmToken from "../../../api/Auth/useConfirmToken";
-import useChangePassword from "../../../api/Auth/useChangepassword";
+//import useChangePassword from "../../../api/Auth/useChangepassword"
 
 const FindPwDetailForm: React.FC = () => {
   const [password, setPassword] = useState("");
@@ -15,8 +18,9 @@ const FindPwDetailForm: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isCapsLockOn, setIsCapsLockOn] = useState(false);
   const navigate = useNavigate();
+  const email = useSelector((state: RootState) => state.auth.email);
   const confirmToken = useConfirmToken();
-  const resetPassword = useChangePassword();
+
   useEffect(() => {
     const validateToken = async () => {
       const urlParams = new URLSearchParams(window.location.search);
@@ -109,7 +113,6 @@ const FindPwDetailForm: React.FC = () => {
         </BackButton>
         <Title>Soon-Market</Title>
       </Header>
-      <SubTitle>새로운 비밀 번호를 입력해주세요.</SubTitle>
       {/* 비밀번호 입력 */}
       <TextFieldContainer1>
         <StyledTextField
@@ -157,11 +160,6 @@ const FormContainer = styled.div`
   align-items: center;
   justify-content: center;
   font-family: 'SUIT', sans-serif;
-`;
-
-const SubTitle = styled.div`
-  font-size: 14px;
-  margin-bottom: 0px;
 `;
 
 const Header = styled.div`
