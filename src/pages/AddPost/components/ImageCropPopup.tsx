@@ -4,9 +4,9 @@ import "react-image-crop/dist/ReactCrop.css";
 import styled from "styled-components";
 
 interface ImageCropPopupProps {
-  src: string; // 사용자가 선택한 이미지 URL
-  onClose: () => void; // 팝업 닫기
-  onCropComplete: (croppedFile: File) => void; // 크롭 완료 시 호출
+  src: string;
+  onClose: () => void;
+  onCropComplete: (croppedFile: File) => void;
 }
 
 const ImageCropPopup: React.FC<ImageCropPopupProps> = ({ src, onClose, onCropComplete }) => {
@@ -21,12 +21,10 @@ const ImageCropPopup: React.FC<ImageCropPopupProps> = ({ src, onClose, onCropCom
   const imgRef = useRef<HTMLImageElement | null>(null);
   const previewCanvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  // 이미지 로드 완료 시 참조 설정
   const handleImageLoad = (img: HTMLImageElement) => {
     imgRef.current = img;
   };
 
-  // 캔버스를 사용하여 크롭된 이미지를 저장
   const generateCroppedImage = async () => {
     if (!completedCrop || !imgRef.current || !previewCanvasRef.current) {
       return;
@@ -72,12 +70,13 @@ const ImageCropPopup: React.FC<ImageCropPopupProps> = ({ src, onClose, onCropCom
     <PopupOverlay>
       <PopupContainer>
         <h2>이미지 자르기</h2>
-        <CropContainer>
+        <CropWrapper>
           <ReactCrop
+            style={{maxWidth:"400px", maxHeight:"400px"}}
             crop={crop}
             onChange={(newCrop) => setCrop(newCrop)}
             onComplete={(newCrop) => setCompletedCrop(newCrop)}
-            aspect={1}
+            aspect={1} // 1:1 비율 유지
           >
             <CropImage
               src={src}
@@ -85,7 +84,7 @@ const ImageCropPopup: React.FC<ImageCropPopupProps> = ({ src, onClose, onCropCom
               alt="Crop preview"
             />
           </ReactCrop>
-        </CropContainer>
+        </CropWrapper>
         <CanvasPreview ref={previewCanvasRef} style={{ display: "none" }} />
         <ButtonContainer>
           <button onClick={onClose}>취소</button>
@@ -117,28 +116,30 @@ const PopupContainer = styled.div`
   padding: 20px;
   border-radius: 10px;
   width: 80%;
-  max-width: 500px;
+  max-width: 350px;
+  max-height: 550px;
   text-align: center;
+  overflow: hidden;
 `;
 
 const CanvasPreview = styled.canvas`
   display: none;
 `;
 
-const CropContainer = styled.div`
-  max-width: 350px;
-  max-height: 550px;
-  overflow: hidden;
+const CropWrapper = styled.div`
+  width: 100%; /* wrapper의 너비 */
+  height: 60vh; /* wrapper의 높이 */
+  max-width: 90%; /* 팝업의 최대 너비 */
+  max-height: 60vh; /* 팝업의 최대 높이 */
   display: flex;
   align-items: center;
   justify-content: center;
   justify-self: center;
+  background-color: #f9f9f9; /* 배경색 (여백 강조) */
 `;
 
 const CropImage = styled.img`
-  max-width: 90vw;
-  max-height: 70dvh;
-  object-fit: contain;
+  object-fit: contain; /* 이미지 비율 유지 */
 `;
 
 
