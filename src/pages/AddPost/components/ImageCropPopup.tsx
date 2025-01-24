@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import ReactCrop, { Crop, PixelCrop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
-import styled, { createGlobalStyle } from "styled-components";
+import styled from "styled-components";
 
 interface ImageCropPopupProps {
   src: string;
@@ -14,8 +14,8 @@ const ImageCropPopup: React.FC<ImageCropPopupProps> = ({ src, onClose, onCropCom
     unit: "%",
     x: 0,
     y: 0,
-    width: 0,
-    height: 0,
+    width: 50,
+    height: 50,
   });
   const [completedCrop, setCompletedCrop] = useState<PixelCrop | null>(null);
   const imgRef = useRef<HTMLImageElement | null>(null);
@@ -32,15 +32,23 @@ const ImageCropPopup: React.FC<ImageCropPopupProps> = ({ src, onClose, onCropCom
 
     const canvas = previewCanvasRef.current;
     const image = imgRef.current;
+
     const scaleX = image.naturalWidth / image.width;
     const scaleY = image.naturalHeight / image.height;
+
+    // 캔버스 크기를 원본 크기로 설정
+    canvas.width = completedCrop.width! * scaleX;
+    canvas.height = completedCrop.height! * scaleY;
+
     const ctx = canvas.getContext("2d");
 
     if (!ctx) return;
 
-    canvas.width = completedCrop.width!;
-    canvas.height = completedCrop.height!;
+    // 고품질 설정
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
 
+    // 이미지 그리기
     ctx.drawImage(
       image,
       completedCrop.x! * scaleX,
@@ -49,10 +57,11 @@ const ImageCropPopup: React.FC<ImageCropPopupProps> = ({ src, onClose, onCropCom
       completedCrop.height! * scaleY,
       0,
       0,
-      completedCrop.width!,
-      completedCrop.height!
+      canvas.width,
+      canvas.height
     );
 
+    // Blob 생성 (최대 품질)
     canvas.toBlob(
       (blob) => {
         if (blob) {
@@ -62,13 +71,12 @@ const ImageCropPopup: React.FC<ImageCropPopupProps> = ({ src, onClose, onCropCom
         }
       },
       "image/jpeg",
-      1
+      1 // 최대 품질
     );
   };
 
   return (
     <PopupOverlay>
-      <CustomCropStyle />
       <PopupContainer>
         <h2>이미지 자르기</h2>
         <CropWrapper>
@@ -77,7 +85,6 @@ const ImageCropPopup: React.FC<ImageCropPopupProps> = ({ src, onClose, onCropCom
             onChange={(newCrop) => setCrop(newCrop)}
             onComplete={(newCrop) => setCompletedCrop(newCrop)}
             aspect={1} // 1:1 비율 유지
-            className="custom-crop"
           >
             <CropImage
               src={src}
@@ -134,14 +141,6 @@ const CropWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-
-  &::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    box-shadow: inset 0px 4px 8px rgba(0, 0, 0, 0.3);
-    pointer-events: none;
-  }
 `;
 
 const CropImage = styled.img`
@@ -164,19 +163,5 @@ const ButtonContainer = styled.div`
     &:hover {
       background-color: #0056b3;
     }
-  }
-`;
-
-// Custom CSS for ReactCrop
-const CustomCropStyle = createGlobalStyle`
-  .ReactCrop__crop-selection {
-    backgroundImage: null;
-    border: 1px solid black !important; /* 점선을 직선으로 변경 */
-  }
-
-  .ReactCrop__drag-handle {
-    width: 6px !important; /* 꼭짓점 크기 */
-    height: 6px !important; /* 꼭짓점 크기 */
-    background-color: black !important; /* 꼭짓점 색상 */
   }
 `;
