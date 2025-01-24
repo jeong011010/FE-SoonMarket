@@ -1,21 +1,13 @@
-import axios from "axios";
-import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
+import axiosInstace from "../axiosInstance";
 
 const useAddPost = () => {
-  const apiUrl = import.meta.env.VITE_API_URL;
-  const navigate = useNavigate()
-  const [cookies] = useCookies(['access_token']);
-  const token = cookies.access_token;
+  const navigate = useNavigate();
 
   const addPost = async (formData: FormData) => {
     try {
       console.log('게시물 등록 시도', formData);
-      await axios.post(`${apiUrl}/posts`, formData, {
-        headers: {
-          Authorization: `${token}`
-        }
-      });
+      await axiosInstace.post("/posts", formData);
       console.log('게시물 추가 완료');
       navigate('/main');
     } catch (error) {
