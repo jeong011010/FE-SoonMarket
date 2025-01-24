@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import ReactCrop, { Crop, PixelCrop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 
 interface ImageCropPopupProps {
   src: string;
@@ -68,15 +68,16 @@ const ImageCropPopup: React.FC<ImageCropPopupProps> = ({ src, onClose, onCropCom
 
   return (
     <PopupOverlay>
+      <CustomCropStyle />
       <PopupContainer>
         <h2>이미지 자르기</h2>
         <CropWrapper>
           <ReactCrop
-            style={{maxWidth:"400px", maxHeight:"400px"}}
             crop={crop}
             onChange={(newCrop) => setCrop(newCrop)}
             onComplete={(newCrop) => setCompletedCrop(newCrop)}
             aspect={1} // 1:1 비율 유지
+            className="custom-crop"
           >
             <CropImage
               src={src}
@@ -115,7 +116,6 @@ const PopupContainer = styled.div`
   background: white;
   padding: 20px;
   border-radius: 10px;
-  width: 80%;
   max-width: 350px;
   max-height: 550px;
   text-align: center;
@@ -127,20 +127,28 @@ const CanvasPreview = styled.canvas`
 `;
 
 const CropWrapper = styled.div`
-  width: 100%; /* wrapper의 너비 */
-  max-width: 90%; /* 팝업의 최대 너비 */
-  max-height: 60vh; /* 팝업의 최대 높이 */
+  overflow: hidden;
+  position: relative;
+  margin: 0 auto;
+  background: #f0f0f0;
   display: flex;
-  align-items: center;
   justify-content: center;
-  justify-self: center;
-  background-color: #f9f9f9; /* 배경색 (여백 강조) */
+  align-items: center;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 0px 4px 8px rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+  }
 `;
 
 const CropImage = styled.img`
+  width: 100%;
+  height: 100%;
   object-fit: contain; /* 이미지 비율 유지 */
 `;
-
 
 const ButtonContainer = styled.div`
   margin-top: 20px;
@@ -156,5 +164,19 @@ const ButtonContainer = styled.div`
     &:hover {
       background-color: #0056b3;
     }
+  }
+`;
+
+// Custom CSS for ReactCrop
+const CustomCropStyle = createGlobalStyle`
+  .ReactCrop__crop-selection {
+    backgroundImage: null;
+    border: 1px solid black !important; /* 점선을 직선으로 변경 */
+  }
+
+  .ReactCrop__drag-handle {
+    width: 6px !important; /* 꼭짓점 크기 */
+    height: 6px !important; /* 꼭짓점 크기 */
+    background-color: black !important; /* 꼭짓점 색상 */
   }
 `;

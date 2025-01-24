@@ -1,6 +1,6 @@
-import CameraAltOutlinedIcon from '@mui/icons-material/CameraAltOutlined';
-import { useRef, useState } from 'react';
-import styled from 'styled-components';
+import React, { useRef, useState } from "react";
+import styled from "styled-components";
+import CameraAltOutlinedIcon from "@mui/icons-material/CameraAltOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 import ImageCropPopup from "./ImageCropPopup";
 
@@ -11,7 +11,6 @@ interface UploadedImage {
   file: File;
 }
 
-// Props 타입 정의
 interface UploadImgBoxProps {
   uploadImg: UploadedImage[];
   setUploadImg: React.Dispatch<React.SetStateAction<UploadedImage[]>>;
@@ -22,14 +21,64 @@ const UploadImgBox: React.FC<UploadImgBoxProps> = ({ uploadImg, setUploadImg }) 
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>("");
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     if (files.length > 0) {
-      const file = files[0];
-      setSelectedImage(file);
-      setPreviewUrl(URL.createObjectURL(file));
+      const resizedImage = await resizeImage(files[0]);
+      setSelectedImage(resizedImage);
+      setPreviewUrl(URL.createObjectURL(resizedImage));
     }
-    e.target.value = "";
+    e.target.value = ""; // 초기화
+  };
+
+  const resizeImage = (file: File): Promise<File> => {
+    return new Promise((resolve) => {
+      createImageBitmap(file).then((bitmap) => {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+
+        const targetWidth = 1200; // 더 높은 해상도로 작업
+        const targetHeight = 1200;
+
+        canvas.width = targetWidth;
+        canvas.height = targetHeight;
+
+        const imageAspect = bitmap.width / bitmap.height;
+        const canvasAspect = targetWidth / targetHeight;
+
+        let drawWidth, drawHeight, offsetX, offsetY;
+
+        if (imageAspect > canvasAspect) {
+          drawWidth = targetWidth;
+          drawHeight = targetWidth / imageAspect;
+          offsetX = 0;
+          offsetY = (targetHeight - drawHeight) / 2;
+        } else {
+          drawHeight = targetHeight;
+          drawWidth = targetHeight * imageAspect;
+          offsetX = (targetWidth - drawWidth) / 2;
+          offsetY = 0;
+        }
+
+        if (ctx) {
+          ctx.fillStyle = "#f0f0f0"; // 배경색
+          ctx.fillRect(0, 0, targetWidth, targetHeight);
+
+          ctx.drawImage(bitmap, offsetX, offsetY, drawWidth, drawHeight);
+
+          canvas.toBlob(
+            (blob) => {
+              if (blob) {
+                const resizedFile = new File([blob], file.name, { type: file.type });
+                resolve(resizedFile);
+              }
+            },
+            "image/jpeg",
+            1 // 최대 품질
+          );
+        }
+      });
+    });
   };
 
   const handleCropComplete = (croppedFile: File) => {
@@ -51,20 +100,20 @@ const UploadImgBox: React.FC<UploadImgBoxProps> = ({ uploadImg, setUploadImg }) 
   };
 
   const handleDeleteImage = (id: string) => {
-    setUploadImg((prev) => prev.filter((image) => image.id !== id)); // 이미지 삭제
+    setUploadImg((prev) => prev.filter((image) => image.id !== id));
   };
 
   return (
     <>
       {selectedImage && (
         <ImageCropPopup
-        src={previewUrl}
-        onClose={() => {
-          setSelectedImage(null);
-          setPreviewUrl("");
-        }}
-        onCropComplete={handleCropComplete}
-      />
+          src={previewUrl}
+          onClose={() => {
+            setSelectedImage(null);
+            setPreviewUrl("");
+          }}
+          onCropComplete={handleCropComplete}
+        />
       )}
       <ImageGrid>
         {uploadImg.length < 10 && (
@@ -87,6 +136,9 @@ const UploadImgBox: React.FC<UploadImgBoxProps> = ({ uploadImg, setUploadImg }) 
   );
 };
 
+
+export default UploadImgBox;
+
 // Styled Components
 const ImageGrid = styled.div`
   display: flex;
@@ -100,15 +152,6 @@ const ImageGrid = styled.div`
   }
   -ms-overflow-style: none;
   scrollbar-width: none;
-`;
-
-const ImagePreview = styled.img`
-  width: 150px;
-  height: 150px;
-  margin: 10px;
-  object-fit: cover;
-  border-radius: 8px;
-  flex-shrink: 0;
 `;
 
 const ImageInputBox = styled.div`
@@ -162,4 +205,11 @@ const DeleteButton = styled.button`
   }
 `;
 
-export default UploadImgBox;
+const ImagePreview = styled.img`
+  width: 150px;
+  height: 150px;
+  margin: 10px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+`;
