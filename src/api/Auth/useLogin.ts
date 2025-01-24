@@ -26,7 +26,7 @@ const useLogin = () => {
 			navigate("/main");
 		}).catch(error => {
 			dispatch(setIsAuthenticated(false));
-    	throw new Error(error);
+			throw new Error(error);
 		})
 	};
 
