@@ -1,7 +1,5 @@
 import axios from "axios";
 import { Cookies } from "react-cookie";
-import store from "../redux/store";
-import { setRefreshToken } from "../redux/modules/auth";
 
 // react-cookie 인스턴스 생성
 const cookies = new Cookies();
@@ -63,23 +61,22 @@ axiosInstance.interceptors.response.use(
 
     try {
       console.log("리프레쉬 토큰 진행");
-      const state = store.getState();
-      const currentRefreshToken = state.auth.refreshToken;
+      const currentRefreshToken = cookies.get('refresh_token');
 
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/users/reissue`,
         {},
         {
-          withCredentials: true, // 쿠키로 refresh_token 전송
+          withCredentials: true,
           headers: {
             Authorization: `${currentRefreshToken}`,
           }
         }
       )
 
-      const newAccessToken = response.data.access_token
-
       // 새 access_token을 쿠키에 저장
+      const newAccessToken = response.data.access_token;
+
       cookies.set('access_token', newAccessToken, {
         path: '/',
         secure: true,
@@ -87,7 +84,14 @@ axiosInstance.interceptors.response.use(
       });
 
       // 새 refresh_token을 redux에 저장
-      store.dispatch(setRefreshToken(response.data.refreshToken));
+      const newRefreshToken = response.data.refreshToken;
+
+      cookies.set("refresh_token", newRefreshToken, {
+        path: "/",
+        httpOnly: false,
+        secure: false,
+        sameSite: "strict",
+      });
 
       // 대기 중인 요청 처리
       onRefreshed(newAccessToken);

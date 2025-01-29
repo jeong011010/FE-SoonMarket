@@ -15,6 +15,7 @@ const useLogin = () => {
 			email,
 			password,
 		}).then(response => {
+			// access_token을 쿠키에 저장
 			const token = response.data.accessToken;
 			cookies.set("access_token", token, {
 				path: "/",

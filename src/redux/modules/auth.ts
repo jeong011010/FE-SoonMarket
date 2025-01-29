@@ -5,7 +5,6 @@ export interface AuthState {
   email: string;
   userId: string;
   role: string;
-  refreshToken: string;
 }
 
 const initialState: AuthState = {
@@ -13,7 +12,6 @@ const initialState: AuthState = {
   email: "",
   userId: "",
   role: "",
-  refreshToken: "",
 };
 
 const auth = createSlice({
@@ -32,11 +30,8 @@ const auth = createSlice({
     setRole(state, action: PayloadAction<string>) { // 추가
       state.role = action.payload;
     },
-    setRefreshToken(state, action: PayloadAction<string>) {
-      state.refreshToken = action.payload;
-    }
   },
 });
 
-export const { setIsAuthenticated, setUserEmail, setUserId, setRole, setRefreshToken } = auth.actions;
+export const { setIsAuthenticated, setUserEmail, setUserId, setRole } = auth.actions;
 export default auth.reducer;
