@@ -2,13 +2,10 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
 import { Button, TextField, IconButton } from "@mui/material";
-import { useSelector } from "react-redux";
-import axios from "axios";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router-dom";
-import { RootState } from "../../../redux/store";
 import useConfirmToken from "../../../api/Auth/useConfirmToken";
-//import useChangePassword from "../../../api/Auth/useChangepassword"
+import useChangePassword from "../../../api/Auth/useChangepassword";
 
 const FindPwDetailForm: React.FC = () => {
   const [password, setPassword] = useState("");
@@ -18,9 +15,8 @@ const FindPwDetailForm: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isCapsLockOn, setIsCapsLockOn] = useState(false);
   const navigate = useNavigate();
-  const email = useSelector((state: RootState) => state.auth.email);
   const confirmToken = useConfirmToken();
-
+  const resetPassword = useChangePassword();
   useEffect(() => {
     const validateToken = async () => {
       const urlParams = new URLSearchParams(window.location.search);
@@ -55,6 +51,7 @@ const FindPwDetailForm: React.FC = () => {
     setConfirmPasswordError("");
   
     let hasError = false;
+  
     if (!password) {
       setPasswordError("비밀번호를 입력해주세요.");
       hasError = true;
@@ -76,7 +73,7 @@ const FindPwDetailForm: React.FC = () => {
     try {
       const urlParams = new URLSearchParams(window.location.search);
       const token = urlParams.get("token");
-      //console.log(token);
+      console.log(token);
       if (!token) {
         throw new Error("토큰이 제공되지 않았습니다.");
       }

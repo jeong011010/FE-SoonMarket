@@ -1,39 +1,47 @@
 import axios from "axios";
 
-interface PasswordUpdateRequest {
-    newPassword: string;
-}
-
 interface ResetPasswordRequest {
-    token: string;
-    passwordUpdateRequest: PasswordUpdateRequest;
+  token: string;
+  passwordUpdateRequest: {
+    newPassword: string;
+  };
 }
 
-interface ConfirmationResponse {
-    message: string;
-}
 
 const useChangePassword = () => {
-    const apiUrl = import.meta.env.VITE_API_URL as string;
+  const apiUrl = import.meta.env.VITE_API_URL as string;
+  /**
+   * 비밀번호를 재설정하는 함수입니다.
+   * @param token - 비밀번호 리셋을 위한 토큰
+   * @param newPassword - 새로 설정할 비밀번호
+   * @returns 성공 시 확인 메시지 문자열을 반환합니다.
+   */
+  const resetPassword = async (token: string, newPassword: string): Promise<string> => {
+    try {
+    
+      const requestBody: ResetPasswordRequest = {
+        token,
+        passwordUpdateRequest: {
+          newPassword,
+        },
+      };
 
-    const resetPassword = async (token: string, newPassword: string): Promise<string> => {
-        try {
-            const passwordUpdateRequest: PasswordUpdateRequest = { newPassword };
-            const requestBody: ResetPasswordRequest = {
-                token,
-                passwordUpdateRequest,
-            };
+     
+      const response = await axios.patch<string>(
+        `${apiUrl}/auth/reset-password`,
+        requestBody
+      );
 
-            // API에 POST 요청을 보냅니다.
-            const response = await axios.patch<ConfirmationResponse>(`${apiUrl}/auth/reset-password`, requestBody);
-            return response.data.message; 
-        } catch (error) {
-            if (axios.isAxiosError(error) && error.response) {
-                throw new Error(`Error: ${error.response.data}`);
-            }
-            throw new Error('예상치 못한 오류가 발생했습니다.');
-        }
-    };
+      return response.data; 
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        
+        throw new Error(`Error: ${error.response.data}`);
+      }
+     
+      throw new Error("예상치 못한 오류가 발생했습니다.");
+    }
+  };
 
     return resetPassword;
 };
