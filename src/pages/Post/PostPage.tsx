@@ -25,7 +25,7 @@ const PostPage = () => {
   return (
     <PageContainer>
       {
-        isClickedReportBtn && <ReportPopup />
+        isClickedReportBtn && <ReportPopup  postId={id} setIsClickedReportBtn={setIsClickedRportBtn} />
       }
       <Header>
         <IconButton color="default" onClick={() => navigate(-1)}>

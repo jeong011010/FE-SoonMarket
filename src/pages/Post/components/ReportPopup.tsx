@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, Select, TextField, FormControl, InputLabel } from '@mui/material';
+import React, { SetStateAction, useState } from 'react';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, Select, TextField, FormControl, InputLabel, SelectChangeEvent } from '@mui/material';
+import styled from 'styled-components';
+import useReport from '../../../api/Post/useReport';
 
 interface Subcategory {
   id: number;
@@ -133,13 +135,15 @@ const categories: Category[] = [
   }
 ];
 
-const ReportForm: React.FC = () => {
+const ReportForm: React.FC<{ postId: string, setIsClickedReportBtn: React.Dispatch<SetStateAction<boolean>> }> = ({ postId, setIsClickedReportBtn }) => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(null);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
   const [reportText, setReportText] = useState<string>('');
+  const report = useReport();
 
   // 대분류 선택 시 소분류 업데이트
-  const handleCategoryChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handleCategoryChange = (event: SelectChangeEvent) => {
     setSelectedCategory(event.target.value as string);
     setSelectedSubcategory(null); // 소분류 초기화
   };
@@ -151,11 +155,12 @@ const ReportForm: React.FC = () => {
 
   // 제출 처리 (예시)
   const handleSubmit = () => {
-    if (selectedCategory && selectedSubcategory && reportText) {
+    if (selectedCategory && selectedSubcategory && selectedCategoryId) {
       // 신고 제출 로직을 추가하세요.
-      console.log('신고 내용:', { selectedCategory, selectedSubcategory, reportText });
+      report(postId, reportText, selectedCategoryId);
+      setIsClickedReportBtn(false);
     } else {
-      alert('모든 항목을 입력해 주세요.');
+      alert('신고 카테고리를 설정해주세요.');
     }
   };
 
@@ -163,7 +168,7 @@ const ReportForm: React.FC = () => {
   const selectedCategoryData = categories.find(category => category.name === selectedCategory);
 
   return (
-    <Dialog open={true} onClose={() => alert("팝업을 닫습니다.")}>
+    <Dialog open={true} onClose={() => setIsClickedReportBtn(false)}>
       <DialogTitle>신고하기</DialogTitle>
       <DialogContent>
         {/* 대분류 선택 */}
@@ -187,7 +192,13 @@ const ReportForm: React.FC = () => {
           <InputLabel>소분류 선택</InputLabel>
           <Select
             value={selectedSubcategory || ''}
-            onChange={(e) => setSelectedSubcategory(e.target.value)}
+            onChange={(e) => {
+              const subcategoryName = e.target.value as string;
+              setSelectedSubcategory(subcategoryName);
+
+              const subcategory = selectedCategoryData?.subcategories.find(sub => sub.name === subcategoryName);
+              setSelectedCategoryId(subcategory ? subcategory.id : null);
+            }}
             label="소분류 선택"
           >
             {selectedCategoryData && selectedCategoryData.subcategories.map((subcategory) => (
@@ -202,23 +213,34 @@ const ReportForm: React.FC = () => {
         <TextField
           value={reportText}
           onChange={handleReportTextChange}
-          label="신고 문구를 입력하세요"
+          label="자세한 신고 내용을 적어주세요."
           fullWidth
           multiline
           rows={4}
           margin="normal"
         />
       </DialogContent>
-      <DialogActions>
-        <Button onClick={() => alert("팝업을 닫습니다.")} color="secondary">
+      <StyledDialogActions>
+        <Button onClick={() => setIsClickedReportBtn(false)} color="secondary" variant='contained'>
           취소
         </Button>
-        <Button onClick={handleSubmit} color="primary">
+        <Button onClick={handleSubmit} color="primary" variant='contained'>
           신고하기
         </Button>
-      </DialogActions>
+      </StyledDialogActions>
     </Dialog>
   );
 };
+
+// 스타일링된 DialogActions 컴포넌트
+const StyledDialogActions = styled(DialogActions)`
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 24px; // 기본 패딩 유지
+  & > button {
+    flex: 1; // 버튼이 동일한 너비를 가지도록 설정
+    margin: 0 16px; // 버튼 사이 간격 추가
+  }
+`;
 
 export default ReportForm;
