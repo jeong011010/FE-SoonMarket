@@ -2,13 +2,10 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
 import { Button, TextField, IconButton } from "@mui/material";
-import { useSelector } from "react-redux";
-import axios from "axios";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router-dom";
-import { RootState } from "../../../redux/store";
 import useConfirmToken from "../../../api/Auth/useConfirmToken";
-//import useChangePassword from "../../../api/Auth/useChangepassword"
+import useChangePassword from "../../../api/Auth/useChangepassword";
 
 const FindPwDetailForm: React.FC = () => {
   const [password, setPassword] = useState("");
@@ -18,9 +15,8 @@ const FindPwDetailForm: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isCapsLockOn, setIsCapsLockOn] = useState(false);
   const navigate = useNavigate();
-  const email = useSelector((state: RootState) => state.auth.email);
   const confirmToken = useConfirmToken();
-
+  const resetPassword = useChangePassword();
   useEffect(() => {
     const validateToken = async () => {
       const urlParams = new URLSearchParams(window.location.search);
@@ -49,13 +45,13 @@ const FindPwDetailForm: React.FC = () => {
 
   const handleSubmit = async () => {
     if (isSubmitting) return;
-
+  
     setIsSubmitting(true);
     setPasswordError("");
     setConfirmPasswordError("");
-
+  
     let hasError = false;
-
+  
     if (!password) {
       setPasswordError("비밀번호를 입력해주세요.");
       hasError = true;
@@ -63,25 +59,28 @@ const FindPwDetailForm: React.FC = () => {
       setPasswordError("영문, 숫자, 특수문자를 포함 8~16자로 설정해주세요.");
       hasError = true;
     }
-
+  
     if (password !== confirmPassword) {
       setConfirmPasswordError("비밀번호가 일치하지 않습니다.");
       hasError = true;
     }
-
+  
     if (hasError) {
       setIsSubmitting(false);
       return;
     }
-
+  
     try {
-      const response = await axios.patch(`users/reset-password`, {
-        email,
-        passwordUpdateRequest: {
-          newPassword: password,
-        },
-      });
-      console.log("비밀번호 재설정 성공:", response.data);
+      const urlParams = new URLSearchParams(window.location.search);
+      const token = urlParams.get("token");
+      console.log(token);
+      if (!token) {
+        throw new Error("토큰이 제공되지 않았습니다.");
+      }
+
+      // 올바른 요청 데이터 형식으로 전달
+      const message = await resetPassword(token, password );
+      console.log("비밀번호 재설정 성공:", message);
       alert("비밀번호가 성공적으로 변경되었습니다.");
       navigate("/login");
     } catch (error) {
@@ -91,6 +90,7 @@ const FindPwDetailForm: React.FC = () => {
       setIsSubmitting(false);
     }
   };
+
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     // Caps Lock 감지
