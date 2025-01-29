@@ -62,43 +62,46 @@ axiosInstance.interceptors.response.use(
     try {
       console.log("리프레쉬 토큰 진행");
       const currentRefreshToken = cookies.get('refresh_token');
+      console.log(currentRefreshToken);
 
-      const response = await axios.post(
+      await axios.post(
         `${import.meta.env.VITE_API_URL}/users/reissue`,
         {},
         {
-          withCredentials: true,
           headers: {
             Authorization: `${currentRefreshToken}`,
           }
         }
-      )
+      ).then(response => {
+        console.log("쿠키 리업데이트");
+        // 새 access_token을 쿠키에 저장
+        const newAccessToken = response.data.accessToken;
 
-      // 새 access_token을 쿠키에 저장
-      const newAccessToken = response.data.access_token;
+        cookies.set('access_token', newAccessToken, {
+          path: '/',
+          secure: true,
+          sameSite: 'strict',
+        });
 
-      cookies.set('access_token', newAccessToken, {
-        path: '/',
-        secure: true,
-        sameSite: 'strict',
-      });
+        // 새 refresh_token을 redux에 저장
+        const newRefreshToken = response.data.refreshToken;
 
-      // 새 refresh_token을 redux에 저장
-      const newRefreshToken = response.data.refreshToken;
+        cookies.set("refresh_token", newRefreshToken, {
+          path: "/",
+          httpOnly: false,
+          secure: false,
+          sameSite: "strict",
+        });
 
-      cookies.set("refresh_token", newRefreshToken, {
-        path: "/",
-        httpOnly: false,
-        secure: false,
-        sameSite: "strict",
-      });
+        // 대기 중인 요청 처리
+        onRefreshed(newAccessToken);
 
-      // 대기 중인 요청 처리
-      onRefreshed(newAccessToken);
+        // 원래 요청 재시도
+        originalRequest.headers['Authorization'] = `${newAccessToken}`;
+        return axiosInstance(originalRequest);
+      })
 
-      // 원래 요청 재시도
-      originalRequest.headers['Authorization'] = `${newAccessToken}`;
-      return axiosInstance(originalRequest);
+
     } catch (refreshError) {
       // Refresh 실패 시 처리 (예: 로그아웃)
       console.error('Refresh token failed', refreshError);
