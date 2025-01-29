@@ -16,17 +16,14 @@ const FindPwEmailForm: React.FC = () => {
   const checkEmail = useCheckEmail();
   const dispatch = useDispatch();
 
-  // 이메일 유효성 검사 함수
   const validateEmail = (value: string): boolean =>
     /^[a-zA-Z0-9._%+-]+@sch\.ac\.kr$/.test(value);
 
-  // 이메일 입력 변경 핸들러
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
     setEmailError(null);
   };
 
-  // 입력 필드 블러 이벤트 핸들러
   const handleBlur = () => {
     if (!email) {
       setEmailError("이메일을 입력해주세요.");
@@ -35,7 +32,6 @@ const FindPwEmailForm: React.FC = () => {
     }
   };
 
-  // 이메일 발송 핸들러
   const handleSendEmail = async () => {
     if (!email) {
       setEmailError("이메일을 입력해주세요.");
@@ -54,14 +50,22 @@ const FindPwEmailForm: React.FC = () => {
         );
         return;
       }
-      await sendEmail(email);
-      setIsEmailSent(true);
-      dispatch(setUserEmail(email));
+
+      //이메일이 중복되지 않은 경우(409: 이메일 사용 가능)
+      if(isEmailUsed === 409){
+        console.log("409 Conflict: 이메일을 보낼 수 있습니다.");
+        await sendEmail(email);
+        setIsEmailSent(true);
+        dispatch(setUserEmail(email)); 
+      }
+      else {
+        setEmailError("이메일 확인 중 오류가 발생했습니다. ");
+      }
     } catch (error) {
       console.error("이메일 발송 실패", error);
       setEmailError("이메일 발송에 실패했습니다.");
     } finally {
-      setIsSending(false); // 이메일 발송 완료 후 상태 초기화
+      setIsSending(false);
     }
   };
 
