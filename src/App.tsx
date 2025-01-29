@@ -118,7 +118,7 @@ function App(): JSX.Element {
     { path: "/search", element: <Search />, private: true },
     { path: "/signup", element: <SignUp /> },
     { path: "/findpassword", element: <FindPw />},
-    { path: "/api/v1/auth/confirm", element: <ChangePassword />},
+    { path: "/reset-password", element: <ChangePassword />},
   ];
 
   return (
