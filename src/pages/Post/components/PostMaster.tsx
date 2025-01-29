@@ -5,9 +5,9 @@ import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred';
 import useLikePost from "../../../api/Post/useLikePost";
 import useGetUserInfo from "../../../api/Auth/useGetUserInfo";
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 
-const PostMaster: React.FC<{ postId: number, userId: number, like: boolean }> = ({ postId, userId, like }) => {
+const PostMaster: React.FC<{ postId: number, userId: number, like: boolean, setIsClickedReportBtn: React.Dispatch<SetStateAction<boolean>> }> = ({ postId, userId, like, setIsClickedReportBtn }) => {
   const likePost = useLikePost();
   const { userInfo, getUserInfo } = useGetUserInfo();
   const [likeState, setLikeState] = useState<boolean>(like);
@@ -34,7 +34,7 @@ const PostMaster: React.FC<{ postId: number, userId: number, like: boolean }> = 
             likeState ? <FavoriteIcon fontSize="large" /> : <FavoriteBorderIcon fontSize="large" />
           }
         </IconButton>
-        <IconButton>
+        <IconButton onClick={() => setIsClickedReportBtn(true)}>
           <ReportGmailerrorredIcon fontSize="large" />
         </IconButton>
       </BtnBox>

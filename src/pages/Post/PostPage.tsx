@@ -2,17 +2,19 @@ import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { IconButton } from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useGetPost from "../../api/Post/useGetPost";
 import PostImgBox from "./components/PostImgBox";
 import PostMaster from "./components/PostMaster";
 import PostContent from "./components/PostContent";
 import BottomBar from "./components/BottomBar";
+import ReportPopup from "./components/ReportPopup";
 
 const PostPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { post, getPost } = useGetPost();
+  const [isClickedReportBtn, setIsClickedRportBtn] = useState<boolean>(false);
 
   useEffect(() => {
     if (id) {
@@ -20,27 +22,25 @@ const PostPage = () => {
     }
   }, [getPost, id]);
 
-  useEffect(() => {
-    if (post?.like !== null) {
-    }
-  }, [post]);
-
   return (
     <PageContainer>
+      {
+        isClickedReportBtn && <ReportPopup  postId={id} setIsClickedReportBtn={setIsClickedRportBtn} />
+      }
       <Header>
         <IconButton color="default" onClick={() => navigate(-1)}>
           <ArrowBackIcon />
         </IconButton>
-        <Dot/>
+        <Dot />
       </Header>
       <ContentContainer>
         {post?.images && <PostImgBox images={post.images} />}
         <PostContentWrapper>
-          {post && post.like !== null && <PostMaster postId={post.postId} userId={post.userId} like={post.like} />}
+          {post && post.like !== null && <PostMaster postId={post.postId} userId={post.userId} like={post.like} setIsClickedReportBtn={setIsClickedRportBtn} />}
           {post && <PostContent post={post} />}
         </PostContentWrapper>
       </ContentContainer>
-      {post && <BottomBar/>}
+      {post && <BottomBar />}
     </PageContainer>
   );
 };
