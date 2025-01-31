@@ -16,19 +16,27 @@ const LikePage = () => {
       <Header>
         <Title>관심 목록</Title>
       </Header>
-      {likePosts && likePosts.length > 0 ? (
-        likePosts.map((data) => (
-          <>
-            <WidePostCard key={data.postId} post={data} />
-            <Divider style={{ width: "95%" }} />
-          </>
-        ))
-      ) : (
-        <p>관심 목록이 없습니다.</p>
-      )}
+      <LikeContent>
+        {likePosts && likePosts.length > 0 ? (
+          likePosts.map((data) => (
+            <div key={data.postId}>
+              <WidePostCard post={data} />
+              <Divider style={{ width: "95%" }} />
+            </div>
+          ))
+        ) : (
+          <p>관심 목록이 없습니다.</p>
+        )}
+      </LikeContent>
     </LikeContainer>
   );
 };
+
+const LikeContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* 전체 화면 높이 */
+`;
 
 const Header = styled.div`
   display: flex;
@@ -56,13 +64,16 @@ const Title = styled.div`
   padding: 10px;
 `;
 
-const LikeContainer = styled.div`
+const LikeContent = styled.div`
+  flex-grow: 1; /* 남은 공간을 모두 차지 */
+  overflow-y: auto; /* 스크롤 가능 */
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   padding-bottom: 60px;
-`
+
+    &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
 
 export default LikePage;
