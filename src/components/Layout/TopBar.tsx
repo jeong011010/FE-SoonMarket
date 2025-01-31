@@ -35,7 +35,7 @@ const SearchBarContainer = styled.form`
 	background-color: #f5f5f5; 
 	border-radius: 20px; 
 	padding: 5px 10px; 
-	width: 270px;
+	width: 320px;
 	height: 20px;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); 
 	margin: 10px;
@@ -49,6 +49,7 @@ const Input = styled.input`
 	flex: 1; 
 	font-size: 14px; 
 	color: #757575; 
+	width: 230px;
 	
 	::placeholder {
 		color: #bdbdbd; 
