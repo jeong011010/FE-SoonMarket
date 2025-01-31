@@ -1,9 +1,9 @@
 import { InputAdornment, MenuItem, Select, TextField } from "@mui/material";
 import styled from "styled-components"
 import React, { useEffect } from "react";
-import useGetUserInfo from "../../../api/Auth/useGetUserInfo";
+import useGetUserInfo from "../../api/Auth/useGetUserInfo";
 import { useSelector } from "react-redux";
-import { RootState } from "../../../redux/store";
+import { RootState } from "../../redux/store";
 
 type Description = {
   title: string;
@@ -43,17 +43,21 @@ const ProductDescriptionInputBox: React.FC<ProductDescriptionInputBoxProps> = ({
     }));
   };
 
+  console.log(description);
+
   return (
     <ContentsBox>
       <InputTitle>제목</InputTitle>
       <DescriptionInput
         variant="outlined"
+        value={description.title}
         placeholder="제품에 대한 간단한 설명을 적어주세요."
         onChange={(e) => handleInputChange('title', e.target.value)}
       />
       <InputTitle>가격</InputTitle>
       <DescriptionInput
         variant="outlined"
+        value={description.price}
         type="number"
         slotProps={{
           input: {
@@ -65,6 +69,7 @@ const ProductDescriptionInputBox: React.FC<ProductDescriptionInputBoxProps> = ({
       <InputTitle>내용</InputTitle>
       <DescriptionInput
         variant="outlined"
+        value={description.content}
         multiline
         rows={3}
         onChange={(e) => handleInputChange('content', e.target.value)}

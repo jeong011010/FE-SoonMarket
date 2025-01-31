@@ -15,7 +15,7 @@ const PostPage = () => {
   const { id } = useParams();
   const { post, getPost } = useGetPost();
   const [isClickedReportBtn, setIsClickedRportBtn] = useState<boolean>(false);
-
+  console.log(post);
   useEffect(() => {
     if (id) {
       getPost(id);

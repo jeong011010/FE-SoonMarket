@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Post } from "../../type/postType";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 
 interface PostProps {
   post: Post
@@ -19,7 +20,7 @@ const PostCard: React.FC<PostProps> = ({ post }) => {
       <Title>{post.title}</Title>
       <Details>
         <Price>₩{post.price.toLocaleString()}</Price>
-        <Views>조회수</Views>
+        <VisibilityIcon style={{fontSize:"14px"}}/>
       </Details>
     </CardContainer>
   );
@@ -118,26 +119,17 @@ const Details = styled.div`
   display: flex;
   justify-content: space-between;
   margin: 5px 10px;
+  align-items: center;
 `;
 
 const Price = styled.p`
   margin: 0;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: bold;
   color: #2d61a6;
 
   @media (max-width: 380px) {
     font-size: 12px;
-  }
-`;
-
-const Views = styled.p`
-  margin: 0;
-  font-size: 12px;
-  color: #999;
-
-  @media (max-width: 380px) {
-    font-size: 10px;
   }
 `;
 

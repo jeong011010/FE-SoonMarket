@@ -23,6 +23,7 @@ import AddPostPage from "./pages/AddPost/AddPostPage";
 import { useCookies } from "react-cookie";
 import PostPage from "./pages/Post/PostPage";
 import { jwtDecode } from "jwt-decode";
+import EditPostPage from "./pages/EditPost/EditPostPage";
 
 const theme = createTheme({
   typography: {
@@ -102,6 +103,7 @@ function App(): JSX.Element {
     },
     { path: "/recommend", element: <Recommend />, private: true },
     { path: "/addpost", element: <AddPostPage />, private: true },
+    { path: "/editpost/:id", element: <EditPostPage/>, private: true },
     { path: "/like", element: <LikePost />, private: true },
     { path: "/mypage", element: <MyPage />, private: true },
     { path: "/edit-profile", element: <EditProfilePage />, private: true },

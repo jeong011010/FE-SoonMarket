@@ -9,6 +9,7 @@ import { SetStateAction, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import useDeletePost from "../../../api/Post/useDeletePost";
+import { useNavigate } from "react-router-dom";
 
 const PostMaster: React.FC<{ postId: number, postUserId: number, like: boolean, setIsClickedReportBtn: React.Dispatch<SetStateAction<boolean>> }> = ({ postId, postUserId, like, setIsClickedReportBtn }) => {
   const likePost = useLikePost();
@@ -16,6 +17,11 @@ const PostMaster: React.FC<{ postId: number, postUserId: number, like: boolean, 
   const { userInfo, getUserInfo } = useGetUserInfo();
   const [likeState, setLikeState] = useState<boolean>(like);
   const userId = useSelector((state: RootState) => state.auth.userId);
+  const navigate = useNavigate();
+
+  const editBtnClick = () => {
+    navigate(`/editpost/${postId}`);
+  };
 
   useEffect(() => {
     getUserInfo(postUserId);
@@ -49,7 +55,7 @@ const PostMaster: React.FC<{ postId: number, postUserId: number, like: boolean, 
       </ProfileText>
       { Number(userId) === postUserId ? (
         <BtnBox>
-          <Button>수정</Button>
+          <Button onClick={editBtnClick}>수정</Button>
           /
           <Button onClick={deleteBtnClick}>삭제</Button>
         </BtnBox>
