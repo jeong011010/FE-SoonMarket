@@ -25,7 +25,7 @@ const PostPage = () => {
   return (
     <PageContainer>
       {
-        isClickedReportBtn && <ReportPopup  postId={id} setIsClickedReportBtn={setIsClickedRportBtn} />
+        isClickedReportBtn && <ReportPopup postId={id} setIsClickedReportBtn={setIsClickedRportBtn} />
       }
       <Header>
         <IconButton color="default" onClick={() => navigate(-1)}>
@@ -36,7 +36,7 @@ const PostPage = () => {
       <ContentContainer>
         {post?.images && <PostImgBox images={post.images} />}
         <PostContentWrapper>
-          {post && post.like !== null && <PostMaster postId={post.postId} userId={post.userId} like={post.like} setIsClickedReportBtn={setIsClickedRportBtn} />}
+          {post && post.like !== null && <PostMaster postId={post.postId} postUserId={post.userId} like={post.like} setIsClickedReportBtn={setIsClickedRportBtn} />}
           {post && <PostContent post={post} />}
         </PostContentWrapper>
       </ContentContainer>

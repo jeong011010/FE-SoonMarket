@@ -6,20 +6,39 @@ import useLikePost from "../../../api/Post/useLikePost";
 import useGetUserInfo from "../../../api/Auth/useGetUserInfo";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { SetStateAction, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/store";
+import useDeletePost from "../../../api/Post/useDeletePost";
 
-const PostMaster: React.FC<{ postId: number, userId: number, like: boolean, setIsClickedReportBtn: React.Dispatch<SetStateAction<boolean>> }> = ({ postId, userId, like, setIsClickedReportBtn }) => {
+const PostMaster: React.FC<{ postId: number, postUserId: number, like: boolean, setIsClickedReportBtn: React.Dispatch<SetStateAction<boolean>> }> = ({ postId, postUserId, like, setIsClickedReportBtn }) => {
   const likePost = useLikePost();
+  const deletePost = useDeletePost();
   const { userInfo, getUserInfo } = useGetUserInfo();
   const [likeState, setLikeState] = useState<boolean>(like);
+  const userId = useSelector((state: RootState) => state.auth.userId);
 
   useEffect(() => {
-    getUserInfo(userId);
-  }, [getUserInfo, userId])
+    getUserInfo(postUserId);
+  }, [getUserInfo, postUserId])
 
   const likeBtnClick = () => {
     setLikeState(prev => !prev);
     likePost(postId)
   }
+
+  const deleteBtnClick = async () => {
+    const confirmDelete = window.confirm("정말로 삭제하시겠습니까?");
+    if (confirmDelete) {
+      try {
+        await deletePost(postId);
+        alert("게시물이 삭제되었습니다.");
+        // TODO: 삭제 후 게시물 목록 업데이트 로직 필요 (ex: 페이지 이동 또는 상태 업데이트)
+      } catch (error) {
+        console.error("게시물 삭제 실패:", error);
+        alert("게시물 삭제에 실패했습니다.");
+      }
+    }
+  };
 
   return (
     <UserBox>
@@ -28,27 +47,35 @@ const PostMaster: React.FC<{ postId: number, userId: number, like: boolean, setI
         <p style={{ margin: 1 }}>{userInfo?.nickname}</p>
         <p style={{ margin: 1 }}>신고 횟수 0</p>
       </ProfileText>
-      <BtnBox>
-        <IconButton onClick={likeBtnClick}>
-          {
-            likeState ? <FavoriteIcon fontSize="large" /> : <FavoriteBorderIcon fontSize="large" />
-          }
-        </IconButton>
-        <IconButton onClick={() => setIsClickedReportBtn(true)}>
-          <ReportGmailerrorredIcon fontSize="large" />
-        </IconButton>
-      </BtnBox>
+      { Number(userId) === postUserId ? (
+        <BtnBox>
+          <Button>수정</Button>
+          /
+          <Button onClick={deleteBtnClick}>삭제</Button>
+        </BtnBox>
+      ): (
+        <BtnBox>
+          <IconButton onClick={likeBtnClick}>
+            {
+              likeState ? <FavoriteIcon fontSize="medium" /> : <FavoriteBorderIcon fontSize="medium" />
+            }
+          </IconButton>
+          <IconButton onClick={() => setIsClickedReportBtn(true)}>
+            <ReportGmailerrorredIcon fontSize="medium" />
+          </IconButton>
+        </BtnBox>
+      )}
+      
     </UserBox >
   )
 }
 
 const UserBox = styled.div`
-  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-bottom: solid 1px gray;
-  padding: 10px;
+  padding: 10px 20px;
 `;
 
 const ProfileImg = styled.div<{ imageUrl?: string }>`
@@ -73,7 +100,19 @@ const BtnBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0px 10px 0px auto;
+  margin: 0px 0px 0px auto;
+`;
+
+const Button = styled.button`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: white;
+  border: 0px;
 `;
 
 export default PostMaster;
