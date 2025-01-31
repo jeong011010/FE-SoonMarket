@@ -1,33 +1,20 @@
-import axios from "axios"
 import { useCallback, useState } from "react"
-import { useCookies } from "react-cookie";
 import { Post } from "../../type/postType";
+import axiosInstance from "../axiosInstance";
 
 const useGetRecommendPost = () => {
   const [recommendPosts, setRecommendPosts] = useState<Post[]>([]);
-  const [cookies] = useCookies(["access_token"]);
-  const token = cookies.access_token;
 
   const getRecommendPosts = useCallback(async () => {
-    const apiUrl = import.meta.env.VITE_API_URL as string;
-    if (!token) {
-      console.error("Cannot fetch posts without a valid token.");
-      return;
-    }
 
     try {
-      const response = await axios.get<Post[]>(`${apiUrl}/posts/random`, {
-        headers: {
-          Authorization: `${token}`,
-        },
-      });
+      const response = await axiosInstance.get<Post[]>(`/posts/random`);
       console.log(response.data);
       setRecommendPosts(response.data);
-      console.log("My posts fetched successfully.");
     } catch (error) {
-      console.error("Error fetching my posts:", error);
+      console.error("추천 게시물 로드 중 오류 발생", error);
     }
-  }, [token]);
+  }, []);
 
 
   return { getRecommendPosts, recommendPosts }

@@ -1,6 +1,6 @@
-import axios from "axios";
 import { useCallback, useState } from "react";
 import { Post } from "../../type/postType";
+import axiosInstance from "../axiosInstance";
 
 type PostListResponse = {
   posts: Post[];
@@ -11,16 +11,15 @@ const useGetSearchPostList = () => {
   const [searchPostList, setSearchPostList] = useState<PostListResponse | null>(null);
 
   const getSearchPostList = useCallback(async (keyword: string, category: string, size: number, page: number) => {
-    const apiUrl = import.meta.env.VITE_API_URL;
-    await axios.get(`${apiUrl}/posts/search`, {
+    await axiosInstance.get(`/posts/search`, {
       params: {
         keyword,
         category,
         size,
-        page
+        page,
       }
     }).then(response => setSearchPostList(response.data))
-      .catch(error => console.error(error));
+      .catch(error => console.error("검색 게시글 로드 중 오류 발생", error));
   }, [])
 
   return { searchPostList, getSearchPostList };
