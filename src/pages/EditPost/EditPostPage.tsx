@@ -35,7 +35,7 @@ const EditPostPage: React.FC = () => {
         price: post.price ?? 0,
         category: post.category || "",
         openchatUrl: post.openchatUrl || "",
-        sold: post.isSold ?? false, // 서버에서 sold 필드 사용
+        sold: post.sold ?? false, // 서버에서 sold 필드 사용
       });
     }
   }, [post]);
