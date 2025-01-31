@@ -1,30 +1,15 @@
-import axios from "axios";
 import { useCallback, useState } from "react";
-import { useCookies } from "react-cookie";
 import { User } from "../../type/userType";
+import axiosInstance from "../axiosInstance";
 
 const useGetUserInfo = () => {
   const [userInfo, setUserInfo] = useState<User | null>(null);
-  const [cookies] = useCookies(["access_token"]);
-  const token = cookies.access_token;
   console.log("userInfo 호출");
   const getUserInfo = useCallback(async (userId: string | number) => {
-    if (!token || !userId) {
-      console.error("Missing token or userId");
-      return;
-    }
-
-    try {
-      const response = await axios.get<User>(
-        `${import.meta.env.VITE_API_URL}/users/${userId}`,
-        { headers: { Authorization: `${token}` } }
-      );
-      setUserInfo(response.data);
-      console.log(response.data);
-    } catch (error) {
-      console.error("Error fetching user information:", error);
-    }
-  }, [token]);
+    await axiosInstance.get<User>(`/users/${userId}`)
+      .then(response => setUserInfo(response.data))
+      .catch(error => console.error("유저 정보 불러오기 중 오류 발생", error));
+  }, []);
 
   return { userInfo, getUserInfo };
 };
