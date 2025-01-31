@@ -17,4 +17,5 @@ export interface Post {
   content: string;
   userId: number;
   like: boolean | null;
+  sold: boolean;
 }

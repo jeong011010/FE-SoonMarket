@@ -1,12 +1,9 @@
 import axios from "axios";
-import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 
 const useEditPost = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
   const navigate = useNavigate()
-  const [cookies] = useCookies(['access_token']);
-  const token = cookies.access_token;
 
   const editPost = async (postId: Number, postData: any) => {
     try {
