@@ -70,7 +70,7 @@ const RopeSVG = styled.svg`
   height: 100px;
   z-index: 0;
 
-path {
+  path {
     fill: none;
     stroke: #c9a679; /* 기본 노끈 색 */
     stroke-width: 6; /* 노끈 두께 */

@@ -71,6 +71,7 @@ const Body = styled.div`
   overflow-x: hidden; /* 좌우 스크롤 방지 */
   box-sizing: border-box; /* 패딩 포함 크기 계산 */
 
+  padding-bottom: 60px;
   &::-webkit-scrollbar {
     display: none;
   }
