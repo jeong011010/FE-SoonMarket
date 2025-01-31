@@ -1,7 +1,13 @@
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from "styled-components"
+import { IconButton } from "@mui/material";
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Post } from '../../type/postType';
+import useLikePost from '../../api/Post/useLikePost';
+import useGetUserInfo from '../../api/Auth/useGetUserInfo';
+import { useEffect, useState } from 'react';
 
 interface PostProps {
   post: Post
@@ -10,18 +16,53 @@ interface PostProps {
 const WidePostCard: React.FC<PostProps> = ({ post }) => {
   const uploadTime = new Date(post.createAt);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const likePost = useLikePost();
+  const { userInfo, getUserInfo } = useGetUserInfo();
+  const [likeState, setLikeState] = useState<boolean>(!post.like);
+  console.log(likeState);
+
+  const formattedDate = `${uploadTime.getFullYear().toString().slice(-2)}.${uploadTime.getMonth() + 1}.${uploadTime.getDate()} ${uploadTime.getHours()}:${uploadTime.getMinutes()}`;
+
+  useEffect(() => {
+    if (userInfo?.id) {
+      getUserInfo(userInfo.id);
+    }
+  }, [getUserInfo, userInfo?.id]);
+
+  const likeBtnClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    setLikeState(prev => !prev);
+    likePost(post.postId);
+  };
 
   return (
     <DataContainer onClick={() => navigate(`/post/${post.postId}`)}>
       <img src={post.images[0]?.imageUrl} alt="일러스트" style={{ width: 120, height: 120, margin: 10, borderRadius: "5%" }} />
       <Detail>
         <h3 style={{ margin: "20px 0px 5px 0px" }}>{post.title}</h3>
-        <p style={{ margin: "5px 0px" }}>{uploadTime.toLocaleString()}</p>
-        <p style={{ margin: "5px 0px" }}>{post.price}</p>
-        <LikesContainer>
-          <ThumbUpAltIcon style={{ fontSize: '20px' }} />
-          <LikesText>{post.countLike}</LikesText>
-        </LikesContainer>
+        <PostDetail>
+          <p style={{ margin: "5px 0px" }}>가격 : {post.price}</p>
+          <p style={{ margin: "5px 0px" }}>작성일 : {formattedDate}</p>
+        </PostDetail>
+        <LikeDetail>
+          <LikesContainer>
+            <ThumbUpAltIcon style={{ fontSize: '20px' }} />
+            <LikesText>{post.countLike}</LikesText>
+          </LikesContainer>
+          {location.pathname === "/like" ? (
+          <BtnBox>
+            <IconButton onClick={likeBtnClick}>
+              {
+                likeState ? <FavoriteIcon fontSize="large" /> : <FavoriteBorderIcon fontSize="large" />
+              }
+            </IconButton>
+            </BtnBox>
+          ) : (
+            <></>
+          )}
+        </LikeDetail>
       </Detail>
     </DataContainer>
   )
@@ -38,19 +79,34 @@ const Detail = styled.div`
   position: relative;
   width: 100%;
 `
+const PostDetail = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-right: 10px;
+`
 
 const LikesContainer = styled.div`
   display: flex;
   align-items: center;
-  position: absolute;
   bottom: 0;
   right: 0;
   margin: 10px;
+`
+
+const LikeDetail = styled.div`
+  display: flex;
+  margin-left: auto;
 `
 
 const LikesText = styled.span`
   margin-left: 5px;
   font-size: 14px;
 `
+
+const BtnBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 export default WidePostCard;

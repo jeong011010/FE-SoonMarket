@@ -3,7 +3,6 @@ import PostCard from "../../../components/Post/PostCard";
 import { useEffect } from "react";
 import { Box } from "@mui/material";
 import useGetMyPosts from "../../../api/Post/useGetMyPost";
-import { Post } from "../../../type/postType";
 
 const MyPost: React.FC = () => {
   const { myPosts, getMyPosts } = useGetMyPosts();
@@ -15,28 +14,20 @@ const MyPost: React.FC = () => {
 
   return (
     <MyPostContainer>
-      {myPosts && myPosts.length > 0 ? (
-        myPosts
-          .reduce<Post[][]>((rows, _, index) => {
-            if (index % 2 === 0) rows.push(myPosts.slice(index, index + 2));
-            return rows;
-          }, [])
-          .map((row, rowIndex) => (
-            <Row key={rowIndex}>
-              {row.map((post) => (
-                <PostCard key={post.postId} post={post} />
-              ))}
-            </Row>
-          ))
-      ) : (
-        <>
-          {myPosts.length === 0 ? (
-            <p>작성한 게시글이 없습니다.</p>
-          ) : (
-            <p>Loading...</p>
-          )}
-        </>
-      )}
+      {myPosts.length ? (
+          <PostContainer>
+            {
+              myPosts.map((post)=>(
+                <PostCard post={post} key={post.postId} />
+              ))
+            }
+          </PostContainer>
+        ) : (
+          <StatusMessage>
+            게시물이 없습니다.
+          </StatusMessage>
+        )
+      }
     </MyPostContainer>
   );
 };
@@ -57,12 +48,20 @@ const MyPostContainer = styled(Box)`
   }
 `;
 
-const Row = styled(Box)`
-  display: flex;
-  justify-content: center; /* 카드들이 가운데 정렬 */
-  flex-wrap: wrap; /* 화면이 작을 때 줄바꿈 허용 */
-  gap: 16px; /* 카드 간격 추가 */
-  width: 100%; /* 부모 요소 크기를 기준으로 정렬 */
+const PostContainer = styled.div`
+  margin: 0px 20px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  padding-bottom: 70px; /* 하단바 높이보다 조금 더 여유 공간 추가 */
+  justify-items: center;
 `;
+
+const StatusMessage = styled.p`
+  text-align: center;
+  color: black;
+  font-size: 14px;
+  margin-right: auto;
+`;
+
 
 export default MyPost;
