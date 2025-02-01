@@ -51,7 +51,6 @@ const FindPwDetailForm: React.FC = () => {
     setConfirmPasswordError("");
   
     let hasError = false;
-  
     if (!password) {
       setPasswordError("비밀번호를 입력해주세요.");
       hasError = true;
@@ -73,7 +72,7 @@ const FindPwDetailForm: React.FC = () => {
     try {
       const urlParams = new URLSearchParams(window.location.search);
       const token = urlParams.get("token");
-      console.log(token);
+      //console.log(token);
       if (!token) {
         throw new Error("토큰이 제공되지 않았습니다.");
       }
