@@ -4,7 +4,6 @@ import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
 import { Button, TextField, IconButton } from "@mui/material";
 import { useDispatch } from "react-redux";
 import usePwCode from "../../../api/Auth/usePwCode";
-import useCheckEmail from "../../../api/Auth/useCheckEmail";
 import { setUserEmail } from "../../../redux/modules/auth";
 
 const FindPwEmailForm: React.FC = () => {
@@ -13,7 +12,6 @@ const FindPwEmailForm: React.FC = () => {
   const [isSending, setIsSending] = useState<boolean>(false);
   const [isEmailSent, setIsEmailSent] = useState<boolean>(false);
   const { sendEmail } = usePwCode();
-  const checkEmail = useCheckEmail();
   const dispatch = useDispatch();
 
   const validateEmail = (value: string): boolean =>
@@ -43,24 +41,10 @@ const FindPwEmailForm: React.FC = () => {
     }
     setIsSending(true);
     try {
-      const isEmailUsed = await checkEmail(email);
-      if (isEmailUsed === 200) {
-        setEmailError(
-          "사용 중이지 않은 이메일입니다. 인증 이메일을 보낼 수 없습니다."
-        );
-        return;
-      }
-
-      //이메일이 중복되지 않은 경우(409: 이메일 사용 가능)
-      if(isEmailUsed === 409){
-        console.log("409 Conflict: 이메일을 보낼 수 있습니다.");
-        await sendEmail(email);
-        setIsEmailSent(true);
-        dispatch(setUserEmail(email)); 
-      }
-      else {
-        setEmailError("이메일 확인 중 오류가 발생했습니다. ");
-      }
+      // 이메일 중복 체크 부분을 제거하고 바로 이메일 전송
+      await sendEmail(email);
+      setIsEmailSent(true);
+      dispatch(setUserEmail(email)); 
     } catch (error) {
       console.error("이메일 발송 실패", error);
       setEmailError("이메일 발송에 실패했습니다.");
