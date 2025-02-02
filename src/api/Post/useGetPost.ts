@@ -9,7 +9,6 @@ const useGetPost = () => {
     try {
       const response = await axiosInstance.get<Post>(`/posts/${postId}`);
       setPost(response.data);
-      console.log(`${postId}번 게시글 데이터 불러오기 성공`, response);
     } catch (error) {
       console.error(error);
     }

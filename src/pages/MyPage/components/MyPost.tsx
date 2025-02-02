@@ -6,7 +6,6 @@ import useGetMyPosts from "../../../api/Post/useGetMyPost";
 
 const MyPost: React.FC = () => {
   const { myPosts, getMyPosts } = useGetMyPosts();
-  console.log(myPosts);
 
   useEffect(() => {
     getMyPosts();

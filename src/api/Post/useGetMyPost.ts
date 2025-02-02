@@ -9,7 +9,6 @@ const useGetMyPosts = () => {
     try {
       const response = await axiosInstance.get("/posts/my-posts");
       setMyPosts(response.data);
-      console.log("My posts fetched successfully.");
     } catch (error) {
       console.error("Error fetching my posts:", error);
     }

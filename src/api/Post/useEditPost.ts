@@ -7,10 +7,8 @@ const useEditPost = () => {
 
   const editPost = async (postId: Number, postData: any) => {
     try {
-      console.log('게시물 수정 시도', postData);
       await axios.put(`${apiUrl}/posts/${postId}`, postData);
-      console.log('게시물 수정 완료');
-      navigate('/main');
+      navigate(`/post/${postId}`);
     } catch (error) {
       console.error('게시물 수정 중 오류 발생', error);
     }

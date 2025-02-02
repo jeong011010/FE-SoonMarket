@@ -37,20 +37,16 @@ const RecommendCardStack: React.FC = () => {
       const uniqueCards = recommendPosts.filter(
         (newCard) => !currentCards.some((card) => card.postId === newCard.postId)
       );
-      console.log(uniqueCards);
-      console.log(tinderCardRefs.current);
       setCurrentCards((prevCards) => [...uniqueCards, ...prevCards]); // 기존 카드 아래에 추가
       tinderCardRefs.current = [
         ...uniqueCards.map(() => React.createRef<TinderCardAPI>()),
         ...tinderCardRefs.current,
       ];
     }
-    console.log(tinderCardRefs);
   }, [recommendPosts, currentCards]);
 
   const handleSwipe = (direction: string, cardIndex: number) => {
     const card = currentCards[cardIndex];
-    console.log(`Swiped ${direction} on card ${cardIndex}, ${card.postId}`);
     if (direction === "right") {
       likePost(card.postId.toString()); // 카드 오른쪽 스와이프 시 호출
     }

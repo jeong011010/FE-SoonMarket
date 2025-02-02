@@ -2,14 +2,8 @@ import styled from "styled-components";
 import schoolImg from "../../assets/soonchunhyangUniversity.jpg";
 import TopBar from "../../components/Layout/TopBar";
 import CategoryPost from "./components/CategoryPost";
-import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
 
-const Main: React.FC = () => {
-  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
-  console.log(isAuthenticated);
-
-  return (
+const Main: React.FC = () => {return (
     <MainPageContainer>
       <TopBar />
       <Content>
