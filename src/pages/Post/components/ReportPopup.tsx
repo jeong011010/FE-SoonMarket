@@ -173,7 +173,7 @@ const ReportForm: React.FC<{ postId: string, setIsClickedReportBtn: React.Dispat
         )}
       </StyledDialogContent>
       <StyledDialogActions>
-        <Button onClick={() => setIsClickedReportBtn(false)} color="secondary" variant="contained" style={{ width: "42%" }}>
+        <Button onClick={() => setIsClickedReportBtn(false)} color="inherit" variant="contained" style={{ width: "42%" }}>
           취소
         </Button>
         <Button onClick={handleSubmit} color="primary" variant="contained" disabled={!selectedCategory || !selectedSubcategory} style={{ width: "42%" }}>
