@@ -8,6 +8,7 @@ import MyInformation from "./components/MyInformation";
 import MyPost from "./components/MyPost";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import LikePosts from "./components/LikePosts";
 
 const MyPage: React.FC = () => {
   const [value, setValue] = useState<number>(0);
@@ -40,6 +41,7 @@ const MyPage: React.FC = () => {
             <StyledTabs value={value} onChange={handleChange} centered>
               <StyledTab label="내 정보" {...a11yProps(0)} />
               <StyledTab label="내가 올린 게시물" {...a11yProps(1)} />
+              <StyledTab label="좋아요" {...a11yProps(2)} />
             </StyledTabs>
           </TabBox>
           <SlidingContainer value={value}>
@@ -48,6 +50,9 @@ const MyPage: React.FC = () => {
             </SlidingPanel>
             <SlidingPanel>
               <MyPost />
+            </SlidingPanel>
+            <SlidingPanel>
+              <LikePosts />
             </SlidingPanel>
           </SlidingContainer>
         </Body>
@@ -144,7 +149,7 @@ const StyledTabs = styled(Tabs)`
 `;
 
 const StyledTab = styled(Tab)`
-  width: 50%;
+  width: 33%;
   font-weight: 600;
   color: #666;
   &:hover {
