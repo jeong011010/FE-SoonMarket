@@ -1,5 +1,4 @@
-import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from "styled-components"
 import { IconButton } from "@mui/material";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -16,12 +15,11 @@ interface PostProps {
 const WidePostCard: React.FC<PostProps> = ({ post }) => {
   const uploadTime = new Date(post.createAt);
   const navigate = useNavigate();
-  const location = useLocation();
 
   const likePost = useLikePost();
   const { userInfo, getUserInfo } = useGetUserInfo();
   const [likeState, setLikeState] = useState<boolean>(!post.like);
-  console.log(likeState);
+  const [likeCount, setLikeCount] = useState<number>(post.countLike);
 
   const formattedDate = `${uploadTime.getFullYear().toString().slice(-2)}.${uploadTime.getMonth() + 1}.${uploadTime.getDate()} ${uploadTime.getHours()}:${uploadTime.getMinutes()}`;
 
@@ -33,6 +31,8 @@ const WidePostCard: React.FC<PostProps> = ({ post }) => {
 
   const likeBtnClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
+    if (likeState === true) setLikeCount(prev => prev - 1);
+    if (likeState === false) setLikeCount(prev => prev + 1);
     setLikeState(prev => !prev);
     likePost(post.postId);
   };
@@ -47,21 +47,16 @@ const WidePostCard: React.FC<PostProps> = ({ post }) => {
           <p style={{ margin: "5px 0px" }}>작성일 : {formattedDate}</p>
         </PostDetail>
         <LikeDetail>
-          <LikesContainer>
-            <ThumbUpAltIcon style={{ fontSize: '20px' }} />
-            <LikesText>{post.countLike}</LikesText>
-          </LikesContainer>
-          {location.pathname === "/like" ? (
           <BtnBox>
             <IconButton onClick={likeBtnClick}>
               {
-                likeState ? <FavoriteIcon fontSize="large" /> : <FavoriteBorderIcon fontSize="large" />
+                likeState ? <FavoriteIcon fontSize='medium' /> : <FavoriteBorderIcon fontSize="medium" />
               }
             </IconButton>
-            </BtnBox>
-          ) : (
-            <></>
-          )}
+          </BtnBox>
+          <LikesContainer>
+            <LikesText>{likeCount}</LikesText>
+          </LikesContainer>
         </LikeDetail>
       </Detail>
     </DataContainer>
@@ -99,7 +94,7 @@ const LikeDetail = styled.div`
 `
 
 const LikesText = styled.span`
-  margin-left: 5px;
+  margin-left: -7px;
   font-size: 14px;
 `
 
