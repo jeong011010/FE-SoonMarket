@@ -7,6 +7,7 @@ import { Post } from '../../type/postType';
 import useLikePost from '../../api/Post/useLikePost';
 import useGetUserInfo from '../../api/Auth/useGetUserInfo';
 import { useEffect, useState } from 'react';
+import getTimeAgo from '../../utils/getTimeAgo';
 
 interface PostProps {
   post: Post
@@ -21,7 +22,7 @@ const WidePostCard: React.FC<PostProps> = ({ post }) => {
   const [likeState, setLikeState] = useState<boolean>(!post.like);
   const [likeCount, setLikeCount] = useState<number>(post.countLike);
 
-  const formattedDate = `${uploadTime.getFullYear().toString().slice(-2)}.${uploadTime.getMonth() + 1}.${uploadTime.getDate()} ${uploadTime.getHours()}:${uploadTime.getMinutes()}`;
+  const formattedDate = getTimeAgo(uploadTime);
 
   useEffect(() => {
     if (userInfo?.id) {
