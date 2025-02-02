@@ -2,11 +2,11 @@ import { BottomNavigation, BottomNavigationAction } from "@mui/material";
 import HomeIcon from '@mui/icons-material/Home';
 import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import TagFacesIcon from '@mui/icons-material/TagFaces';
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useLocation, useNavigate } from "react-router-dom";
+import ChatIcon from '@mui/icons-material/Chat';
 
 const BottomNav = () => {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ const BottomNav = () => {
       // 다른 경로에 따라 더 추가 가능
       case '/addpost':
         return 2;
-      case '/like':
+      case '/chat-list':
         return 3;
       case '/mypage':
         return 4;
@@ -49,7 +49,7 @@ const BottomNav = () => {
       <NavItem label="홈" icon={<HomeIcon />} onClick={() => navigate('/main')} />
       <NavItem label="어떤데?" icon={<CardGiftcardIcon />} onClick={() => navigate('/recommend')} />
       <NavItem label="글쓰기" icon={<AddCircleOutlineIcon />} onClick={() => navigate('/addpost')} />
-      <NavItem label="관심목록" icon={<FavoriteBorderIcon />} onClick={() => navigate('/like')} />
+      <NavItem label="채팅" icon={<ChatIcon />} onClick={() => navigate('/chat-list')} />
       <NavItem
         label="마이페이지"
         icon={<TagFacesIcon />}
