@@ -23,10 +23,6 @@ const PostImgBox: React.FC<PostImgBoxProps> = ({ images }) => {
       const distance = e.touches[0].clientX - startX;
       const maxDrag = 370; // 최대 드래그 허용 범위 (1개의 이미지 크기)
 
-      if (Math.abs(distance) > Math.abs(e.touches[0].clientY - startX)) {
-        e.preventDefault();
-      }
-
       // 드래그 거리를 제한
       if (
         (currentImageIndex === 0 && distance > 0) || // 첫 이미지에서 왼쪽 드래그
