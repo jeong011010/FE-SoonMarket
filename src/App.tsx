@@ -10,7 +10,6 @@ import Main from "./pages/Main/Main";
 import BottomNav from "./components/Layout/BottomNav";
 import Search from "./pages/Search/Search";
 import Recommend from "./pages/Recommend/RecommendPage";
-import LikePost from "./pages/LikePost/LikePage";
 import MyPage from "./pages/MyPage/MyPage";
 import EditProfilePage from "./pages/MyPage/EditProfilePage";
 import SignUp from "./pages/Auth/SignUpPage";
@@ -24,6 +23,7 @@ import { useCookies } from "react-cookie";
 import PostPage from "./pages/Post/PostPage";
 import { jwtDecode } from "jwt-decode";
 import EditPostPage from "./pages/EditPost/EditPostPage";
+import ChatListPage from "./pages/ChatListPage/ChatListPage";
 
 const theme = createTheme({
   typography: {
@@ -103,11 +103,11 @@ function App(): JSX.Element {
     },
     { path: "/recommend", element: <Recommend />, private: true },
     { path: "/addpost", element: <AddPostPage />, private: true },
-    { path: "/editpost/:id", element: <EditPostPage/>, private: true },
-    { path: "/like", element: <LikePost />, private: true },
+    { path: "/editpost/:id", element: <EditPostPage />, private: true },
+    { path: "/chat-list", element: <ChatListPage />, private: true },
     { path: "/mypage", element: <MyPage />, private: true },
     { path: "/edit-profile", element: <EditProfilePage />, private: true },
-    
+
     { path: "/main", element: <Main />, private: true },
     { path: "/post/:id", element: <PostPage />, private: true },
     { path: "/search", element: <Search />, private: true },
