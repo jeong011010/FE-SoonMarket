@@ -4,7 +4,6 @@ import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
 import { Button, TextField, IconButton } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router-dom";
-import useConfirmToken from "../../../api/Auth/useConfirmToken";
 import useChangePassword from "../../../api/Auth/useChangepassword";
 
 const FindPwDetailForm: React.FC = () => {
@@ -15,30 +14,10 @@ const FindPwDetailForm: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isCapsLockOn, setIsCapsLockOn] = useState(false);
   const navigate = useNavigate();
-  const confirmToken = useConfirmToken();
   const resetPassword = useChangePassword();
+  
   useEffect(() => {
-    const validateToken = async () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const token = urlParams.get("token");
-
-      if (!token) {
-        console.error("토큰이 제공되지 않았습니다.");
-        navigate("/findpassword");
-        return;
-      }
-
-      try {
-        const message = await confirmToken(token);
-        console.log("토큰 검증 성공:", message);
-      } catch (error) {
-        console.error("토큰 검증 실패:", error);
-        navigate("/findpassword");
-      }
-    };
-
-    validateToken();
-  }, [confirmToken, navigate]);
+  }, [navigate]);
 
   const validatePassword = (value: string): boolean =>
     /^(?=.*[a-z])(?=.*[\W])(?=.*\d)[a-zA-Z\d\W]{8,16}$/.test(value);
@@ -73,16 +52,15 @@ const FindPwDetailForm: React.FC = () => {
     try {
       const urlParams = new URLSearchParams(window.location.search);
       const token = urlParams.get("token");
-      console.log(token);
       if (!token) {
         throw new Error("토큰이 제공되지 않았습니다.");
       }
 
       // 올바른 요청 데이터 형식으로 전달
-      const message = await resetPassword(token, password );
+      const message = await resetPassword(token, password);
       console.log("비밀번호 재설정 성공:", message);
       alert("비밀번호가 성공적으로 변경되었습니다.");
-      navigate("/login");
+      navigate("/");
     } catch (error) {
       console.error("비밀번호 재설정 중 오류 발생:", error);
       alert("비밀번호 재설정 중 오류가 발생했습니다. 다시 시도해주세요.");
@@ -90,7 +68,6 @@ const FindPwDetailForm: React.FC = () => {
       setIsSubmitting(false);
     }
   };
-
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     // Caps Lock 감지
@@ -100,6 +77,7 @@ const FindPwDetailForm: React.FC = () => {
       setIsCapsLockOn(false);
     }
   };
+
   return (
     <FormContainer>
       <Header>
@@ -202,6 +180,7 @@ const TextFieldContainer1 = styled.div`
   border-radius: 4px;
   margin-top: 0px;
 `;
+
 const StyledTextField = styled(TextField)`
   width: 100%;
   && .MuiFilledInput-root {
