@@ -39,7 +39,7 @@ const PostPage = () => {
           {post && <PostContent post={post} />}
         </PostContentWrapper>
       </ContentContainer>
-      {post && <BottomBar />}
+      {post && <BottomBar postId={post.postId}/>}
     </PageContainer>
   );
 };

@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react";
 import { Chat } from "../../type/chatType";
 import axiosInstance from "../axiosInstance";
+import { useNavigate } from "react-router-dom";
 
 type ChatListResponse = {
   chats: Chat[];
@@ -8,18 +9,17 @@ type ChatListResponse = {
 
 const useGetChatList = () => {
   const [chatList, setChatList] = useState<ChatListResponse | null>(null);
+  const navigate = useNavigate();
 
-  const getChatList = useCallback(async (keyword: string, category: string, size: number, page: number) => {
-    await axiosInstance.get(`/posts/search`, {
-      params: {
-        keyword,
-        category,
-        size,
-        page,
-      }
-    }).then(response => setChatList(response.data))
-      .catch(error => console.error("검색 게시글 로드 중 오류 발생", error));
-  }, [])
+  const getChatList = useCallback(async () => {
+    try {
+      const response = await axiosInstance.get("/chat/rooms");
+      setChatList(response.data);
+      console.log(chatList);
+    } catch (error) {
+      console.error("좋아요 게시물 받아오는 중 오류 발생", error);
+    }
+  }, []);
 
   return { chatList, getChatList };
 }

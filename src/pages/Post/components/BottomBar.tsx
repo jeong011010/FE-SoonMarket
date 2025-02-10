@@ -1,15 +1,21 @@
 import { Button } from "@mui/material";
 import styled from "styled-components";
+import useAddChat from "../../../api/Chat/useAddChat";
 
-const BottomBar = () => {
+const BottomBar: React.FC<{postId : number}> = ({postId})  => {
+  const addChat = useAddChat();
+
+  const handleAddChat = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+    addChat(postId);
+  }
 
   return (
     <BottomBtnBox>
       <ChatBtn
         variant="contained"
-        onClick={() => window.open("https://open.kakao.com/o/sftW1KOg")}
-      >
-        오픈 채팅으로 거래하기
+        onClick={handleAddChat}>
+        채팅 하기
       </ChatBtn>
     </BottomBtnBox>
   )
