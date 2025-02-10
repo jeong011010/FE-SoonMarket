@@ -23,7 +23,7 @@ import { useCookies } from "react-cookie";
 import PostPage from "./pages/Post/PostPage";
 import { jwtDecode } from "jwt-decode";
 import EditPostPage from "./pages/EditPost/EditPostPage";
-import ChatListPage from "./pages/ChatListPage/ChatListPage";
+import ChatListPage from "./pages/Chat/ChatListPage";
 
 const theme = createTheme({
   typography: {

@@ -1,8 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import styled from "styled-components"
 import { Chat } from '../../../type/chatType';
-import useGetUserInfo from '../../../api/Auth/useGetUserInfo';
-import { useEffect, useState } from 'react';
 import getTimeAgo from '../../../utils/getTimeAgo';
 
 interface ChatProps {
@@ -13,22 +11,18 @@ const WideChatCard: React.FC<ChatProps> = ({ chat }) => {
   const lastMsgTime = new Date(chat.latestMessageTime);
   const navigate = useNavigate();
 
-  const { userInfo, getUserInfo } = useGetUserInfo();
   const formattedDate = getTimeAgo(lastMsgTime);
-
-  useEffect(() => {
-    if (userInfo?.id) {
-      getUserInfo(userInfo.id);
-    }
-  }, [getUserInfo, userInfo?.id]);
 
   return (
     <DataContainer onClick={() => navigate(`/chat/${chat.roomId}`)}>
       <img src={chat.postImageUrl} alt="일러스트" style={{ width: 80, height: 80, margin: 20, borderRadius: "5%" }} />
       <Detail>
-        <h3 style={{ margin: "20px 0px 5px 0px" }}>{chat.opponentNickName}</h3>
+        <DetailTop>
+          <h3>{chat.opponentNickName}</h3>
+          <p style={{paddingLeft:"15px"}}>{formattedDate}</p>
+        </DetailTop>
         <PostDetail>
-          <p style={{ margin: "5px 0px" }}>{chat.latestMessage} : {formattedDate}</p>
+          {chat.latestMessage === "" ? "채팅을 시작해보세요!" : chat.latestMessage}
         </PostDetail>
       </Detail>
     </DataContainer>
@@ -47,9 +41,13 @@ const Detail = styled.div`
   width: 100%;
 `
 const PostDetail = styled.div`
+  font-weight: normal;
+`
+
+const DetailTop = styled.div`
   display: flex;
-  justify-content: space-between;
-  margin-right: 10px;
+  padding-top : 5px;
+  align-items: center;
 `
 
 export default WideChatCard;
