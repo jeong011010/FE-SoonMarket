@@ -43,7 +43,7 @@ axiosInstance.interceptors.response.use(
   (response) => response, // 정상적인 응답은 그대로 반환
   async (error) => {
     const originalRequest = error.config;
-
+    console.log(error.response);
     if (error.response?.status === 401 && !originalRequest._retry) {
       if (isRefreshing) {
         // 이미 갱신 중이라면 대기
@@ -54,61 +54,62 @@ axiosInstance.interceptors.response.use(
           })
         })
       }
-    }
+      originalRequest._retry = true;
+      isRefreshing = true;
 
-    originalRequest._retry = true;
-    isRefreshing = true;
+      try {
+        console.log("리프레쉬 토큰 진행");
+        const currentRefreshToken = cookies.get('refresh_token');
+        console.log(currentRefreshToken);
 
-    try {
-      console.log("리프레쉬 토큰 진행");
-      const currentRefreshToken = cookies.get('refresh_token');
-      console.log(currentRefreshToken);
-
-      await axios.post(
-        `${import.meta.env.VITE_API_URL}/users/reissue`,
-        {},
-        {
-          headers: {
-            Authorization: `${currentRefreshToken}`,
+        await axios.post(
+          `${import.meta.env.VITE_API_URL}/users/reissue`,
+          {},
+          {
+            headers: {
+              Authorization: `${currentRefreshToken}`,
+            }
           }
-        }
-      ).then(response => {
-        console.log("쿠키 리업데이트");
-        // 새 access_token을 쿠키에 저장
-        const newAccessToken = response.data.accessToken;
+        ).then(response => {
+          console.log("쿠키 리업데이트");
+          // 새 access_token을 쿠키에 저장
+          const newAccessToken = response.data.accessToken;
 
-        cookies.set('access_token', newAccessToken, {
-          path: '/',
-          secure: true,
-          sameSite: 'strict',
-        });
+          cookies.set('access_token', newAccessToken, {
+            path: '/',
+            secure: true,
+            sameSite: 'strict',
+          });
 
-        // 새 refresh_token을 redux에 저장
-        const newRefreshToken = response.data.refreshToken;
+          // 새 refresh_token을 redux에 저장
+          const newRefreshToken = response.data.refreshToken;
 
-        cookies.set("refresh_token", newRefreshToken, {
-          path: "/",
-          httpOnly: false,
-          secure: false,
-          sameSite: "strict",
-        });
+          cookies.set("refresh_token", newRefreshToken, {
+            path: "/",
+            httpOnly: false,
+            secure: false,
+            sameSite: "strict",
+          });
 
-        // 대기 중인 요청 처리
-        onRefreshed(newAccessToken);
+          // 대기 중인 요청 처리
+          onRefreshed(newAccessToken);
 
-        // 원래 요청 재시도
-        originalRequest.headers['Authorization'] = `${newAccessToken}`;
-        return axiosInstance(originalRequest);
-      })
+          // 원래 요청 재시도
+          originalRequest.headers['Authorization'] = `${newAccessToken}`;
+          return axiosInstance(originalRequest);
+        })
 
 
-    } catch (refreshError) {
-      // Refresh 실패 시 처리 (예: 로그아웃)
-      console.error('Refresh token failed', refreshError);
-      return Promise.reject(refreshError);
-    } finally {
-      isRefreshing = false;
+      } catch (refreshError) {
+        // Refresh 실패 시 처리 (예: 로그아웃)
+        console.error('Refresh token failed', refreshError);
+        return Promise.reject(refreshError);
+      } finally {
+        isRefreshing = false;
+      }
     }
+
+    
 
     return Promise.reject(error);
   }
