@@ -2,7 +2,7 @@ export interface Chat {
   roomId : string;
   postImageUrl : string;
   latestMessageTime : string;
-  latestMessaage : string;
+  latestMessage : string;
   opponentNickName : string;
   myNickName : string;
   myId : number;

@@ -24,11 +24,11 @@ const WideChatCard: React.FC<ChatProps> = ({ chat }) => {
 
   return (
     <DataContainer onClick={() => navigate(`/chat/${chat.roomId}`)}>
-      <img src={chat.postImageUrl} alt="일러스트" style={{ width: 120, height: 120, margin: 10, borderRadius: "5%" }} />
+      <img src={chat.postImageUrl} alt="일러스트" style={{ width: 80, height: 80, margin: 20, borderRadius: "5%" }} />
       <Detail>
         <h3 style={{ margin: "20px 0px 5px 0px" }}>{chat.opponentNickName}</h3>
         <PostDetail>
-          <p style={{ margin: "5px 0px" }}>{chat.latestMessaage} : {formattedDate}</p>
+          <p style={{ margin: "5px 0px" }}>{chat.latestMessage} : {formattedDate}</p>
         </PostDetail>
       </Detail>
     </DataContainer>

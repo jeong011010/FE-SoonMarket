@@ -9,13 +9,12 @@ const ChatListPage: React.FC = () => {
 
   useEffect(() => {
     getChatList();
-    console.log(chatList);
   }, [getChatList]);
 
   return (
     <ChatListPageContainer>
       {
-        chatList?.chats ? chatList.chats.map((chat) => (
+        chatList ? chatList.map((chat) => (
           <React.Fragment key={chat.roomId}>
             <WideChatCard chat={chat} />
             <Divider style={{ width: "95%" }} />
