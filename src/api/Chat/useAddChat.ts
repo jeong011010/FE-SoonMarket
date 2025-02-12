@@ -8,7 +8,7 @@ const useAddChat = () => {
     try {
       await axiosInstace.post(`/posts/${postId}/room`);
       console.log('채팅방 생성 완료');
-      navigate('/chat-list');
+      navigate(`/chat-list`);
     } catch (error: any) {
       if (error.response && error.response.data && error.response.data.error) {
         // 서버에서 제공한 에러 메시지 표시

@@ -28,7 +28,7 @@ const ChatListPage: React.FC = () => {
       {
         chatList ? chatList.map((chat) => (
           <React.Fragment key={chat.roomId}>
-            <WideChatCard chat={chat} />
+            <WideChatCard chatList={chat} />
             <Divider style={{ width: "95%" }} />
           </React.Fragment>
         )) : (
