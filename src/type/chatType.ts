@@ -15,11 +15,16 @@ export interface Chat {
   postId: number; // 연결된 게시물 ID
 }
 
+export enum MessageType {
+  ENTER = "ENTER",
+  TALK = "TALK",
+}
+
 // 채팅 메시지 타입
 export interface ChatMessage {
-  messageId: number; // 메시지 고유 ID
-  roomId: string; // 채팅방 ID
-  senderId: number; // 메시지 보낸 사람 ID
-  content: string; // 메시지 내용
-  sendAt: string; // 전송 시간
+  type: MessageType;
+  roomId: string;
+  sender: number;
+  message: string;
+  nickname: string;
 }
