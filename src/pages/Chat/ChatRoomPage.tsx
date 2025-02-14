@@ -89,10 +89,10 @@ const ChatRoomPage: React.FC = () => {
   const togglePopup = () => {
     if (!showPopup) {
       setShowPopup(true);
-      setTimeout(() => setIsPopupVisible(true), 10); // 애니메이션을 위해 딜레이 추가
+      setTimeout(() => setIsPopupVisible(true), 10);
     } else {
       setIsPopupVisible(false);
-      setTimeout(() => setShowPopup(false), 300); // 애니메이션 끝나고 DOM에서 제거
+      setTimeout(() => setShowPopup(false), 300);
     }
   };
 
@@ -181,7 +181,6 @@ const ChatRoomPage: React.FC = () => {
 
 export default ChatRoomPage;
 
-// ✅ 스타일 적용
 const Container = styled.div`
   display: flex;
   flex-direction: column;
