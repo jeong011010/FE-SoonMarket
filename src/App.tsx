@@ -10,6 +10,7 @@ import Main from "./pages/Main/Main";
 import BottomNav from "./components/Layout/BottomNav";
 import Search from "./pages/Search/Search";
 import Recommend from "./pages/Recommend/RecommendPage";
+import LikePost from "./pages/MyPage/components/LikePosts";
 import MyPage from "./pages/MyPage/MyPage";
 import EditProfilePage from "./pages/MyPage/EditProfilePage";
 import SignUp from "./pages/Auth/SignUpPage";
@@ -17,7 +18,7 @@ import FindPw from "./pages/Auth/FindPwPage"
 import ChangePassword from "./pages/Auth/components/FindPwDetailForm"
 
 //Redux
-import { setIsAuthenticated, setRole, setUserId } from "./redux/modules/auth";
+import { setIsAuthenticated } from "./redux/modules/auth";
 import { useSelector } from "react-redux";
 import { RootState } from "./redux/store";
 import AddPostPage from "./pages/AddPost/AddPostPage";
@@ -41,28 +42,6 @@ interface RouteConfig {
   private?: boolean;
 }
 
-
-// JWT 페이로드 타입 정의
-interface JwtPayload {
-  sub?: string; // userId
-  auth?: string; // role
-  [key: string]: any;
-}
-
-const extractTokenData = (token: string): { userId: string; role: string } | null => {
-  try {
-    const decoded = jwtDecode<JwtPayload>(token);
-    return {
-      userId: decoded.sub || "",
-      role: decoded.auth || "",
-    };
-  } catch (error) {
-    console.error("Failed to decode token:", error);
-    return null;
-  }
-};
-
-
 function App(): JSX.Element {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -70,17 +49,9 @@ function App(): JSX.Element {
   const [cookies] = useCookies(["access_token"]);
   const token = cookies.access_token;
 
-
   useEffect(() => {
-    if (token) {
-      const tokenData = extractTokenData(token);
-      if (tokenData) {
-        dispatch(setIsAuthenticated(true));
-        dispatch(setUserId(tokenData.userId));
-        dispatch(setRole(tokenData.role));
-      }
-    } else {
-      dispatch(setIsAuthenticated(false));
+    if (token !== undefined) {
+      dispatch(setIsAuthenticated(true))
     }
   }, [dispatch, token]);
 
@@ -112,7 +83,7 @@ function App(): JSX.Element {
     { path: "/chat/:id", element: <ChatRoomPage/>, private: true },
     { path: "/mypage", element: <MyPage />, private: true },
     { path: "/edit-profile", element: <EditProfilePage />, private: true },
-
+    
     { path: "/main", element: <Main />, private: true },
     { path: "/post/:id", element: <PostPage />, private: true },
     { path: "/search", element: <Search />, private: true },
