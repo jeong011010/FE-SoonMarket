@@ -11,7 +11,7 @@ const useGetChatList = () => {
       setChatList(response.data);
       console.log(response.data);
     } catch (error) {
-      console.error("좋아요 게시물 받아오는 중 오류 발생", error);
+      console.error("채팅 리스트 받아오는 중 오류 발생", error);
     }
   }, []);
 

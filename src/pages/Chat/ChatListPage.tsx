@@ -19,6 +19,7 @@ const ChatListPage: React.FC = () => {
   useEffect(() => {
     getUserInfo(userId);
   }, [getUserInfo, userId]);
+  console.log(chatList);
 
   return (
     <ChatListPageContainer>
@@ -32,7 +33,7 @@ const ChatListPage: React.FC = () => {
             <Divider style={{ width: "95%" }} />
           </React.Fragment>
         )) : (
-          <></>
+          <>채팅방이 없습니다.</>
         )
       }
     </ChatListPageContainer>

@@ -1,7 +1,11 @@
 import styled from "styled-components"
 import useGetChatRoom from "../../api/Chat/useGetChatRoom";
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+
+import { IconButton } from "@mui/material";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import SendIcon from "@mui/icons-material/Send";
 import useGetPost from "../../api/Post/useGetPost";
 import useGetUserInfo from "../../api/Auth/useGetUserInfo";
 import { User } from "../../type/userType";
@@ -14,18 +18,21 @@ import { RootState } from "../../redux/store";
 
 
 const ChatRoomPage: React.FC = () => {
+
+  const navigate = useNavigate();
   const { id : roomId } = useParams();
   const { chatRoom, getChatRoom, error, loading } = useGetChatRoom();
-  const { messages: fetchedMessages, loading: messagesLoading } = useGetChatMsg(roomId || "");
+  const { messages: fetchedMessages } = useGetChatMsg(roomId || "");
   const { post, getPost } = useGetPost();
-  const { getUserInfo } = useGetUserInfo();
+  const { userInfo, getUserInfo } = useGetUserInfo();
   const deleteChat = useDeleteChat();
   const { messages: stompMessages, sendMessage } = useChat(roomId || "");
   const [inputMessage, setInputMessage] = useState("");
+  
   const userId = Number(useSelector((state: RootState) => state.auth.userId));
+  const [opponent, setOpponent] = useState<User | null>(null);
 
-  const [author, setAuthor] = useState<User | null>(null);
-  const [buyer, setBuyer] = useState<User | null>(null);
+  const chatContainerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (roomId) {
@@ -37,31 +44,44 @@ const ChatRoomPage: React.FC = () => {
     if (!chatRoom) return;
     if (chatRoom.postId===null) return;
     getPost(chatRoom.postId.toString());
-  
-    Promise.all([
-      getUserInfo(chatRoom.authorId), 
-      getUserInfo(chatRoom.buyerId)
-    ])
-      .then(([authorData, buyerData]) => {
-        setAuthor(authorData);
-        setBuyer(buyerData);
-      })
-      .catch((err) => console.error("사용자 정보 가져오기 오류", err));
+    getUserInfo(userId);
+
+    const opponentId = chatRoom.authorId === userId ? chatRoom.buyerId : chatRoom.authorId;
+    
+    getUserInfo(opponentId).then((user) => {
+      setOpponent(user);
+    });
+
   }, [chatRoom, getPost, getUserInfo]);
+
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [fetchedMessages, stompMessages]);
+
+  console.log(userId);
 
   const handleSendMessage = () => {
     if (!inputMessage.trim()) return;
+    if (!userInfo) return;
 
     const chatMessage = {
       type: MessageType.TALK, // 메시지 타입 (백엔드와 맞춰야 함)
       roomId: roomId || "",
-      sender: userId, // 로그인한 사용자 ID (예시)
+      senderId: userId, // 로그인한 사용자 ID (예시)
       message: inputMessage,
-      nickname: "익명"// 닉네임 (예시)
+      nickname: userInfo.nickname,
     };
 
     sendMessage(chatMessage);
     setInputMessage("");
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSendMessage();
+    }
   };
 
   const deleteBtnClick = async () => {
@@ -77,43 +97,122 @@ const ChatRoomPage: React.FC = () => {
     }
   };
 
-  console.log(fetchedMessages, stompMessages);
-
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
+  console.log(fetchedMessages);
 
   return (
-    <div>
-      <h1>채팅방 - {roomId}</h1>
-      <div style={{ height: "400px", overflowY: "auto", border: "1px solid #ccc", padding: "10px" }}>
+    <Container>
+      <Header>
+        <IconButton color="default" onClick={() => navigate(-1)}>
+          <ArrowBackIcon />
+        </IconButton>
+      </Header>
+      <ChatContainer ref={chatContainerRef}>
         {[...fetchedMessages, ...stompMessages].map((msg, index) => (
-          <p key={index}>
-            <strong>{msg.nickname}:</strong> {msg.message}
-          </p>
+          <ChatBubble key={index} isMine={msg.senderId === userId}>
+            {msg.senderId !== userId && <Nickname>{opponent?.nickname}</Nickname>}
+            <Message>{msg.message}</Message>
+          </ChatBubble>
         ))}
-      </div>
-      <input
-        type="text"
-        value={inputMessage}
-        onChange={(e) => setInputMessage(e.target.value)}
-        placeholder="메시지를 입력하세요"
-      />
-      <button onClick={handleSendMessage}>전송</button>
-      <Button onClick={deleteBtnClick}>나가기</Button>
-    </div>
+      </ChatContainer>
+      <InputContainer>
+        <StyledInput
+          type="text"
+          value={inputMessage}
+          onChange={(e) => setInputMessage(e.target.value)}
+          onKeyPress={handleKeyPress}
+          placeholder="메시지를 입력하세요"
+        />
+        <SendButton onClick={handleSendMessage}>
+          <SendIcon />
+        </SendButton>
+      </InputContainer>
+      <ExitButton onClick={deleteBtnClick}>나가기</ExitButton>
+    </Container>
   )
 }
 
-const Button = styled.button`
-  display: inline-flex;
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: 16px;
+  width: 100%;
+`;
+
+const Header = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 5px;
+`;
+
+const ChatContainer = styled.div`
+  width: 90%;
+  height: 400px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+`;
+
+const ChatBubble = styled.div<{ isMine: boolean }>`
+  max-width: 70%;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 15px;
+  word-wrap: break-word;
+  align-self: ${({ isMine }) => (isMine ? "flex-end" : "flex-start")};
+  background-color: ${({ isMine }) => (isMine ? "#007bff" : "#f1f1f1")};
+  color: ${({ isMine }) => (isMine ? "white" : "black")};
+`;
+
+const Nickname = styled.div`
+  font-size: 12px;
   font-weight: bold;
+  color: gray;
+  margin-bottom: 3px;
+`;
+
+const Message = styled.div`
+  font-size: 16px;
+`;
+
+const InputContainer = styled.div`
+  display: flex;
+  width: 90%;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  align-items: center;
+  padding: 5px;
+`;
+
+const StyledInput = styled.input`
+  flex-grow: 1;
+  padding: 10px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+`;
+
+const SendButton = styled.button`
+  background: none;
+  border: none;
   cursor: pointer;
-  transition: all 0.3s ease;
-  background-color: white;
-  border: 0px;
+  padding: 5px;
+`;
+
+const ExitButton = styled.button`
+  margin-top: 10px;
+  padding: 10px 20px;
+  border: none;
+  background-color: red;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
 `;
 
 export default ChatRoomPage;

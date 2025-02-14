@@ -24,7 +24,7 @@ export enum MessageType {
 export interface ChatMessage {
   type: MessageType;
   roomId: string;
-  sender: number;
+  senderId: number;
   message: string;
   nickname: string;
 }
