@@ -1,28 +1,28 @@
 import { useNavigate } from 'react-router-dom';
 import styled from "styled-components"
-import { Chat } from '../../../type/chatType';
+import { ChatList } from '../../../type/chatType';
 import getTimeAgo from '../../../utils/getTimeAgo';
 
 interface ChatProps {
-  chat: Chat
+  chatList: ChatList
 };
 
-const WideChatCard: React.FC<ChatProps> = ({ chat }) => {
-  const lastMsgTime = new Date(chat.latestMessageTime);
+const WideChatCard: React.FC<ChatProps> = ({ chatList }) => {
+  const lastMsgTime = new Date(chatList.latestMessageTime);
   const navigate = useNavigate();
 
   const formattedDate = getTimeAgo(lastMsgTime);
 
   return (
-    <DataContainer onClick={() => navigate(`/chat/${chat.roomId}`)}>
-      <img src={chat.postImageUrl} alt="일러스트" style={{ width: 80, height: 80, margin: 20, borderRadius: "5%" }} />
+    <DataContainer onClick={() => navigate(`/chat/${chatList.roomId}`)}>
+      <img src={chatList.postImageUrl} alt="일러스트" style={{ width: 80, height: 80, margin: 20, borderRadius: "5%" }} />
       <Detail>
         <DetailTop>
-          <h3>{chat.opponentNickName}</h3>
+          <h3>{chatList.opponentNickName}</h3>
           <p style={{paddingLeft:"15px"}}>{formattedDate}</p>
         </DetailTop>
         <PostDetail>
-          {chat.latestMessage === "" ? "채팅을 시작해보세요!" : chat.latestMessage}
+          {chatList.latestMessage === "" ? "채팅을 시작해보세요!" : chatList.latestMessage}
         </PostDetail>
       </Detail>
     </DataContainer>

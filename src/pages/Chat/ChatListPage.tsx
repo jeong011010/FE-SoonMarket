@@ -19,6 +19,7 @@ const ChatListPage: React.FC = () => {
   useEffect(() => {
     getUserInfo(userId);
   }, [getUserInfo, userId]);
+  console.log(chatList);
 
   return (
     <ChatListPageContainer>
@@ -28,11 +29,11 @@ const ChatListPage: React.FC = () => {
       {
         chatList ? chatList.map((chat) => (
           <React.Fragment key={chat.roomId}>
-            <WideChatCard chat={chat} />
+            <WideChatCard chatList={chat} />
             <Divider style={{ width: "95%" }} />
           </React.Fragment>
         )) : (
-          <></>
+          <>채팅방이 없습니다.</>
         )
       }
     </ChatListPageContainer>

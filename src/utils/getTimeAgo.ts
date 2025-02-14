@@ -1,7 +1,6 @@
 const getTimeAgo = (uploadTime: Date): string => {
   const now = new Date();
   const diff = Math.floor((now.getTime() - uploadTime.getTime()) / 1000); // 초 단위 차이
-  console.log(diff);
 
   if (diff < 60) return "방금 전"; // 1분 이내
   if (diff < 3600) return `${Math.floor(diff / 60)}분 전`; // 1시간 이내
