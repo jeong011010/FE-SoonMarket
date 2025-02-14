@@ -2,8 +2,8 @@ import styled from "styled-components"
 import useGetChatRoom from "../../api/Chat/useGetChatRoom";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
 import { IconButton } from "@mui/material";
+import MenuIcon from '@mui/icons-material/Menu';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SendIcon from "@mui/icons-material/Send";
 import useGetPost from "../../api/Post/useGetPost";
@@ -16,11 +16,9 @@ import useGetChatMsg from "../../api/Chat/useGetChatMsg";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 
-
 const ChatRoomPage: React.FC = () => {
-
   const navigate = useNavigate();
-  const { id : roomId } = useParams();
+  const { id: roomId } = useParams();
   const { chatRoom, getChatRoom, error, loading } = useGetChatRoom();
   const { messages: fetchedMessages } = useGetChatMsg(roomId || "");
   const { post, getPost } = useGetPost();
@@ -28,6 +26,9 @@ const ChatRoomPage: React.FC = () => {
   const deleteChat = useDeleteChat();
   const { messages: stompMessages, sendMessage } = useChat(roomId || "");
   const [inputMessage, setInputMessage] = useState("");
+
+  const [showPopup, setShowPopup] = useState(false);
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
   
   const userId = Number(useSelector((state: RootState) => state.auth.userId));
   const [opponent, setOpponent] = useState<User | null>(null);
@@ -42,10 +43,12 @@ const ChatRoomPage: React.FC = () => {
 
   useEffect(() => {
     if (!chatRoom) return;
-    if (chatRoom.postId===null) return;
+    if (chatRoom.postId === null) return;
+    console.log(chatRoom.postId);
     getPost(chatRoom.postId.toString());
     getUserInfo(userId);
 
+    console.log(post);
     const opponentId = chatRoom.authorId === userId ? chatRoom.buyerId : chatRoom.authorId;
     
     getUserInfo(opponentId).then((user) => {
@@ -60,16 +63,14 @@ const ChatRoomPage: React.FC = () => {
     }
   }, [fetchedMessages, stompMessages]);
 
-  console.log(userId);
-
   const handleSendMessage = () => {
     if (!inputMessage.trim()) return;
     if (!userInfo) return;
 
     const chatMessage = {
-      type: MessageType.TALK, // 메시지 타입 (백엔드와 맞춰야 함)
+      type: MessageType.TALK,
       roomId: roomId || "",
-      senderId: userId, // 로그인한 사용자 ID (예시)
+      senderId: userId,
       message: inputMessage,
       nickname: userInfo.nickname,
     };
@@ -84,7 +85,28 @@ const ChatRoomPage: React.FC = () => {
     }
   };
 
-  const deleteBtnClick = async () => {
+  
+  const togglePopup = () => {
+    if (!showPopup) {
+      setShowPopup(true);
+      setTimeout(() => setIsPopupVisible(true), 10); // 애니메이션을 위해 딜레이 추가
+    } else {
+      setIsPopupVisible(false);
+      setTimeout(() => setShowPopup(false), 300); // 애니메이션 끝나고 DOM에서 제거
+    }
+  };
+
+  const handleBlockUser = () => {
+    alert(`${opponent?.nickname}님을 차단했습니다.`);
+    setShowPopup(false);
+  };
+
+  const handleReportUser = () => {
+    alert(`${opponent?.nickname}님을 신고했습니다.`);
+    setShowPopup(false);
+  };
+
+  const handleLeaveChat = async () => {
     const confirmDelete = window.confirm("정말로 나가시겠습니까?");
     if (confirmDelete && chatRoom) {
       try {
@@ -99,15 +121,30 @@ const ChatRoomPage: React.FC = () => {
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
-  console.log(fetchedMessages);
 
   return (
     <Container>
+      {/* 최상단 메뉴바 */}
       <Header>
-        <IconButton color="default" onClick={() => navigate(-1)}>
+        <IconButton onClick={() => navigate(-1)}>
           <ArrowBackIcon />
         </IconButton>
+        <RoomTitle>{opponent?.nickname || "채팅방"}</RoomTitle>
+        <IconButton onClick={togglePopup}>
+          <MenuIcon />
+        </IconButton>
       </Header>
+
+      {post && (
+        <PostInfoContainer onClick={() => navigate(`/post/${post.postId}`)}>
+          <PostImage src={post.images?.[0]?.imageUrl || "/default-image.jpg"} alt="post" />
+          <PostDetails>
+            <PostTitle>{post.title}</PostTitle>
+            <PostPrice>{post.price.toLocaleString()}원</PostPrice>
+          </PostDetails>
+        </PostInfoContainer>
+      )}
+
       <ChatContainer ref={chatContainerRef}>
         {[...fetchedMessages, ...stompMessages].map((msg, index) => (
           <ChatBubble key={index} isMine={msg.senderId === userId}>
@@ -116,6 +153,7 @@ const ChatRoomPage: React.FC = () => {
           </ChatBubble>
         ))}
       </ChatContainer>
+
       <InputContainer>
         <StyledInput
           type="text"
@@ -128,30 +166,49 @@ const ChatRoomPage: React.FC = () => {
           <SendIcon />
         </SendButton>
       </InputContainer>
-      <ExitButton onClick={deleteBtnClick}>나가기</ExitButton>
+      {showPopup && (
+        <PopupOverlay isVisible={isPopupVisible} onClick={togglePopup}>
+          <PopupContainer isVisible={isPopupVisible} onClick={(e) => e.stopPropagation()}>
+            <PopupButton onClick={handleBlockUser}>차단하기</PopupButton>
+            <PopupButton onClick={handleReportUser}>신고하기</PopupButton>
+            <PopupButton onClick={handleLeaveChat}>나가기</PopupButton>
+          </PopupContainer>
+        </PopupOverlay>
+      )}
     </Container>
-  )
-}
+  );
+};
 
+export default ChatRoomPage;
+
+// ✅ 스타일 적용
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
+  height: 100vh;
+  position: relative;
 `;
 
 const Header = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
-  padding: 5px;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+`;
+
+const RoomTitle = styled.div`
+  font-size: 18px;
+  font-weight: bold;
 `;
 
 const ChatContainer = styled.div`
-  width: 90%;
-  height: 400px;
+  width: 100%;
+  flex-grow: 1;
   overflow-y: auto;
-  border: 1px solid #ccc;
   padding: 10px;
   display: flex;
   flex-direction: column;
@@ -160,12 +217,49 @@ const ChatContainer = styled.div`
 const ChatBubble = styled.div<{ isMine: boolean }>`
   max-width: 70%;
   padding: 10px;
-  margin: 5px 0;
+  margin: 5px 10px;
   border-radius: 15px;
   word-wrap: break-word;
   align-self: ${({ isMine }) => (isMine ? "flex-end" : "flex-start")};
   background-color: ${({ isMine }) => (isMine ? "#007bff" : "#f1f1f1")};
   color: ${({ isMine }) => (isMine ? "white" : "black")};
+`;
+
+const PopupOverlay = styled.div<{ isVisible: boolean }>`
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.3);
+  opacity: ${({ isVisible }) => (isVisible ? "1" : "0")};
+  pointer-events: ${({ isVisible }) => (isVisible ? "auto" : "none")};
+  transition: opacity 0.3s ease-in-out;
+`;
+
+const PopupContainer = styled.div<{ isVisible: boolean }>`
+  background: white;
+  max-width: 400px;
+  width: 100%;
+  padding: 15px;
+  border-radius: 10px 10px 0 0;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  transform: ${({ isVisible }) => (isVisible ? "translateY(0%)" : "translateY(100%)")};
+  transition: transform 0.3s ease-in-out;
+`;
+
+const PopupButton = styled.button<{ danger?: boolean }>`
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: #f5f5f5;
+  color: black;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 8px;
 `;
 
 const Nickname = styled.div`
@@ -181,12 +275,10 @@ const Message = styled.div`
 
 const InputContainer = styled.div`
   display: flex;
-  width: 90%;
-  margin-top: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
   align-items: center;
-  padding: 5px;
+  width: 100%;
+  border-top: 1px solid #ccc;
+  padding: 10px;
 `;
 
 const StyledInput = styled.input`
@@ -204,15 +296,41 @@ const SendButton = styled.button`
   padding: 5px;
 `;
 
-const ExitButton = styled.button`
-  margin-top: 10px;
-  padding: 10px 20px;
-  border: none;
-  background-color: red;
-  color: white;
-  font-size: 16px;
+const PostInfoContainer = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background: #f8f9fa;
   cursor: pointer;
-  border-radius: 5px;
+  border-bottom: 1px solid #ddd;
+  transition: background 0.2s ease-in-out;
+  width: 100%;
+
+  &:hover {
+    background: #e9ecef;
+  }
 `;
 
-export default ChatRoomPage;
+const PostImage = styled.img`
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  object-fit: cover;
+  margin-right: 10px;
+`;
+
+const PostDetails = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const PostTitle = styled.div`
+  font-weight: bold;
+  font-size: 14px;
+  color: #333;
+`;
+
+const PostPrice = styled.div`
+  font-size: 12px;
+  color: #888;
+`;

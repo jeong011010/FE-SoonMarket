@@ -94,7 +94,8 @@ function App(): JSX.Element {
   const shouldShowBottomNav = (): boolean => {
     const noBottomNavRoutes = ["/", "/signup", "/signup1", "/addpost", "/post"];
     const isPostRoute = /^\/post\/.+$/;
-    return !noBottomNavRoutes.includes(location.pathname) && !isPostRoute.test(location.pathname);
+    const isChatRoute = /^\/chat\/.+$/;
+    return !noBottomNavRoutes.includes(location.pathname) && !isPostRoute.test(location.pathname) && !isChatRoute.test(location.pathname);
   };
 
   const routes: RouteConfig[] = [
