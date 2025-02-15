@@ -26,16 +26,16 @@ const ChatListPage: React.FC = () => {
       <Header>
         <Title>{userInfo?.nickname}님의 채팅</Title>
       </Header>
-      {
-        chatList ? chatList.map((chat) => (
+      <ChatListContainer>
+        {chatList ? chatList.map((chat) => (
           <React.Fragment key={chat.roomId}>
             <WideChatCard chatList={chat} />
             <Divider style={{ width: "95%" }} />
           </React.Fragment>
         )) : (
           <>채팅방이 없습니다.</>
-        )
-      }
+        )}
+      </ChatListContainer>
     </ChatListPageContainer>
   )
 }
@@ -44,7 +44,18 @@ const ChatListPageContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh; /* 전체 화면 높이 */
-`
+  overflow: hidden; /* 전체 페이지에서 스크롤 방지 */
+  
+`;
+
+const ChatListContainer = styled.div`
+  flex-grow: 1;
+  overflow-y: auto; /* 상단, 하단 제외하고 스크롤 가능 */
+  padding-bottom: 10px; /* 하단 바 여백 확보 */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
 
 const Header = styled.div`
   display: flex;
