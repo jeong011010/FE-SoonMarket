@@ -9,12 +9,15 @@ import PostMaster from "./components/PostMaster";
 import PostContent from "./components/PostContent";
 import BottomBar from "./components/BottomBar";
 import ReportPopup from "./components/ReportPopup";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 const PostPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { post, getPost } = useGetPost();
   const [isClickedReportBtn, setIsClickedRportBtn] = useState<boolean>(false);
+  const userId = useSelector((state: RootState) => state.auth.userId);
   useEffect(() => {
     if (id) {
       getPost(id);
@@ -39,7 +42,7 @@ const PostPage = () => {
           {post && <PostContent post={post} />}
         </PostContentWrapper>
       </ContentContainer>
-      {post && <BottomBar postId={post.postId}/>}
+      {post && userId!==post.userId?.toString() && <BottomBar postId={post.postId}/>}
     </PageContainer>
   );
 };
