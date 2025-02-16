@@ -10,6 +10,5 @@ export interface User {
     originalName: string;
   };
   preferredCategories: number[];
-  openchatUrl: string;
   reportCount: number;
 }

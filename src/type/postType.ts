@@ -10,7 +10,6 @@ export interface Post {
   price: number;
   category: string;
   countLike: number;
-  openchatUrl: string;
   createAt: string;
   updateAt: string;
   deleteAt: string | null;

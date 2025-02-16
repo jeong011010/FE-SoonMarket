@@ -18,7 +18,6 @@ const EditPostPage: React.FC = () => {
     content: "",
     price: 0,
     category: "",
-    openchatUrl: "",
     sold: false,
   });
 
@@ -34,7 +33,6 @@ const EditPostPage: React.FC = () => {
         content: post.content || "",
         price: post.price ?? 0,
         category: post.category || "",
-        openchatUrl: post.openchatUrl || "",
         sold: post.sold ?? false, // 서버에서 sold 필드 사용
       });
     }
@@ -46,8 +44,7 @@ const EditPostPage: React.FC = () => {
       description.title.trim() !== "" &&
       description.content.trim() !== "" &&
       description.price > 0 &&
-      description.category.trim() !== "" &&
-      description.openchatUrl.trim() !== ""
+      description.category.trim() !== ""
     );
   };
 
@@ -68,7 +65,6 @@ const EditPostPage: React.FC = () => {
       content: description.content,
       price: description.price,
       category: description.category,
-      openchatUrl: description.openchatUrl,
       sold: description.sold,
     };
 

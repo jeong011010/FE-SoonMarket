@@ -24,7 +24,6 @@ const AddPostPage: React.FC = () => {
     content: "",
     price: 0,
     category: "",
-    openchatUrl: "",
     sold: false,
   });
 
@@ -35,8 +34,7 @@ const AddPostPage: React.FC = () => {
       description.title.trim() !== "" &&
       description.content.trim() !== "" &&
       description.price > 0 && // 가격이 양수여야 한다고 가정
-      description.category.trim() !== "" &&
-      description.openchatUrl.trim() !== ""
+      description.category.trim() !== ""
     );
   };
 

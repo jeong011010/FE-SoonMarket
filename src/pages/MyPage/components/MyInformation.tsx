@@ -14,12 +14,6 @@ const MyInformation: React.FC<MyInformationProps> = ({ userInfo }) => {
   const cookies = new Cookies();
   const dispatch = useDispatch();
 
-  const handleOpenChat = () => {
-    if (userInfo?.openchatUrl) {
-      window.open(userInfo.openchatUrl, "_blank"); // 새 창에서 오픈채팅방 링크 열기
-    }
-  };
-
   const handleLogout = () => {
     cookies.remove("access_token", { path: "/" });
     dispatch(setIsAuthenticated(false));
@@ -37,7 +31,6 @@ const MyInformation: React.FC<MyInformationProps> = ({ userInfo }) => {
         <strong>전화번호:</strong> {userInfo?.phone || "정보 없음"}
       </InfoText>
       <ButtonContainer>
-        <Button onClick={handleOpenChat}>오픈채팅방으로 이동</Button>
         <Button onClick={() => navigate("/edit-profile")}>내 정보 수정</Button>
         <Button variant="danger" onClick={handleLogout}>로그아웃</Button>
       </ButtonContainer>

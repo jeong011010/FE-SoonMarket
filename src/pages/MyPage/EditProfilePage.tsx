@@ -11,7 +11,6 @@ import { RootState } from "../../redux/store";
 const EditProfilePage: React.FC = () => {
   const { userInfo, getUserInfo } = useGetUserInfo();
   const [phone, setPhone] = useState<string>("");
-  const [openchatUrl, setOpenchatUrl] = useState<string>("");
   const [nickname, setNickname] = useState<string>("");
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
@@ -40,7 +39,6 @@ const EditProfilePage: React.FC = () => {
 
     if (userInfo) {
       setPhone(userInfo.phone || "");
-      setOpenchatUrl(userInfo.openchatUrl || "");
       setNickname(userInfo.nickname || "");
       initializeImage();
     }
@@ -71,7 +69,6 @@ const EditProfilePage: React.FC = () => {
     const requestData = {
       phone,
       nickname,
-      openchatUrl,
     };
 
     const formData = new FormData();
@@ -130,13 +127,6 @@ const EditProfilePage: React.FC = () => {
           label="전화번호"
           value={phone}
           onChange={handlePhoneChange}
-          fullWidth
-          margin="dense"
-        />
-        <TextField
-          label="오픈채팅 URL"
-          value={openchatUrl}
-          onChange={(e) => setOpenchatUrl(e.target.value)}
           fullWidth
           margin="dense"
         />
