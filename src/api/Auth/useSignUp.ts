@@ -6,6 +6,7 @@ interface SignUpRequest {
 	email: string;
 	password: string;
 	nickname: string;
+	fcmToken: string;
 }
 
 const useSignUp = () => {
@@ -25,6 +26,7 @@ const useSignUp = () => {
 				email, // 필수값
 				password, // 필수값
 				nickname, // 필수값
+				fcmToken, 
 			};
 
 			// FormData 생성
@@ -34,8 +36,6 @@ const useSignUp = () => {
 			// 빈 파일 추가 (Content-Type만 지정)
 			formData.append("file", new Blob([], { type: "image/jpeg" }));
 
-			// fcmToken 추가
-			formData.append("fcmToken", fcmToken); 
 
 			// API 요청
 			await axios.post(`${apiUrl}/users/signup`, formData)
