@@ -2,29 +2,30 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Post } from "../../type/postType";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import { forwardRef } from "react";
 
 interface PostProps {
-  post: Post
+  post: Post;
 }
 
-const PostCard: React.FC<PostProps> = ({ post }) => {
+const PostCard = forwardRef<HTMLDivElement, PostProps>(({ post }, ref) => {
   const navigate = useNavigate();
 
   return (
-    <CardContainer onClick={() => navigate(`/post/${post.postId}`)}>
-      <Dot/>
+    <CardContainer ref={ref} onClick={() => navigate(`/post/${post.postId}`)}>
+      <Dot />
       <ImageContainer>
-      <CardImage src={post.images[0]?.imageUrl} alt="일러스트" />
+        <CardImage src={post.images[0]?.imageUrl} alt="일러스트" />
       </ImageContainer>
       <Separator />
       <Title>{post.title}</Title>
       <Details>
         <Price>₩{post.price.toLocaleString()}</Price>
-        <VisibilityIcon style={{fontSize:"14px"}}/>
+        <VisibilityIcon style={{ fontSize: "14px" }} />
       </Details>
     </CardContainer>
   );
-};
+});
 
 // Styled Components
 const CardContainer = styled.div`
@@ -49,7 +50,6 @@ const CardContainer = styled.div`
     height: 190px;
   }
 `;
-
 
 const ImageContainer = styled.div`
   width: 140px;

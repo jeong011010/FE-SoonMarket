@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useGetSearchPostList from "../../../api/Post/useGetSearchPostList";
 import CategoryBtnGroup from "../../../components/Post/CategoryBtnGroup";
 import styled from "styled-components";
@@ -6,23 +6,47 @@ import PostCard from "../../../components/Post/PostCard";
 
 const CategoryPost: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("전체");
+  const [page, setPage] = useState<number>(0);
   const { searchPostList, getSearchPostList } = useGetSearchPostList();
+  const observerRef = useRef<IntersectionObserver | null>(null);
+  const lastPostRef = useRef<HTMLDivElement | null>(null);
+  console.log(searchPostList);
 
   useEffect(() => {
+    console.log("카테고리 변경")
+    setPage(0);
     selectedCategory === "전체" ? getSearchPostList("", "", 10, 0) : getSearchPostList("", selectedCategory, 10, 0);
-  }, [getSearchPostList, selectedCategory]);
+  }, [selectedCategory, getSearchPostList]);
+
+  useEffect(() => {
+    if (!lastPostRef.current || searchPostList?.last) return;
+
+    observerRef.current = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        setPage(prev => prev + 1);
+      }
+    }, { threshold: 1 });
+
+    observerRef.current.observe(lastPostRef.current);
+
+    return () => observerRef.current?.disconnect();
+  }, [searchPostList]);
+
+  useEffect(() => {
+    if (page > 0) selectedCategory === "전체" ? getSearchPostList("", "", 10, page) : getSearchPostList("", selectedCategory, 10, page);
+  }, [getSearchPostList, selectedCategory, page]);
 
   return (
     <>
-    <CategoryGroupWrapper>
-      <CategoryBtnGroup selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
-    </CategoryGroupWrapper>
+      <CategoryGroupWrapper>
+        <CategoryBtnGroup selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
+      </CategoryGroupWrapper>
       {
         searchPostList?.posts.length ? (
           <PostContainer>
             {
-              searchPostList.posts.map((post) => (
-                <PostCard post={post} key={post.postId} />
+              searchPostList.posts.map((post, index) => (
+                <PostCard post={post} key={index * 3} ref={index === searchPostList.posts.length - 1 ? lastPostRef : null} />
               ))
             }
           </PostContainer>
