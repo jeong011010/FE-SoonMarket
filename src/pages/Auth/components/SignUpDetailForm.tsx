@@ -5,7 +5,7 @@ import { Button, TextField, IconButton } from "@mui/material";
 import { useSelector } from "react-redux";
 import useSignUp from "../../../api/Auth/useSignUp";
 import { RootState } from "../../../redux/store";
-import { initializeFirebase, requestFCMToken } from "../../../firebase/firebase"; // FirebaseService import
+import { requestFCMToken } from "../../../firebase/firebase"; 
 
 const SignUpDetailForm: React.FC = () => {
   const [nickname, setNickname] = useState("");
@@ -18,22 +18,21 @@ const SignUpDetailForm: React.FC = () => {
   const [isCapsLockOn, setIsCapsLockOn] = useState(false);
   const [fcmToken, setFcmToken] = useState<string | null>(null); // FCM 토큰 상태 추가
   const signUp = useSignUp();
-
   const email = useSelector((state: RootState) => state.auth.email);
 
   useEffect(() => {
-    // Firebase 초기화
-    initializeFirebase();
-
     // FCM 토큰 요청
-    requestFCMToken().then((currentToken) => {
+    const fetchFCMToken = async () => {
+      const currentToken = await requestFCMToken();
       if (currentToken) {
         console.log('발급 받은 FCM 토큰:', currentToken);
         setFcmToken(currentToken); // FCM 토큰 상태에 저장
       } else {
         console.log("No registration token available.");
       }
-    });
+    };
+
+    fetchFCMToken();
   }, []); // 컴포넌트가 마운트될 때 한 번만 실행
 
   const validatePassword = (value: string): boolean =>
@@ -76,11 +75,11 @@ const SignUpDetailForm: React.FC = () => {
     }
 
     try {
-      if(fcmToken) {
+      if (fcmToken) {
         await signUp(email, password, nickname, fcmToken); // FCM 토큰을 signUp에 전달
-      }else {
-        console.error("받아온 FCM 토큰이 없습니다. ");
-        //여기서 에러 처리 로직 추가 가능
+      } else {
+        console.error("받아온 FCM 토큰이 없습니다.");
+        // 여기에 에러 처리 로직을 추가할 수 있습니다.
       }
       
     } catch (error) {
@@ -92,11 +91,7 @@ const SignUpDetailForm: React.FC = () => {
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     // Caps Lock 감지
-    if (e.getModifierState("CapsLock") && !isCapsLockOn) {
-      setIsCapsLockOn(true);
-    } else if (!e.getModifierState("CapsLock") && isCapsLockOn) {
-      setIsCapsLockOn(false);
-    }
+    setIsCapsLockOn(e.getModifierState("CapsLock"));
   };
 
   return (
@@ -108,7 +103,7 @@ const SignUpDetailForm: React.FC = () => {
           variant="filled"
           value={nickname}
           onChange={(e) => setNickname(e.target.value)}
-          onKeyDown={(e) => handleKeyDown(e)}
+          onKeyDown={handleKeyDown}
         />
         <IconButton onClick={() => setNickname("")}>
           <HighlightOffOutlinedIcon />
@@ -183,7 +178,7 @@ const StyledTextField = styled(TextField)`
 `;
 
 const SubmitButton = styled(Button)`
-  && {    
+  && {
     border-radius: 20px;
     width: 350px;
     background: #d9e9f9;
