@@ -8,7 +8,7 @@ const cookies = new Cookies();
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   withCredentials: true,
-  timeout: 1000,
+  timeout: 5000,
 })
 
 // 토큰 갱신 여부 플래그
