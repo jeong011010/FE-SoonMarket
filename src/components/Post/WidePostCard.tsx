@@ -6,14 +6,14 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Post } from '../../type/postType';
 import useLikePost from '../../api/Post/useLikePost';
 import useGetUserInfo from '../../api/Auth/useGetUserInfo';
-import { useEffect, useState } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 import getTimeAgo from '../../utils/getTimeAgo';
 
 interface PostProps {
   post: Post
 };
 
-const WidePostCard: React.FC<PostProps> = ({ post }) => {
+const WidePostCard = forwardRef<HTMLDivElement, PostProps>(({ post }, ref) => {
   const uploadTime = new Date(post.createAt);
   const navigate = useNavigate();
 
@@ -39,7 +39,7 @@ const WidePostCard: React.FC<PostProps> = ({ post }) => {
   };
 
   return (
-    <DataContainer onClick={() => navigate(`/post/${post.postId}`)}>
+    <DataContainer onClick={() => navigate(`/post/${post.postId}`)} ref={ref}>
       <img src={post.images[0]?.imageUrl} alt="일러스트" style={{ width: 120, height: 120, margin: 10, borderRadius: "5%" }} />
       <Detail>
         <h3 style={{ margin: "20px 0px 5px 0px" }}>{post.title}</h3>
@@ -61,8 +61,8 @@ const WidePostCard: React.FC<PostProps> = ({ post }) => {
         </LikeDetail>
       </Detail>
     </DataContainer>
-  )
-}
+  );
+});
 
 const DataContainer = styled.div`
   width: 100%;
