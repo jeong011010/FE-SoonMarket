@@ -77,11 +77,12 @@ axiosInstance.interceptors.response.use(
 
           cookies.set('access_token', newAccessToken, {
             path: '/',
-            secure: true,
+            secure: false,
+            httpOnly: false,
             sameSite: 'strict',
           });
 
-          // 새 refresh_token을 redux에 저장
+          // 새 refresh_token을 쿠키에 저장
           const newRefreshToken = response.data.refreshToken;
 
           cookies.set("refresh_token", newRefreshToken, {
