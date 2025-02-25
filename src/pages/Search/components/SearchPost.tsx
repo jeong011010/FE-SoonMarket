@@ -4,6 +4,7 @@ import useGetSearchPostList from "../../../api/Post/useGetSearchPostList";
 import WidePostCard from "../../../components/Post/WidePostCard";
 import { useLocation } from "react-router-dom";
 import { Divider } from "@mui/material";
+import styled from "styled-components";
 
 const SearchPost: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("전체");
@@ -40,8 +41,8 @@ const SearchPost: React.FC = () => {
   }, [getSearchPostList, selectedCategory, page, searchQuery]);
 
   return (
-    <>
-      <CategoryBtnGroup selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
+    <Content>
+      <CategoryBtnGroup selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} width="90%"/>
       {
         searchPostList?.posts.length ? searchPostList?.posts.map((post, index) => (
           <React.Fragment key={post.postId}>
@@ -52,8 +53,14 @@ const SearchPost: React.FC = () => {
           <p>해당하는 게시물을 찾을 수 없습니다.</p>
         )
       }
-    </>
+    </Content>
   )
 }
+
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
 
 export default SearchPost;
