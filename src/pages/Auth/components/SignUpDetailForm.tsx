@@ -4,8 +4,8 @@ import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
 import { Button, TextField, IconButton } from "@mui/material";
 import { useSelector } from "react-redux";
 import useSignUp from "../../../api/Auth/useSignUp";
-import { RootState } from "../../../redux/store";
-import { requestFCMToken } from "../../../firebase/firebase"; 
+import { RootState } from "../../../redux/store"; 
+// import { requestFCMToken } from "../../../firebase/firebase"; // Firebase 관련 코드 주석 처리
 
 const SignUpDetailForm: React.FC = () => {
   const [nickname, setNickname] = useState("");
@@ -16,23 +16,23 @@ const SignUpDetailForm: React.FC = () => {
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isCapsLockOn, setIsCapsLockOn] = useState(false);
-  const [fcmToken, setFcmToken] = useState<string | null>(null); // FCM 토큰 상태 추가
+  // const [fcmToken, setFcmToken] = useState<string | null>(null); // FCM 토큰 상태 추가
   const signUp = useSignUp();
   const email = useSelector((state: RootState) => state.auth.email);
 
   useEffect(() => {
     // FCM 토큰 요청
-    const fetchFCMToken = async () => {
-      const currentToken = await requestFCMToken();
-      if (currentToken) {
-        console.log('발급 받은 FCM 토큰:', currentToken);
-        setFcmToken(currentToken); // FCM 토큰 상태에 저장
-      } else {
-        console.log("No registration token available.");
-      }
-    };
+    // const fetchFCMToken = async () => {
+    //   const currentToken = await requestFCMToken();
+    //   if (currentToken) {
+    //     console.log('발급 받은 FCM 토큰:', currentToken);
+    //     setFcmToken(currentToken); // FCM 토큰 상태에 저장
+    //   } else {
+    //     console.log("No registration token available.");
+    //   }
+    // };
 
-    fetchFCMToken();
+    // fetchFCMToken();
   }, []); // 컴포넌트가 마운트될 때 한 번만 실행
 
   const validatePassword = (value: string): boolean =>
@@ -75,12 +75,13 @@ const SignUpDetailForm: React.FC = () => {
     }
 
     try {
-      if (fcmToken) {
-        await signUp(email, password, nickname, fcmToken); // FCM 토큰을 signUp에 전달
-      } else {
-        console.error("받아온 FCM 토큰이 없습니다.");
-        // 여기에 에러 처리 로직을 추가할 수 있습니다.
-      }
+      // if (fcmToken) {
+      //   await signUp(email, password, nickname, fcmToken); // FCM 토큰을 signUp에 전달
+      // } else {
+      //   console.error("받아온 FCM 토큰이 없습니다.");
+      //   // 여기에 에러 처리 로직을 추가할 수 있습니다.
+      // }
+      await signUp(email, password, nickname); // FCM 토큰 없이 회원가입 호출
       
     } catch (error) {
       console.error("회원가입 중 오류 발생:", error);

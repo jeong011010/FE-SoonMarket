@@ -74,6 +74,7 @@ const SignUpEmailForm: React.FC<SignUpEmailFormProps> = ({ onNext }) => {
         setCodeError("인증 번호가 틀렸습니다.");
       }
     } catch (error) {
+      console.error(error);
       setCodeError("예기치 못한 오류가 발생했습니다. 다시 시도해주세요");
     }
   };

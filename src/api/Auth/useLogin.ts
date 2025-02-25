@@ -9,13 +9,13 @@ const useLogin = () => {
 	const cookies = new Cookies();
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-
-	const login = async (email: string, password: string, fcmToken: string | null): Promise<void> => {
+	
+	const login = async (email: string, password: string /*, fcmToken: string | null */): Promise<void> => {
 		try {
 			const response = await axios.post(`${apiUrl}/users/login`, {
 				email,
 				password,
-				fcmToken, // FCM 토큰 추가
+				// fcmToken, // FCM 토큰 추가 주석 처리
 			});
 
 			const accessToken = response.data.accessToken;
@@ -36,7 +36,8 @@ const useLogin = () => {
 			navigate("/main");
 		} catch (error) {
 			dispatch(setIsAuthenticated(false));
-			throw new Error(error);
+			const errorMessage = error instanceof Error ? error.message : String(error);
+			throw new Error(errorMessage);
 		}
 	};
 

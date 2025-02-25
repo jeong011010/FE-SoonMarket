@@ -6,7 +6,7 @@ interface SignUpRequest {
 	email: string;
 	password: string;
 	nickname: string;
-	fcmToken: string;
+	//fcmToken: string;
 }
 
 const useSignUp = () => {
@@ -17,7 +17,7 @@ const useSignUp = () => {
 		email: string,
 		password: string,
 		nickname: string,
-		fcmToken: string 
+		//fcmToken: string 
 	): Promise<void> => {
 		try {
 			
@@ -26,7 +26,7 @@ const useSignUp = () => {
 				email, // 필수값
 				password, // 필수값
 				nickname, // 필수값
-				fcmToken, 
+				//fcmToken, 
 			};
 
 			// FormData 생성
