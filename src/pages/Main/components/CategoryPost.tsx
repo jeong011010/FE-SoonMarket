@@ -39,7 +39,7 @@ const CategoryPost: React.FC = () => {
   return (
     <>
       <CategoryGroupWrapper>
-        <CategoryBtnGroup selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
+        <CategoryBtnGroup selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} width="85%"/>
       </CategoryGroupWrapper>
       {
         searchPostList?.posts.length ? (

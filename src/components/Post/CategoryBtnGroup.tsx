@@ -4,9 +4,10 @@ import styled from "styled-components";
 interface CategoryBtnGroupProps {
   selectedCategory: string;
   setSelectedCategory: React.Dispatch<React.SetStateAction<string>>;
+  width: string;
 }
 
-const CategoryBtnGroup: React.FC<CategoryBtnGroupProps> = ({ selectedCategory, setSelectedCategory }) => {
+const CategoryBtnGroup: React.FC<CategoryBtnGroupProps> = ({ selectedCategory, setSelectedCategory, width }) => {
   const categories = ["전체", "여성 의류", "남성 의류", "신발", "가방 지갑", "시계", "악세서리", "전자제품", "스포츠/레저", "컬렉션", "취미", "가구", "주방 용품", "식품", "같이 해요", "같이 시켜요", "같이 먹어요", "같이 타요"];
 
   const handleCategoryClick = (category: string) => {
@@ -14,7 +15,7 @@ const CategoryBtnGroup: React.FC<CategoryBtnGroupProps> = ({ selectedCategory, s
   };
 
   return (
-    <CategoryBox>
+    <CategoryBox style={{ width }}>
       {categories.map((category) => (
         <Category
           key={category}
