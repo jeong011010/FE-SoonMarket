@@ -27,4 +27,5 @@ export interface ChatMessage {
   senderId: number;
   message: string;
   nickname: string;
+  fileUrl: string;
 }
