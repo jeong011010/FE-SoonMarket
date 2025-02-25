@@ -59,9 +59,22 @@ const ChatRoomPage: React.FC = () => {
 
   useEffect(() => {
     if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+      const chatContainer = chatContainerRef.current;
+  
+      chatContainer.scrollTop = chatContainer.scrollHeight;
     }
   }, [fetchedMessages, stompMessages]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (chatContainerRef.current) {
+        const chatContainer = chatContainerRef.current;
+        const inputContainerHeight = 50;
+    
+        chatContainer.scrollTop = chatContainer.scrollHeight - inputContainerHeight;
+      }
+    }, 100);
+  }, []);
 
   const handleSendMessage = () => {
     if (!inputMessage.trim()) return;
@@ -278,6 +291,7 @@ const InputContainer = styled.div`
   width: 100%;
   border-top: 1px solid #ccc;
   padding: 10px;
+  height: 50px;
 `;
 
 const StyledInput = styled.input`
