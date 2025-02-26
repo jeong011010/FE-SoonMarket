@@ -4,6 +4,7 @@ import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
 import { Button, IconButton, TextField } from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";
 import useLogin from "../../../api/Auth/useLogin";
+// import { requestFCMToken } from "../../../firebase/firebase"; // Firebase 관련 코드 주석 처리
 
 const LoginForm: React.FC = () => {
   const [id, setId] = useState("");
@@ -15,8 +16,8 @@ const LoginForm: React.FC = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    let err=0;
-    setLoginError(""); // 기존 로그인 에러 메시지 초기화
+    let err = 0;
+    setLoginError(""); 
     if (!id) {
       setIdError("아이디를 입력해주세요");
       err++;
@@ -29,20 +30,29 @@ const LoginForm: React.FC = () => {
     } else {
       setPwError("");
     }
-    if(err===0){
+    if (err === 0) {
       try {
         const fullEmail = `${id}@sch.ac.kr`;
-        await login(fullEmail, password);
+        // FCM 토큰 요청
+        // const currentToken = await requestFCMToken(); // FCM 토큰 요청 주석 처리
+        // if (currentToken) {
+        //   await login(fullEmail, password, currentToken); // FCM 토큰 전달 주석 처리
+        //   console.log('발급 받은 FCM 토큰:', currentToken);
+        // } else {
+        //   console.log("No registration token available.");
+        //   setLoginError("FCM 토큰을 가져오지 못했습니다.");
+        // }
+        await login(fullEmail, password); // FCM 토큰 없이 로그인 호출
+
       } catch (error) {
-        // 로그인 실패 시 에러 메시지 설정
         setLoginError("아이디 또는 비밀번호가 정확하지 않습니다.");
+        console.error(error);
       }
     }
   };
 
   return (
     <LoginFormBox onSubmit={handleSubmit}>
-
       <TextFieldContainer>
         <LoginTextField
           type="id"

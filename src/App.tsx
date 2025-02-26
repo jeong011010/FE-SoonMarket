@@ -13,6 +13,8 @@ import Recommend from "./pages/Recommend/RecommendPage";
 import MyPage from "./pages/MyPage/MyPage";
 import EditProfilePage from "./pages/MyPage/EditProfilePage";
 import SignUp from "./pages/Auth/SignUpPage";
+import FindPw from "./pages/Auth/FindPwPage"
+import ChangePassword from "./pages/Auth/components/FindPwDetailForm"
 
 //Redux
 import { setIsAuthenticated, setRole, setUserId } from "./redux/modules/auth";
@@ -37,13 +39,11 @@ interface RouteConfig {
   element: JSX.Element;
   path: string;
   private?: boolean;
-}
+};
 
-
-// JWT 페이로드 타입 정의
 interface JwtPayload {
-  sub?: string; // userId
-  auth?: string; // role
+  sub?: string;
+  auth?: string;
   [key: string]: any;
 }
 
@@ -55,11 +55,10 @@ const extractTokenData = (token: string): { userId: string; role: string } | nul
       role: decoded.auth || "",
     };
   } catch (error) {
-    console.error("Failed to decode token:", error);
+    console.error("토큰 데이터 추출 실패", error);
     return null;
   }
-};
-
+}
 
 function App(): JSX.Element {
   const dispatch = useDispatch();
@@ -67,7 +66,6 @@ function App(): JSX.Element {
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
   const [cookies] = useCookies(["access_token"]);
   const token = cookies.access_token;
-
 
   useEffect(() => {
     if (token) {
@@ -92,7 +90,7 @@ function App(): JSX.Element {
   };
 
   const shouldShowBottomNav = (): boolean => {
-    const noBottomNavRoutes = ["/", "/signup", "/signup1", "/addpost", "/post"];
+    const noBottomNavRoutes = ["/", "/signup", "/signup1", "/addpost", "/post", "/reset-password", "/findpassword"];
     const isPostRoute = /^\/post\/.+$/;
     const isChatRoute = /^\/chat\/.+$/;
     return !noBottomNavRoutes.includes(location.pathname) && !isPostRoute.test(location.pathname) && !isChatRoute.test(location.pathname);
@@ -107,7 +105,7 @@ function App(): JSX.Element {
     { path: "/addpost", element: <AddPostPage />, private: true },
     { path: "/editpost/:id", element: <EditPostPage />, private: true },
     { path: "/chat-list", element: <ChatListPage />, private: true },
-    { path: "/chat/:id", element: <ChatRoomPage/>, private: true },
+    { path: "/chat/:id", element: <ChatRoomPage />, private: true },
     { path: "/mypage", element: <MyPage />, private: true },
     { path: "/edit-profile", element: <EditProfilePage />, private: true },
 
@@ -115,6 +113,8 @@ function App(): JSX.Element {
     { path: "/post/:id", element: <PostPage />, private: true },
     { path: "/search", element: <Search />, private: true },
     { path: "/signup", element: <SignUp /> },
+    { path: "/findpassword", element: <FindPw /> },
+    { path: "/reset-password", element: <ChangePassword /> },
   ];
 
   return (

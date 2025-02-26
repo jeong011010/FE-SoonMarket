@@ -2,60 +2,35 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
 import { Button, TextField, IconButton } from "@mui/material";
-import { useSelector } from "react-redux";
-import useSignUp from "../../../api/Auth/useSignUp";
-import { RootState } from "../../../redux/store"; 
-// import { requestFCMToken } from "../../../firebase/firebase"; // Firebase 관련 코드 주석 처리
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useNavigate } from "react-router-dom";
+import useChangePassword from "../../../api/Auth/useChangepassword";
 
-const SignUpDetailForm: React.FC = () => {
-  const [nickname, setNickname] = useState("");
+const FindPwDetailForm: React.FC = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [nicknameError, setNicknameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isCapsLockOn, setIsCapsLockOn] = useState(false);
-  // const [fcmToken, setFcmToken] = useState<string | null>(null); // FCM 토큰 상태 추가
-  const signUp = useSignUp();
-  const email = useSelector((state: RootState) => state.auth.email);
-
+  const navigate = useNavigate();
+  const resetPassword = useChangePassword();
+  
   useEffect(() => {
-    // FCM 토큰 요청
-    // const fetchFCMToken = async () => {
-    //   const currentToken = await requestFCMToken();
-    //   if (currentToken) {
-    //     console.log('발급 받은 FCM 토큰:', currentToken);
-    //     setFcmToken(currentToken); // FCM 토큰 상태에 저장
-    //   } else {
-    //     console.log("No registration token available.");
-    //   }
-    // };
-
-    // fetchFCMToken();
-  }, []); // 컴포넌트가 마운트될 때 한 번만 실행
+  }, [navigate]);
 
   const validatePassword = (value: string): boolean =>
     /^(?=.*[a-z])(?=.*[\W])(?=.*\d)[a-zA-Z\d\W]{8,16}$/.test(value);
 
   const handleSubmit = async () => {
     if (isSubmitting) return;
-
+  
     setIsSubmitting(true);
-    setNicknameError("");
     setPasswordError("");
     setConfirmPasswordError("");
-
+  
     let hasError = false;
-
-    if (!nickname) {
-      setNicknameError("닉네임을 입력해주세요.");
-      hasError = true;
-    } else if (nickname.length < 2 || nickname.length > 8) {
-      setNicknameError("닉네임은 2~8자로 설정해주세요.");
-      hasError = true;
-    }
-
+  
     if (!password) {
       setPasswordError("비밀번호를 입력해주세요.");
       hasError = true;
@@ -63,28 +38,32 @@ const SignUpDetailForm: React.FC = () => {
       setPasswordError("영문, 숫자, 특수문자를 포함 8~16자로 설정해주세요.");
       hasError = true;
     }
-
+  
     if (password !== confirmPassword) {
       setConfirmPasswordError("비밀번호가 일치하지 않습니다.");
       hasError = true;
     }
-
+  
     if (hasError) {
       setIsSubmitting(false);
       return;
     }
-
+  
     try {
-      // if (fcmToken) {
-      //   await signUp(email, password, nickname, fcmToken); // FCM 토큰을 signUp에 전달
-      // } else {
-      //   console.error("받아온 FCM 토큰이 없습니다.");
-      //   // 여기에 에러 처리 로직을 추가할 수 있습니다.
-      // }
-      await signUp(email, password, nickname); // FCM 토큰 없이 회원가입 호출
-      
+      const urlParams = new URLSearchParams(window.location.search);
+      const token = urlParams.get("token");
+      if (!token) {
+        throw new Error("토큰이 제공되지 않았습니다.");
+      }
+
+      // 올바른 요청 데이터 형식으로 전달
+      const message = await resetPassword(token, password);
+      console.log("비밀번호 재설정 성공:", message);
+      alert("비밀번호가 성공적으로 변경되었습니다.");
+      navigate("/");
     } catch (error) {
-      console.error("회원가입 중 오류 발생:", error);
+      console.error("비밀번호 재설정 중 오류 발생:", error);
+      alert("비밀번호 재설정 중 오류가 발생했습니다. 다시 시도해주세요.");
     } finally {
       setIsSubmitting(false);
     }
@@ -92,28 +71,26 @@ const SignUpDetailForm: React.FC = () => {
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     // Caps Lock 감지
-    setIsCapsLockOn(e.getModifierState("CapsLock"));
+    if (e.getModifierState("CapsLock") && !isCapsLockOn) {
+      setIsCapsLockOn(true);
+    } else if (!e.getModifierState("CapsLock") && isCapsLockOn) {
+      setIsCapsLockOn(false);
+    }
   };
 
   return (
     <FormContainer>
-      {/* 닉네임 입력 */}
-      <TextFieldContainer>
-        <StyledTextField
-          label="닉네임"
-          variant="filled"
-          value={nickname}
-          onChange={(e) => setNickname(e.target.value)}
-          onKeyDown={handleKeyDown}
-        />
-        <IconButton onClick={() => setNickname("")}>
-          <HighlightOffOutlinedIcon />
-        </IconButton>
-      </TextFieldContainer>
-      {nicknameError && <ErrorText>{nicknameError}</ErrorText>}
-
+      <Header>
+        <BackButton>
+          <IconButton onClick={() => navigate("/")}>
+            <ArrowBackIcon />
+          </IconButton>
+        </BackButton>
+        <Title>Soon-Market</Title>
+      </Header>
+      <SubTitle>새로운 비밀 번호를 입력해주세요.</SubTitle>
       {/* 비밀번호 입력 */}
-      <TextFieldContainer>
+      <TextFieldContainer1>
         <StyledTextField
           label="비밀번호"
           variant="filled"
@@ -125,7 +102,7 @@ const SignUpDetailForm: React.FC = () => {
         <IconButton onClick={() => setPassword("")}>
           <HighlightOffOutlinedIcon />
         </IconButton>
-      </TextFieldContainer>
+      </TextFieldContainer1>
       {isCapsLockOn && <StatusText>Caps Lock이 켜져있습니다.</StatusText>}
       {passwordError && <ErrorText>{passwordError}</ErrorText>}
 
@@ -145,17 +122,44 @@ const SignUpDetailForm: React.FC = () => {
       {confirmPasswordError && <ErrorText>{confirmPasswordError}</ErrorText>}
 
       {/* 제출 버튼 */}
-      <SubmitButton onClick={handleSubmit}>회원가입</SubmitButton>
+      <SubmitButton onClick={handleSubmit}>비밀번호 변경</SubmitButton>
     </FormContainer>
   );
 };
 
-export default SignUpDetailForm;
+export default FindPwDetailForm;
 
+/* 스타일 코드 */
 const FormContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  font-family: 'SUIT', sans-serif;
+`;
+
+const SubTitle = styled.div`
+  font-size: 14px;
+  margin-bottom: 0px;
+`;
+
+const Header = styled.div`
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+`;
+
+const BackButton = styled.div`
+  position: absolute;
+  left: 16px;
+  top: 16px;
+`;
+
+const Title = styled.h1`
+  margin: 100px;
+  font-family: 'SUIT', sans-serif;
 `;
 
 const TextFieldContainer = styled.div`
@@ -165,6 +169,16 @@ const TextFieldContainer = styled.div`
   width: 350px;
   margin: 20px;
   border-radius: 4px;
+`;
+
+const TextFieldContainer1 = styled.div`
+  display: flex;
+  align-items: center;
+  background: #bdd9f2;
+  width: 350px;
+  margin: 20px;
+  border-radius: 4px;
+  margin-top: 0px;
 `;
 
 const StyledTextField = styled(TextField)`
@@ -190,9 +204,9 @@ const ErrorText = styled.div`
   color: red;
   font-size: 0.75rem;
   text-align: left;
-  margin-top: -10px; /* 필드와의 간격 조정 */
-  margin-bottom: 10px; /* 아래 콘텐츠와의 간격 조정 */
-  width: 350px; /* 필드와 동일한 너비로 확장 */
+  margin-top: -10px;
+  margin-bottom: 10px;
+  width: 350px;
 `;
 
 const StatusText = styled.div`
