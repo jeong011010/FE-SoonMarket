@@ -69,9 +69,16 @@ const FindPwEmailForm: React.FC = () => {
         </IconButton>
       </TextFieldContainer>
       {isSending ? (
-        <StatusText>발송 중...</StatusText>
+        <StatusContainer>
+          <StatusText>발송 중...</StatusText>
+        </StatusContainer>
       ) : isEmailSent ? (
-        <StatusText>발송 완료</StatusText>
+        <StatusContainer>
+          <StatusText>발송 완료</StatusText>
+          <MailButton onClick={() => window.open("https://mail.sch.ac.kr", "_blank")}>
+            메일함 이동하기
+          </MailButton>
+        </StatusContainer>
       ) : emailError ? (
         <ErrorText>{emailError}</ErrorText>
       ) : null}
@@ -138,10 +145,8 @@ const StatusText = styled.div`
   color: #888;
   font-size: 0.75rem;
   text-align: left;
-  margin-top: -10px;
-  margin-bottom: 10px;
-  width: 350px;
 `;
+
 
 const ErrorText = styled.div`
   color: red;
@@ -150,4 +155,29 @@ const ErrorText = styled.div`
   margin-top: -10px;
   margin-bottom: 10px;
   width: 350px;
+`;
+
+const StatusContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 350px; /* 텍스트와 버튼의 너비를 맞춤 */
+  heigth: 30px;
+  margin-top: -10px;
+
+`;
+
+const MailButton = styled.button`
+  background: #2575fc;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: background 0.3s;
+
+  &:hover {
+    background: #1a5cb7;
+  }
 `;

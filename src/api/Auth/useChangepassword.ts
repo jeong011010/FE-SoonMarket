@@ -1,7 +1,6 @@
 import axios from "axios";
 
 interface ResetPasswordRequest {
-  token: string;
   passwordUpdateRequest: {
     newPassword: string;
   };
@@ -18,9 +17,8 @@ const useChangePassword = () => {
    */
   const resetPassword = async (token: string, newPassword: string): Promise<string> => {
     try {
-    
+      console.log(token);
       const requestBody: ResetPasswordRequest = {
-        token,
         passwordUpdateRequest: {
           newPassword,
         },
@@ -29,7 +27,13 @@ const useChangePassword = () => {
      
       const response = await axios.patch<string>(
         `${apiUrl}/auth/reset-password`,
-        requestBody
+        requestBody,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // ✅ 토큰을 헤더에 포함
+            "Content-Type": "application/json",
+          },
+        }
       );
 
       return response.data; 
