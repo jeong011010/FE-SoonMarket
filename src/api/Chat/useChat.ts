@@ -3,45 +3,56 @@ import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import { ChatMessage } from "../../type/chatType";
 
-const SERVER_URL = `${import.meta.env.VITE_API_URL_ORIGIN}/ws-stomp`; // 백엔드 STOMP 엔드포인트
+const SERVER_URL = `${import.meta.env.VITE_API_URL_ORIGIN}/ws-stomp`;
 
 const useChat = (roomId: string) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const stompClient = useRef<Stomp.Client | null>(null);
+  const isConnected = useRef(false); // 연결 상태 추적
 
   useEffect(() => {
     const socket = new SockJS(SERVER_URL);
     const client = Stomp.over(socket);
-    
-    client.connect({}, () => {
-      console.log("WebSocket 연결됨");
 
-      // 채팅방 구독
-      client.subscribe(`/sub/chat/room/${roomId}`, (message) => {
-        const receivedMessage: ChatMessage = JSON.parse(message.body);
-        setMessages((prevMessages) => [...prevMessages, receivedMessage]);
-      });
-    });
+    client.connect(
+      {},
+      () => {
+        console.log("WebSocket 연결됨");
+        stompClient.current = client;
+        isConnected.current = true; // 연결 완료 플래그
 
-    stompClient.current = client;
+        // 채팅방 구독
+        client.subscribe(`/sub/chat/room/${roomId}`, (message) => {
+          const receivedMessage: ChatMessage = JSON.parse(message.body);
+          setMessages((prevMessages) => [...prevMessages, receivedMessage]);
+        });
+      },
+      (error) => {
+        console.error("WebSocket 연결 실패:", error);
+        isConnected.current = false;
+      }
+    );
 
     return () => {
       if (stompClient.current) {
         stompClient.current.disconnect(() => {
           console.log("WebSocket 연결 종료됨");
+          stompClient.current = null;
+          isConnected.current = false;
         });
       }
     };
   }, [roomId]);
 
   const sendMessage = (msg: ChatMessage) => {
-    console.log(msg);
-    if (stompClient.current && stompClient.current.connected) {
+    if (stompClient.current && isConnected.current) {
       stompClient.current.send(
         "/pub/chat/message",
         {},
         JSON.stringify(msg)
       );
+    } else {
+      console.warn("WebSocket이 아직 연결되지 않음.");
     }
   };
 
