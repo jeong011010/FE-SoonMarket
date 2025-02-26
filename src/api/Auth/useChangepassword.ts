@@ -23,7 +23,8 @@ const useChangePassword = () => {
           newPassword,
         },
       };
-     
+      console.log(newPassword);
+      console.log(requestBody);
       const response = await axios.patch<string>(
         `${apiUrl}/auth/reset-password`,
         requestBody,
