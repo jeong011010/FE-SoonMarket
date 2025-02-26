@@ -3,8 +3,6 @@ import useGetChatRoom from "../../api/Chat/useGetChatRoom";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { IconButton } from "@mui/material";
-import MenuIcon from '@mui/icons-material/Menu';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SendIcon from "@mui/icons-material/Send";
 import ImageIcon from "@mui/icons-material/Image";
 import CloseIcon from "@mui/icons-material/Close";
@@ -18,6 +16,7 @@ import useGetChatMsg from "../../api/Chat/useGetChatMsg";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import useFileUpload from "../../api/Chat/useFileUpload";
+import Header from "./components/Header";
 
 const ChatRoomPage: React.FC = () => {
   const navigate = useNavigate();
@@ -31,8 +30,7 @@ const ChatRoomPage: React.FC = () => {
   const [inputMessage, setInputMessage] = useState("");
 
   const [showPopup, setShowPopup] = useState(false);
-  const [isPopupVisible, setIsPopupVisible] = useState(false);
-  
+
   const userId = Number(useSelector((state: RootState) => state.auth.userId));
   const [opponent, setOpponent] = useState<User | null>(null);
 
@@ -57,7 +55,7 @@ const ChatRoomPage: React.FC = () => {
 
     console.log(post);
     const opponentId = chatRoom.authorId === userId ? chatRoom.buyerId : chatRoom.authorId;
-    
+
     getUserInfo(opponentId).then((user) => {
       setOpponent(user);
     });
@@ -69,7 +67,7 @@ const ChatRoomPage: React.FC = () => {
       if (chatContainerRef.current) {
         const chatContainer = chatContainerRef.current;
         const inputContainerHeight = 50;
-    
+
         chatContainer.scrollTop = chatContainer.scrollHeight - inputContainerHeight;
       }
     }, 100);
@@ -80,32 +78,40 @@ const ChatRoomPage: React.FC = () => {
       if (chatContainerRef.current) {
         const chatContainer = chatContainerRef.current;
         const inputContainerHeight = 50;
-    
+
         chatContainer.scrollTop = chatContainer.scrollHeight - inputContainerHeight;
       }
     }, 100);
   }, []);
 
+  const togglePopup = () => {
+    if (!showPopup) {
+      setShowPopup(true);
+    } else {
+      setShowPopup(false);
+    }
+  };
+
   const handleSendMessage = async () => {
     if (!inputMessage.trim() && !selectedImage) return;
     if (!userInfo) return;
-  
+
     let fileUrl = null;
     if (selectedImage && roomId) {
       const formData = new FormData();
       formData.append("file", selectedImage);
-      
+
       const uploadedUrl = await fileUpload(roomId, formData);
       if (!uploadedUrl) {
         alert("이미지 업로드에 실패했습니다.");
         return;  // 이미지 업로드 실패 시 메시지 전송 안 함
       }
-  
+
       fileUrl = uploadedUrl; // URL 저장
       setSelectedImage(null);
       setPreviewUrl(null);
     }
-  
+
     const chatMessage = {
       type: MessageType.TALK,
       roomId: roomId || "",
@@ -114,7 +120,7 @@ const ChatRoomPage: React.FC = () => {
       nickname: userInfo.nickname,
       fileUrl, // 🔥 이미지 URL 포함
     };
-  
+
     sendMessage(chatMessage);
     setInputMessage("");
   };
@@ -126,7 +132,7 @@ const ChatRoomPage: React.FC = () => {
       setPreviewUrl(URL.createObjectURL(file));
     }
   };
-  
+
   const handleRemoveImage = () => {
     setSelectedImage(null);
     setPreviewUrl(null);
@@ -135,17 +141,6 @@ const ChatRoomPage: React.FC = () => {
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       handleSendMessage();
-    }
-  };
-
-  
-  const togglePopup = () => {
-    if (!showPopup) {
-      setShowPopup(true);
-      setTimeout(() => setIsPopupVisible(true), 10);
-    } else {
-      setIsPopupVisible(false);
-      setTimeout(() => setShowPopup(false), 300);
     }
   };
 
@@ -177,15 +172,7 @@ const ChatRoomPage: React.FC = () => {
 
   return (
     <Container>
-      <Header>
-        <IconButton onClick={() => navigate(-1)}>
-          <ArrowBackIcon />
-        </IconButton>
-        <RoomTitle>{opponent?.nickname || "채팅방"}</RoomTitle>
-        <IconButton onClick={togglePopup}>
-          <MenuIcon />
-        </IconButton>
-      </Header>
+      <Header opponentNickname={opponent?.nickname} togglePopup={togglePopup} />
 
       {post && (
         <PostInfoContainer onClick={() => navigate(`/post/${post.postId}`)}>
@@ -236,8 +223,8 @@ const ChatRoomPage: React.FC = () => {
         </StyledInputWrapper>
       </InputContainer>
       {showPopup && (
-        <PopupOverlay isVisible={isPopupVisible} onClick={togglePopup}>
-          <PopupContainer isVisible={isPopupVisible} onClick={(e) => e.stopPropagation()}>
+        <PopupOverlay isVisible={showPopup} onClick={togglePopup}>
+          <PopupContainer isVisible={showPopup} onClick={(e) => e.stopPropagation()}>
             <PopupButton onClick={handleBlockUser}>차단하기</PopupButton>
             <PopupButton onClick={handleReportUser}>신고하기</PopupButton>
             <PopupButton onClick={handleLeaveChat}>나가기</PopupButton>
@@ -257,20 +244,6 @@ const Container = styled.div`
   width: 100%;
   height: 100dvh;
   position: relative;
-`;
-
-const Header = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding: 10px;
-  border-bottom: 1px solid #ccc;
-`;
-
-const RoomTitle = styled.div`
-  font-size: 18px;
-  font-weight: bold;
 `;
 
 const ChatContainer = styled.div`

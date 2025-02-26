@@ -2,13 +2,13 @@ import styled from "styled-components"
 import useGetChatList from "../../api/Chat/useGetChatList";
 import React, { useEffect } from "react";
 import { Divider } from "@mui/material";
-import WideChatCard from "./components/WideChatCard";
 import useGetUserInfo from "../../api/Auth/useGetUserInfo";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import WideChatCard from "./components/WideChatCard";
 
 const ChatListPage: React.FC = () => {
-  const {chatList, getChatList } = useGetChatList();
+  const { chatList, getChatList } = useGetChatList();
   const { userInfo, getUserInfo } = useGetUserInfo();
   const userId = useSelector((state: RootState) => state.auth.userId);
 
