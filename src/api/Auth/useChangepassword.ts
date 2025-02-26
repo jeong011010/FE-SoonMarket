@@ -30,7 +30,7 @@ const useChangePassword = () => {
         requestBody,
         {
           headers: {
-            Authorization: `Bearer ${token}`, // ✅ 토큰을 헤더에 포함
+            Authorization: `${token}`, // ✅ 토큰을 헤더에 포함
             "Content-Type": "application/json",
           },
         }
