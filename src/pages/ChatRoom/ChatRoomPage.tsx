@@ -10,7 +10,6 @@ import useGetPost from "../../api/Post/useGetPost";
 import useGetUserInfo from "../../api/Auth/useGetUserInfo";
 import { User } from "../../type/userType";
 import { MessageType } from "../../type/chatType";
-import useDeleteChat from "../../api/Chat/useDeleteChat";
 import useChat from "../../api/Chat/useChat";
 import useGetChatMsg from "../../api/Chat/useGetChatMsg";
 import { useSelector } from "react-redux";
@@ -18,6 +17,7 @@ import { RootState } from "../../redux/store";
 import useFileUpload from "../../api/Chat/useFileUpload";
 import Header from "./components/Header";
 import PostInfo from "./components/PostInfo";
+import ChatPopup from "./components/ChatPopup";
 
 const ChatRoomPage: React.FC = () => {
   const { id: roomId } = useParams();
@@ -25,7 +25,6 @@ const ChatRoomPage: React.FC = () => {
   const { messages: fetchedMessages } = useGetChatMsg(roomId || "");
   const { post, getPost } = useGetPost();
   const { userInfo, getUserInfo } = useGetUserInfo();
-  const deleteChat = useDeleteChat();
   const { messages: stompMessages, sendMessage } = useChat(roomId || "");
   const [inputMessage, setInputMessage] = useState("");
 
@@ -144,29 +143,6 @@ const ChatRoomPage: React.FC = () => {
     }
   };
 
-  const handleBlockUser = () => {
-    alert(`${opponent?.nickname}님을 차단했습니다.`);
-    setShowPopup(false);
-  };
-
-  const handleReportUser = () => {
-    alert(`${opponent?.nickname}님을 신고했습니다.`);
-    setShowPopup(false);
-  };
-
-  const handleLeaveChat = async () => {
-    const confirmDelete = window.confirm("정말로 나가시겠습니까?");
-    if (confirmDelete && chatRoom) {
-      try {
-        await deleteChat(chatRoom.roomId);
-        alert("채팅방을 나갔습니다.");
-      } catch (error) {
-        console.error("채팅방 나가기 실패:", error);
-        alert("채팅방 나가기에 실패했습니다.");
-      }
-    }
-  };
-
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
@@ -214,15 +190,7 @@ const ChatRoomPage: React.FC = () => {
           </SendButton>
         </StyledInputWrapper>
       </InputContainer>
-      {showPopup && (
-        <PopupOverlay showPopup={showPopup} onClick={togglePopup}>
-          <PopupContainer showPopup={showPopup} onClick={(e) => e.stopPropagation()}>
-            <PopupButton onClick={handleBlockUser}>차단하기</PopupButton>
-            <PopupButton onClick={handleReportUser}>신고하기</PopupButton>
-            <PopupButton onClick={handleLeaveChat}>나가기</PopupButton>
-          </PopupContainer>
-        </PopupOverlay>
-      )}
+      {showPopup && chatRoom && <ChatPopup opponentNickName={opponent?.nickname || ""} showPopup={showPopup} setShowPopup={setShowPopup} roomId={chatRoom?.roomId} togglePopup={togglePopup} />}
     </Container>
   );
 };
@@ -245,43 +213,6 @@ const ChatContainer = styled.div`
   padding: 10px;
   display: flex;
   flex-direction: column;
-`;
-
-const PopupOverlay = styled.div<{ showPopup: boolean }>`
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.3);
-  opacity: ${({ showPopup }) => (showPopup ? "1" : "0")};
-  pointer-events: ${({ showPopup }) => (showPopup ? "auto" : "none")};
-  transition: opacity 0.3s ease-in-out;
-`;
-
-const PopupContainer = styled.div<{ showPopup: boolean }>`
-  background: white;
-  max-width: 400px;
-  width: 100%;
-  padding: 15px;
-  border-radius: 10px 10px 0 0;
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-  transform: ${({ showPopup }) => (showPopup ? "translateY(0%)" : "translateY(100%)")};
-  transition: transform 0.3s ease-in-out;
-`;
-
-const PopupButton = styled.button<{ danger?: boolean }>`
-  width: 100%;
-  padding: 12px;
-  border: none;
-  background: #f5f5f5;
-  color: black;
-  font-size: 16px;
-  cursor: pointer;
-  margin-top: 8px;
 `;
 
 const Nickname = styled.div`
