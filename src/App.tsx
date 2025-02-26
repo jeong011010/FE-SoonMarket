@@ -17,13 +17,13 @@ import FindPw from "./pages/Auth/FindPwPage"
 import ChangePassword from "./pages/Auth/components/FindPwDetailForm"
 
 //Redux
-import { setIsAuthenticated } from "./redux/modules/auth";
+import { setIsAuthenticated, setRole, setUserId } from "./redux/modules/auth";
 import { useSelector } from "react-redux";
 import { RootState } from "./redux/store";
 import AddPostPage from "./pages/AddPost/AddPostPage";
 import { useCookies } from "react-cookie";
 import PostPage from "./pages/Post/PostPage";
-//import { jwtDecode } from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import EditPostPage from "./pages/EditPost/EditPostPage";
 import ChatListPage from "./pages/Chat/ChatListPage";
 import ChatRoomPage from "./pages/Chat/ChatRoomPage";
@@ -39,6 +39,25 @@ interface RouteConfig {
   element: JSX.Element;
   path: string;
   private?: boolean;
+};
+
+interface JwtPayload {
+  sub?: string;
+  auth?: string;
+  [key: string]: any;
+}
+
+const extractTokenData = (token: string): { userId: string; role: string } | null => {
+  try {
+    const decoded = jwtDecode<JwtPayload>(token);
+    return {
+      userId: decoded.sub || "",
+      role: decoded.auth || "",
+    };
+  } catch (error) {
+    console.error("토큰 데이터 추출 실패", error);
+    return null;
+  }
 }
 
 function App(): JSX.Element {
@@ -49,8 +68,15 @@ function App(): JSX.Element {
   const token = cookies.access_token;
 
   useEffect(() => {
-    if (token !== undefined) {
-      dispatch(setIsAuthenticated(true))
+    if (token) {
+      const tokenData = extractTokenData(token);
+      if (tokenData) {
+        dispatch(setIsAuthenticated(true));
+        dispatch(setUserId(tokenData.userId));
+        dispatch(setRole(tokenData.role));
+      }
+    } else {
+      dispatch(setIsAuthenticated(false));
     }
   }, [dispatch, token]);
 
@@ -79,16 +105,16 @@ function App(): JSX.Element {
     { path: "/addpost", element: <AddPostPage />, private: true },
     { path: "/editpost/:id", element: <EditPostPage />, private: true },
     { path: "/chat-list", element: <ChatListPage />, private: true },
-    { path: "/chat/:id", element: <ChatRoomPage/>, private: true },
+    { path: "/chat/:id", element: <ChatRoomPage />, private: true },
     { path: "/mypage", element: <MyPage />, private: true },
     { path: "/edit-profile", element: <EditProfilePage />, private: true },
-    
+
     { path: "/main", element: <Main />, private: true },
     { path: "/post/:id", element: <PostPage />, private: true },
     { path: "/search", element: <Search />, private: true },
     { path: "/signup", element: <SignUp /> },
-    { path: "/findpassword", element: <FindPw />},
-    { path: "/reset-password", element: <ChangePassword />},
+    { path: "/findpassword", element: <FindPw /> },
+    { path: "/reset-password", element: <ChangePassword /> },
   ];
 
   return (
