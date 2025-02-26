@@ -1,7 +1,6 @@
 import axios from "axios";
 
 interface ResetPasswordRequest {
-  token: string;
   passwordUpdateRequest: {
     newPassword: string;
   };
@@ -20,7 +19,6 @@ const useChangePassword = () => {
     try {
     
       const requestBody: ResetPasswordRequest = {
-        token,
         passwordUpdateRequest: {
           newPassword,
         },
@@ -28,7 +26,12 @@ const useChangePassword = () => {
      
       const response = await axios.patch<string>(
         `${apiUrl}/auth/reset-password`,
-        requestBody
+        requestBody,
+        {
+          headers: {
+            Authorization: `${token}`
+          }
+        }
       );
 
       return response.data; 
