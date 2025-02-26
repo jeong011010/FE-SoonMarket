@@ -14,7 +14,7 @@ const useChangePassword = () => {
       console.log(newPassword);
       const response = await axios.patch<string>(
         `${apiUrl}/auth/reset-password`,
-        newPassword,
+        {newPassword},
         {
           headers: {
             Authorization: `${token}`,
