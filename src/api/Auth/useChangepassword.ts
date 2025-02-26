@@ -1,11 +1,5 @@
 import axios from "axios";
 
-interface ResetPasswordRequest {
-  passwordUpdateRequest: {
-    newPassword: string;
-  };
-}
-
 
 const useChangePassword = () => {
   const apiUrl = import.meta.env.VITE_API_URL as string;
@@ -17,20 +11,16 @@ const useChangePassword = () => {
    */
   const resetPassword = async (token: string, newPassword: string): Promise<string> => {
     try {
-    
-      const requestBody: ResetPasswordRequest = {
-        passwordUpdateRequest: {
-          newPassword,
-        },
-      };
+
      
       const response = await axios.patch<string>(
         `${apiUrl}/auth/reset-password`,
-        requestBody,
+        newPassword,
         {
           headers: {
-            Authorization: `${token}`
-          }
+            Authorization: `${token}`,
+            "Content-Type": "application/json",
+          },
         }
       );
 
