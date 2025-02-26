@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import useGetChatRoom from "../../api/Chat/useGetChatRoom";
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { IconButton } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import ImageIcon from "@mui/icons-material/Image";
@@ -17,9 +17,9 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import useFileUpload from "../../api/Chat/useFileUpload";
 import Header from "./components/Header";
+import PostInfo from "./components/PostInfo";
 
 const ChatRoomPage: React.FC = () => {
-  const navigate = useNavigate();
   const { id: roomId } = useParams();
   const { chatRoom, getChatRoom, error, loading } = useGetChatRoom();
   const { messages: fetchedMessages } = useGetChatMsg(roomId || "");
@@ -174,15 +174,7 @@ const ChatRoomPage: React.FC = () => {
     <Container>
       <Header opponentNickname={opponent?.nickname} togglePopup={togglePopup} />
 
-      {post && (
-        <PostInfoContainer onClick={() => navigate(`/post/${post.postId}`)}>
-          <PostImage src={post.images?.[0]?.imageUrl || "/default-image.jpg"} alt="post" />
-          <PostDetails>
-            <PostTitle>{post.title}</PostTitle>
-            <PostPrice>{post.price.toLocaleString()}원</PostPrice>
-          </PostDetails>
-        </PostInfoContainer>
-      )}
+      {chatRoom && <PostInfo postId={chatRoom?.postId.toString()} />}
 
       <ChatContainer ref={chatContainerRef}>
         {[...fetchedMessages, ...stompMessages].map((msg, index) => (
@@ -223,8 +215,8 @@ const ChatRoomPage: React.FC = () => {
         </StyledInputWrapper>
       </InputContainer>
       {showPopup && (
-        <PopupOverlay isVisible={showPopup} onClick={togglePopup}>
-          <PopupContainer isVisible={showPopup} onClick={(e) => e.stopPropagation()}>
+        <PopupOverlay showPopup={showPopup} onClick={togglePopup}>
+          <PopupContainer showPopup={showPopup} onClick={(e) => e.stopPropagation()}>
             <PopupButton onClick={handleBlockUser}>차단하기</PopupButton>
             <PopupButton onClick={handleReportUser}>신고하기</PopupButton>
             <PopupButton onClick={handleLeaveChat}>나가기</PopupButton>
@@ -255,7 +247,7 @@ const ChatContainer = styled.div`
   flex-direction: column;
 `;
 
-const PopupOverlay = styled.div<{ isVisible: boolean }>`
+const PopupOverlay = styled.div<{ showPopup: boolean }>`
   position: fixed;
   bottom: 0;
   left: 0;
@@ -265,19 +257,19 @@ const PopupOverlay = styled.div<{ isVisible: boolean }>`
   align-items: flex-end;
   justify-content: center;
   background: rgba(0, 0, 0, 0.3);
-  opacity: ${({ isVisible }) => (isVisible ? "1" : "0")};
-  pointer-events: ${({ isVisible }) => (isVisible ? "auto" : "none")};
+  opacity: ${({ showPopup }) => (showPopup ? "1" : "0")};
+  pointer-events: ${({ showPopup }) => (showPopup ? "auto" : "none")};
   transition: opacity 0.3s ease-in-out;
 `;
 
-const PopupContainer = styled.div<{ isVisible: boolean }>`
+const PopupContainer = styled.div<{ showPopup: boolean }>`
   background: white;
   max-width: 400px;
   width: 100%;
   padding: 15px;
   border-radius: 10px 10px 0 0;
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-  transform: ${({ isVisible }) => (isVisible ? "translateY(0%)" : "translateY(100%)")};
+  transform: ${({ showPopup }) => (showPopup ? "translateY(0%)" : "translateY(100%)")};
   transition: transform 0.3s ease-in-out;
 `;
 
@@ -383,45 +375,6 @@ const SendButton = styled.button`
   border: none;
   cursor: pointer;
   padding: 5px;
-`;
-
-const PostInfoContainer = styled.div`
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  background: #f8f9fa;
-  cursor: pointer;
-  border-bottom: 1px solid #ddd;
-  transition: background 0.2s ease-in-out;
-  width: 100%;
-
-  &:hover {
-    background: #e9ecef;
-  }
-`;
-
-const PostImage = styled.img`
-  width: 50px;
-  height: 50px;
-  border-radius: 8px;
-  object-fit: cover;
-  margin-right: 10px;
-`;
-
-const PostDetails = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const PostTitle = styled.div`
-  font-weight: bold;
-  font-size: 14px;
-  color: #333;
-`;
-
-const PostPrice = styled.div`
-  font-size: 12px;
-  color: #888;
 `;
 
 const ChatBubble = styled.div<{ isMine: boolean }>`
