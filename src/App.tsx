@@ -86,7 +86,7 @@ function App(): JSX.Element {
       return <div>Loading...</div>;
     }
 
-    return isAuthenticated ? element : <Navigate to="/" replace />;
+    return token ? element : <Navigate to="/" replace />;
   };
 
   const shouldShowBottomNav = (): boolean => {
@@ -97,10 +97,7 @@ function App(): JSX.Element {
   };
 
   const routes: RouteConfig[] = [
-    {
-      path: "/",
-      element: isAuthenticated ? <Navigate to="/main" /> : <LoginPage />,
-    },
+    { path: "/", element: <LoginPage /> },
     { path: "/recommend", element: <Recommend />, private: true },
     { path: "/addpost", element: <AddPostPage />, private: true },
     { path: "/editpost/:id", element: <EditPostPage />, private: true },
