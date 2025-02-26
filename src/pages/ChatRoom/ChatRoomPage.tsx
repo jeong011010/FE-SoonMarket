@@ -18,6 +18,7 @@ import useFileUpload from "../../api/Chat/useFileUpload";
 import Header from "./components/Header";
 import PostInfo from "./components/PostInfo";
 import ChatPopup from "./components/ChatPopup";
+import ChatMessage from "./components/ChatMessage";
 
 const ChatRoomPage: React.FC = () => {
   const { id: roomId } = useParams();
@@ -149,19 +150,8 @@ const ChatRoomPage: React.FC = () => {
   return (
     <Container>
       <Header opponentNickname={opponent?.nickname} togglePopup={togglePopup} />
-
       {chatRoom && <PostInfo postId={chatRoom?.postId.toString()} />}
-
-      <ChatContainer ref={chatContainerRef}>
-        {[...fetchedMessages, ...stompMessages].map((msg, index) => (
-          <ChatBubble key={index} isMine={msg.senderId === userId}>
-            {msg.senderId !== userId && <Nickname>{opponent?.nickname}</Nickname>}
-            {msg.fileUrl && <ChatImage src={msg.fileUrl} alt="Uploaded" />}
-            <Message>{msg.message}</Message>
-          </ChatBubble>
-        ))}
-      </ChatContainer>
-
+      <ChatMessage chatContainerRef={chatContainerRef} fetchedMessages={fetchedMessages} stompMessages={stompMessages} userId={userId} opponentNickname={opponent?.nickname} />
       <InputContainer hasImage={!!selectedImage}>
         {selectedImage && (
           <ImagePreviewContainer>
@@ -204,35 +194,6 @@ const Container = styled.div`
   width: 100%;
   height: 100dvh;
   position: relative;
-`;
-
-const ChatContainer = styled.div`
-  width: 100%;
-  flex-grow: 1;
-  overflow-y: auto;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-`;
-
-const Nickname = styled.div`
-  font-size: 12px;
-  font-weight: bold;
-  color: gray;
-  margin-bottom: 3px;
-`;
-
-const Message = styled.div`
-  font-size: 16px;
-`;
-
-const ChatImage = styled.img`
-  max-width: 200px;
-  max-height: 200px;
-  border-radius: 10px;
-  margin-bottom: 5px;
-  object-fit: cover;
-  cursor: pointer;
 `;
 
 const InputContainer = styled.div<{ hasImage: boolean }>`
@@ -306,17 +267,4 @@ const SendButton = styled.button`
   border: none;
   cursor: pointer;
   padding: 5px;
-`;
-
-const ChatBubble = styled.div<{ isMine: boolean }>`
-  max-width: 70%;
-  padding: 10px;
-  margin: 5px 10px;
-  border-radius: 15px;
-  word-wrap: break-word;
-  align-self: ${({ isMine }) => (isMine ? "flex-end" : "flex-start")};
-  background-color: ${({ isMine }) => (isMine ? "#007bff" : "#f1f1f1")};
-  color: ${({ isMine }) => (isMine ? "white" : "black")};
-  display: flex;
-  flex-direction: column;
 `;
