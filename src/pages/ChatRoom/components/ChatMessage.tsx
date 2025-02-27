@@ -1,5 +1,7 @@
+import React, { useState } from "react";
 import styled from "styled-components";
 import type { ChatMessage } from "../../../type/chatType";
+import ImgEnlarge from "./ImgEnlarge";
 
 interface ChatMessageProps {
   chatContainerRef: React.RefObject<HTMLDivElement>;
@@ -10,16 +12,31 @@ interface ChatMessageProps {
 }
 
 const ChatMessage: React.FC<ChatMessageProps> = ({ chatContainerRef, fetchedMessages, stompMessages, userId, opponentNickname }) => {
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+  const handleImageClick = (imageUrl: string) => {
+    setSelectedImage(imageUrl);
+  };
+
+  const handleCloseOverlay = () => {
+    setSelectedImage(null);
+  };
+
   return (
-    <ChatContainer ref={chatContainerRef}>
-      {[...fetchedMessages, ...stompMessages].map((msg, index) => (
-        <ChatBubble key={index} isMine={msg.senderId === userId}>
-          {msg.senderId !== userId && <Nickname>{opponentNickname}</Nickname>}
-          {msg.fileUrl && <ChatImage src={msg.fileUrl} alt="Uploaded" />}
-          <Message>{msg.message}</Message>
-        </ChatBubble>
-      ))}
-    </ChatContainer>
+    <>
+      <ChatContainer ref={chatContainerRef}>
+        {[...fetchedMessages, ...stompMessages].map((msg, index) => (
+          <ChatBubble key={index} isMine={msg.senderId === userId}>
+            {msg.senderId !== userId && <Nickname>{opponentNickname}</Nickname>}
+            {msg.fileUrl && <ChatImage src={msg.fileUrl} alt="Uploaded" onClick={() => handleImageClick(msg.fileUrl)} />}
+            <Message>{msg.message}</Message>
+          </ChatBubble>
+        ))}
+      </ChatContainer>
+      {selectedImage && (
+        <ImgEnlarge imageUrl={selectedImage} onClose={handleCloseOverlay} />
+      )}
+    </>
   );
 };
 
