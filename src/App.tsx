@@ -11,7 +11,6 @@ import BottomNav from "./components/Layout/BottomNav";
 import Search from "./pages/Search/Search";
 import Recommend from "./pages/Recommend/RecommendPage";
 import MyPage from "./pages/MyPage/MyPage";
-import EditProfilePage from "./pages/MyPage/EditProfilePage";
 import SignUp from "./pages/Auth/SignUpPage";
 import FindPw from "./pages/Auth/FindPwPage"
 import ChangePassword from "./pages/Auth/components/FindPwDetailForm"
@@ -104,8 +103,6 @@ function App(): JSX.Element {
     { path: "/chat-list", element: <ChatListPage />, private: true },
     { path: "/chat/:id", element: <ChatRoomPage />, private: true },
     { path: "/mypage", element: <MyPage />, private: true },
-    { path: "/edit-profile", element: <EditProfilePage />, private: true },
-
     { path: "/main", element: <Main />, private: true },
     { path: "/post/:id", element: <PostPage />, private: true },
     { path: "/search", element: <Search />, private: true },
