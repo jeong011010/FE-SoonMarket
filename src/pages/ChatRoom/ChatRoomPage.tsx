@@ -87,7 +87,7 @@ const ChatRoomPage: React.FC = () => {
       {chatRoom && <PostInfo postId={chatRoom?.postId.toString()} />}
       <ChatMessage chatContainerRef={chatContainerRef} fetchedMessages={fetchedMessages} stompMessages={stompMessages} userId={userId} opponentNickname={opponent?.nickname} />
       {userInfo && <ChatInput userInfo={userInfo} userId={userId} roomId={roomId || ""} sendMessage={sendMessage} />}
-      {showPopup && chatRoom && <ChatPopup opponentNickName={opponent?.nickname || ""} showPopup={showPopup} setShowPopup={setShowPopup} roomId={chatRoom?.roomId} togglePopup={togglePopup} />}
+      {chatRoom && <ChatPopup opponentNickName={opponent?.nickname || ""} showPopup={showPopup} setShowPopup={setShowPopup} roomId={chatRoom?.roomId} togglePopup={togglePopup} />}
     </Container>
   );
 };

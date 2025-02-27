@@ -105,8 +105,6 @@ const ChatInput: React.FC<ChatInputProps> = ({ userInfo, userId, roomId, sendMes
 	)
 };
 
-
-
 const InputContainer = styled.div<{ hasImage: boolean }>`
   display: flex;
   flex-direction: column;

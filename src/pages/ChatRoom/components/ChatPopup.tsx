@@ -68,7 +68,9 @@ const PopupContainer = styled.div<{ showPopup: boolean }>`
   padding: 15px;
   border-radius: 10px 10px 0 0;
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-  transform: ${({ showPopup }) => (showPopup ? "translateY(0%)" : "translateY(100%)")};
+  position: absolute;
+  bottom: 0;
+  transform: ${({ showPopup }) => (showPopup ? "translateY(0)" : "translateY(100%)")};
   transition: transform 0.3s ease-in-out;
 `;
 
