@@ -4,6 +4,7 @@ import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
 import { Button, TextField, IconButton } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router-dom";
+import useResetPassword from "../../../api/Auth/useResetpassword";
 import useChangePassword from "../../../api/Auth/useChangepassword";
 
 const FindPwDetailForm: React.FC = () => {
@@ -14,7 +15,8 @@ const FindPwDetailForm: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isCapsLockOn, setIsCapsLockOn] = useState(false);
   const navigate = useNavigate();
-  const resetPassword = useChangePassword();
+  const resetPassword = useResetPassword();
+  const changePassword = useChangePassword();
   
   useEffect(() => {
   }, [navigate]);
@@ -53,14 +55,19 @@ const FindPwDetailForm: React.FC = () => {
       const urlParams = new URLSearchParams(window.location.search);
       const token = urlParams.get("token");
       if (!token) {
-        throw new Error("토큰이 제공되지 않았습니다.");
-      }
+        changePassword(password);
+        console.log("비밀번호 재설정 성공");
+        alert("비밀번호가 성공적으로 변경되었습니다.");
+        navigate(-1);
 
-      // 올바른 요청 데이터 형식으로 전달
-      const message = await resetPassword(token, password);
-      console.log("비밀번호 재설정 성공:", message);
-      alert("비밀번호가 성공적으로 변경되었습니다.");
-      navigate("/");
+      }
+      else {
+        const message = await resetPassword(token, password);
+        console.log("비밀번호 재설정 성공:", message);
+        alert("비밀번호가 성공적으로 변경되었습니다.");
+        navigate("/");
+
+      }
     } catch (error) {
       console.error("비밀번호 재설정 중 오류 발생:", error);
       alert("비밀번호 재설정 중 오류가 발생했습니다. 다시 시도해주세요.");
@@ -82,7 +89,7 @@ const FindPwDetailForm: React.FC = () => {
     <FormContainer>
       <Header>
         <BackButton>
-          <IconButton onClick={() => navigate("/")}>
+          <IconButton onClick={() => navigate(-1)}>
             <ArrowBackIcon />
           </IconButton>
         </BackButton>

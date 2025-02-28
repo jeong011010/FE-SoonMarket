@@ -11,6 +11,7 @@ import { RootState } from "../../redux/store";
 import LikePosts from "./components/LikePosts";
 import useEditProfile from "../../api/Auth/useEditProfile";
 import { useNavigate } from "react-router-dom";
+import SettingPopup from "./components/SettingPopup";
 
 const MyPage: React.FC = () => {
   const [value, setValue] = useState<number>(0);
@@ -22,6 +23,7 @@ const MyPage: React.FC = () => {
 
   const [isEditingNickname, setIsEditingNickname] = useState(false);
   const [nickname, setNickname] = useState(userInfo?.nickname || "");
+  const [showPopup, setShowPopup] = useState(false);
 
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -87,6 +89,14 @@ const MyPage: React.FC = () => {
     }
   };
 
+  const togglePopup = () => {
+    if (!showPopup) {
+      setShowPopup(true);
+    } else {
+      setShowPopup(false);
+    }
+  };
+
   useEffect(() => {
     getUserInfo(userId);
   }, [getUserInfo, userId]);
@@ -97,7 +107,7 @@ const MyPage: React.FC = () => {
         <Header>
           <Title>회원정보</Title>
           <IconButton color="default">
-            <SettingsIcon />
+            <SettingsIcon onClick={togglePopup}/>
           </IconButton>
         </Header>
         <Body>
@@ -158,6 +168,7 @@ const MyPage: React.FC = () => {
             </SlidingPanel>
           </SlidingContainer>
         </Body>
+        {<SettingPopup showPopup={showPopup} setShowPopup={setShowPopup} togglePopup={togglePopup} />}
       </MyPageContainer>
     </StyledBackground>
   );
