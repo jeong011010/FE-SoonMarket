@@ -160,10 +160,10 @@ const MyPage: React.FC = () => {
             </StyledTabs>
           </TabBox>
           <SlidingContainer value={value}>
-            <SlidingPanel>
+            <SlidingPanel isActive={value === 0}>
               <MyPost />
             </SlidingPanel>
-            <SlidingPanel>
+            <SlidingPanel isActive={value === 1}>
               <LikePosts />
             </SlidingPanel>
           </SlidingContainer>
@@ -197,16 +197,23 @@ const Body = styled.div`
 
 const SlidingContainer = styled.div<{ value: number }>`
   display: flex;
-  width: 200%; /* 두 패널을 나란히 배치 */
-  transform: translateX(${(props) => props.value * -50}%); /* 활성화된 탭으로 이동 */
-  transition: transform 0.5s ease-in-out; /* 슬라이딩 애니메이션 */
+  width: 200%;
+  transform: translateX(${(props) => props.value * -50}%);
+  transition: transform 0.5s ease-in-out;
+  overflow: hidden; /* 부모 컨테이너에서 스크롤 방지 */
 `;
 
-const SlidingPanel = styled.div`
-  width: 50%; /* 컨테이너의 절반 크기를 차지 */
-  flex-shrink: 0; /* 크기 고정 */
+const SlidingPanel = styled.div<{ isActive: boolean }>`
+  width: 50%;
+  flex-shrink: 0;
   padding: 16px;
   box-sizing: border-box;
+  overflow-y: ${({ isActive }) => (isActive ? "auto" : "hidden")}; 
+  height: ${({ isActive }) => (isActive ? "auto" : "100%")};
+
+  &::-webkit-scrollbar {
+    display: ${({ isActive }) => (isActive ? "auto" : "none")}; /* 필요할 때만 스크롤 */
+  }
 `;
 
 const StyledBackground = styled.div`
