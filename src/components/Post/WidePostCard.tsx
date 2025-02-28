@@ -49,11 +49,7 @@ const WidePostCard = forwardRef<HTMLDivElement, PostProps>(({ post }, ref) => {
         </PostDetail>
         <LikeDetail>
           <BtnBox>
-            <IconButton onClick={likeBtnClick}>
-              {
-                likeState ? <FavoriteIcon fontSize='medium' /> : <FavoriteBorderIcon fontSize="medium" />
-              }
-            </IconButton>
+            <FavoriteIcon fontSize='medium' />
           </BtnBox>
           <LikesContainer>
             <LikesText>{likeCount}</LikesText>
