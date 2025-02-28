@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Post } from "../../type/postType";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { forwardRef } from "react";
+import getTimeAgo from "../../utils/getTimeAgo";
 
 interface PostProps {
   post: Post;
@@ -10,6 +11,8 @@ interface PostProps {
 
 const PostCard = forwardRef<HTMLDivElement, PostProps>(({ post }, ref) => {
   const navigate = useNavigate();
+  const lastMsgTime = new Date(post.createAt);
+  const formattedDate = getTimeAgo(lastMsgTime);
 
   return (
     <CardContainer ref={ref} onClick={() => navigate(`/post/${post.postId}`)}>
@@ -21,7 +24,7 @@ const PostCard = forwardRef<HTMLDivElement, PostProps>(({ post }, ref) => {
       <Title>{post.title}</Title>
       <Details>
         <Price>₩{post.price.toLocaleString()}</Price>
-        <VisibilityIcon style={{ fontSize: "14px" }} />
+        <DateText>{formattedDate}</DateText>
       </Details>
     </CardContainer>
   );
@@ -120,6 +123,7 @@ const Details = styled.div`
   justify-content: space-between;
   margin: 5px 10px;
   align-items: center;
+  width: 100%;
 `;
 
 const Price = styled.p`
@@ -127,10 +131,19 @@ const Price = styled.p`
   font-size: 12px;
   font-weight: bold;
   color: #2d61a6;
+  white-space: nowrap; /* 줄바꿈 방지 */
+  overflow: hidden;
+  text-overflow: ellipsis; /* 너무 길 경우 말줄임 처리 */
+  min-width: 80px; /* 🔥 최소 너비 설정하여 밀리지 않게 */
+`;
 
-  @media (max-width: 380px) {
-    font-size: 12px;
-  }
+const DateText = styled.p`
+  font-size: 12px;
+  color: #666;
+  margin: 0;
+  margin-right: 15px;
+  text-align: right; /* 🔥 오른쪽 정렬 */
+  white-space: nowrap; /* 줄바꿈 방지 */
 `;
 
 export default PostCard;
