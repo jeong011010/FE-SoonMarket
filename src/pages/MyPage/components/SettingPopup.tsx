@@ -2,6 +2,10 @@ import { useState } from "react";
 import styled from "styled-components";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+import { useNavigate } from "react-router-dom";
+import { Cookies } from "react-cookie";
+import { useDispatch } from "react-redux";
+import { setIsAuthenticated, setRole, setUserId } from "../../../redux/modules/auth";
 
 interface SettingPopupProps {
 	showPopup: boolean;
@@ -26,6 +30,22 @@ const SettingPopup: React.FC<SettingPopupProps> = ({ showPopup, setShowPopup,tog
     setIsOpenAccSet(!isOpenAccSet);
   }
 
+  const navigate = useNavigate();
+  const cookies = new Cookies();
+  const dispatch = useDispatch();
+
+  const handleChangePassowrd = () => {
+    navigate("/reset-password")
+  }
+
+  const handleLogout = () => {
+    cookies.remove("access_token", { path: "/" });
+    dispatch(setIsAuthenticated(false));
+    dispatch(setUserId(''));
+    dispatch(setRole(''));
+    navigate("/");
+  };
+
 	return (
 		<PopupOverlay showPopup={showPopup} onClick={togglePopup}>
 			<PopupContainer showPopup={showPopup} onClick={(e) => e.stopPropagation()}>
@@ -36,8 +56,8 @@ const SettingPopup: React.FC<SettingPopupProps> = ({ showPopup, setShowPopup,tog
           {isOpenAccSet ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
         </PopupButton>
         <AccountManageContainer isOpen={isOpenAccSet}>
-          <SpecialPopupButton onClick={handleReportUser}>비밀번호 수정</SpecialPopupButton>
-          <SpecialPopupButton logout onClick={handleOpenAccSet}>로그아웃</SpecialPopupButton>
+          <SpecialPopupButton onClick={handleChangePassowrd}>비밀번호 수정</SpecialPopupButton>
+          <SpecialPopupButton logout onClick={handleLogout}>로그아웃</SpecialPopupButton>
         </AccountManageContainer>
 				
         
