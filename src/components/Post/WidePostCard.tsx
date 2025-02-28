@@ -1,10 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import styled from "styled-components"
-import { IconButton } from "@mui/material";
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Post } from '../../type/postType';
-import useLikePost from '../../api/Post/useLikePost';
 import useGetUserInfo from '../../api/Auth/useGetUserInfo';
 import { forwardRef, useEffect, useState } from 'react';
 import getTimeAgo from '../../utils/getTimeAgo';
@@ -17,10 +14,8 @@ const WidePostCard = forwardRef<HTMLDivElement, PostProps>(({ post }, ref) => {
   const uploadTime = new Date(post.createAt);
   const navigate = useNavigate();
 
-  const likePost = useLikePost();
   const { userInfo, getUserInfo } = useGetUserInfo();
-  const [likeState, setLikeState] = useState<boolean>(!post.like);
-  const [likeCount, setLikeCount] = useState<number>(post.countLike);
+  const [likeCount] = useState<number>(post.countLike);
 
   const formattedDate = getTimeAgo(uploadTime);
 
@@ -29,14 +24,6 @@ const WidePostCard = forwardRef<HTMLDivElement, PostProps>(({ post }, ref) => {
       getUserInfo(userInfo.id);
     }
   }, [getUserInfo, userInfo?.id]);
-
-  const likeBtnClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-    if (likeState === true) setLikeCount(prev => prev - 1);
-    if (likeState === false) setLikeCount(prev => prev + 1);
-    setLikeState(prev => !prev);
-    likePost(post.postId);
-  };
 
   return (
     <DataContainer onClick={() => navigate(`/post/${post.postId}`)} ref={ref}>

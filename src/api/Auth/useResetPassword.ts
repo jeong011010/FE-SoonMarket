@@ -1,7 +1,6 @@
 import axios from "axios";
-import axiosInstance from "../axiosInstance";
 
-const useChangePassword = () => {
+const useResetPassword = () => {
   const apiUrl = import.meta.env.VITE_API_URL as string;
   /**
    * 비밀번호를 재설정하는 함수입니다.
@@ -35,15 +34,7 @@ const useChangePassword = () => {
     }
   };
 
-  const changePassword = async (newPassword: string): Promise<void> => {
-    try {
-      await axiosInstance.patch(`/users/me`, newPassword);
-    } catch (error) {
-      console.error("비밀번호 수정 중 오류 발생", error);
-    }
-  }
-
-    return resetPassword;
+  return resetPassword;
 };
 
-export default useChangePassword;
+export default useResetPassword;
