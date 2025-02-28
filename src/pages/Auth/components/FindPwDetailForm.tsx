@@ -4,8 +4,8 @@ import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
 import { Button, TextField, IconButton } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router-dom";
-import useResetPassword from "../../../api/Auth/useResetpassword";
-import useChangePassword from "../../../api/Auth/useChangepassword";
+import useChangePassword from "../../../api/Auth/useChangePassword";
+import useResetPassword from "../../../api/Auth/useResetPassword";
 
 const FindPwDetailForm: React.FC = () => {
   const [password, setPassword] = useState("");

@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Post } from "../../type/postType";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import { forwardRef } from "react";
 import getTimeAgo from "../../utils/getTimeAgo";
 
