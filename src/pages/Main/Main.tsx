@@ -4,31 +4,22 @@ import styled from "styled-components";
 import schoolImg from "../../assets/soonchunhyangUniversity.jpg";
 import TopBar from "../../components/Layout/TopBar";
 import CategoryPost from "./components/CategoryPost";
-import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
-//import { initializeFirebase, requestFCMToken } from "../../firebase/firebase"; // FirebaseService import
+import useSetNotification from "../../api/Auth/useSetNotification";
+
+const allowNotification = async () => {
+  const setNotification = useSetNotification();
+  const permission = await Notification.requestPermission();
+
+  if (permission === "granted") {
+    setNotification(true);
+  } else {
+    console.log("알림 권한 거부됨");
+    return null;
+  }
+}
 
 const Main: React.FC = () => {
-  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
-  console.log(isAuthenticated);
-
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //     // Firebase 초기화
-  //     initializeFirebase();
-
-  //     // FCM 토큰 요청
-  //     requestFCMToken().then((currentToken) => {
-  //       if (currentToken) {
-  //         console.log('발급 받은 FCM 토큰:', currentToken);
-  //         alert("토큰: " + currentToken);
-  //         // 서버에 토큰을 전달하는 로직 추가
-  //       } else {
-  //         console.log("No registration token available.");
-  //       }
-  //     });
-  //   }
-  // }, [isAuthenticated]);
+  allowNotification();
 
   return (
     <MainPageContainer>

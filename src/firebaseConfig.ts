@@ -17,17 +17,10 @@ export const messaging = getMessaging(app);
 // 🔹 **FCM 토큰 요청 함수**
 export const getFCMToken = async (): Promise<string | null> => {
 	try {
-		const permission = await Notification.requestPermission();
-		if (permission === "granted") {
-			const token = await getToken(messaging, {
-				vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
-			});
-			console.log("FCM Token:", token);
-			return token;
-		} else {
-			console.log("알림 권한 거부됨");
-			return null;
-		}
+		const token = await getToken(messaging, {
+			vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
+		});
+		return token;
 	} catch (error) {
 		console.error("FCM 토큰 가져오기 실패:", error);
 		return null;
