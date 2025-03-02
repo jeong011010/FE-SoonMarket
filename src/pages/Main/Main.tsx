@@ -1,10 +1,9 @@
 import React from "react";
-//import { useEffect } from "react";
 import styled from "styled-components";
 import schoolImg from "../../assets/soonchunhyangUniversity.jpg";
 import TopBar from "../../components/Layout/TopBar";
 import CategoryPost from "./components/CategoryPost";
-import useSetNotification from "../../api/Auth/useSetNotification";
+import useSetNotification from "../../api/Notification/useSetNotification";
 
 const allowNotification = async () => {
   const setNotification = useSetNotification();
