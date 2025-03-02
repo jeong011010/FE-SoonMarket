@@ -1,24 +1,31 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import schoolImg from "../../assets/soonchunhyangUniversity.jpg";
 import TopBar from "../../components/Layout/TopBar";
 import CategoryPost from "./components/CategoryPost";
 import useSetNotification from "../../api/Notification/useSetNotification";
 
-const allowNotification = async () => {
-  const setNotification = useSetNotification();
-  const permission = await Notification.requestPermission();
-
-  if (permission === "granted") {
-    setNotification(true);
-  } else {
-    console.log("알림 권한 거부됨");
-    return null;
-  }
-}
-
 const Main: React.FC = () => {
-  allowNotification();
+  const setNotification = useSetNotification();
+
+  useEffect(() => {
+    const requestNotificationPermission = async () => {
+      // 로컬 스토리지에서 확인
+      const hasRequested = localStorage.getItem("notification_requested");
+
+      if (!hasRequested) {
+        const permission = await Notification.requestPermission();
+        if (permission === "granted") {
+          setNotification(true);
+          localStorage.setItem("notification_requested", "true"); // 요청 완료 저장
+        } else {
+          console.log("알림 권한 거부됨");
+        }
+      }
+    };
+
+    requestNotificationPermission();
+  }, [setNotification]);
 
   return (
     <MainPageContainer>
@@ -37,9 +44,9 @@ const MainPageContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 100%; /* 컨테이너가 최소 화면 크기를 차지 */
+  min-height: 100%;
   width: 100%;
-  padding-bottom: 60px; /* 하단바 높이만큼 패딩 추가 */
+  padding-bottom: 60px;
 `;
 
 const Content = styled.div`
@@ -47,9 +54,9 @@ const Content = styled.div`
   flex: 1;
   width: 100%;
   max-width: 430px;
-  overflow-y: auto; /* 콘텐츠 스크롤 가능 */
+  overflow-y: auto;
   background-color: #f6f6f6;
-  
+
   &::-webkit-scrollbar {
     display: none;
   }
@@ -57,12 +64,12 @@ const Content = styled.div`
 
 const SchoolImgWrapper = styled.div`
   display: flex;
-  justify-content: center; /* 가로 중앙 정렬 */
+  justify-content: center;
   width: 100%;
 `;
 
 const SchoolImg = styled.img`
-  width: 85%; /* 화면 너비의 85% */
+  width: 85%;
   border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 `;
