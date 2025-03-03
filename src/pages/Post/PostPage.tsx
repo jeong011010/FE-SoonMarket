@@ -9,8 +9,6 @@ import PostMaster from "./components/PostMaster";
 import PostContent from "./components/PostContent";
 import BottomBar from "./components/BottomBar";
 import ReportPopup from "./components/ReportPopup";
-import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
 
 const PostPage = () => {
   const navigate = useNavigate();
