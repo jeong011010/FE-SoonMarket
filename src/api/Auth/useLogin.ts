@@ -39,6 +39,7 @@ const useLogin = () => {
 		}).catch((error) => {
 			dispatch(setIsAuthenticated(false));
 			console.error("로그인 실패:", error);
+			throw error.response?.data?.message;
 		});
 	};
 	return login;
