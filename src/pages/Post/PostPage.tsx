@@ -17,7 +17,6 @@ const PostPage = () => {
   const { id } = useParams();
   const { post, getPost } = useGetPost();
   const [isClickedReportBtn, setIsClickedRportBtn] = useState<boolean>(false);
-  const userId = useSelector((state: RootState) => state.auth.userId);
   useEffect(() => {
     if (id) {
       getPost(id);
@@ -42,7 +41,7 @@ const PostPage = () => {
           {post && <PostContent post={post} />}
         </PostContentWrapper>
       </ContentContainer>
-      {post && userId!==post.userId?.toString() && <BottomBar postId={post.postId}/>}
+      {post && <BottomBar post={post}/>}
     </PageContainer>
   );
 };
