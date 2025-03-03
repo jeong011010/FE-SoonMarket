@@ -8,23 +8,23 @@ import { useDispatch } from "react-redux";
 import { setIsAuthenticated, setRole, setUserId } from "../../../redux/modules/auth";
 
 interface SettingPopupProps {
-	showPopup: boolean;
-	setShowPopup: React.Dispatch<React.SetStateAction<boolean>>;
-	togglePopup: () => void;
+  showPopup: boolean;
+  setShowPopup: React.Dispatch<React.SetStateAction<boolean>>;
+  togglePopup: () => void;
 }
 
-const SettingPopup: React.FC<SettingPopupProps> = ({ showPopup, setShowPopup,togglePopup }) => {
+const SettingPopup: React.FC<SettingPopupProps> = ({ showPopup, setShowPopup, togglePopup }) => {
   const [isOpenAccSet, setIsOpenAccSet] = useState(false);
 
-	const handleBlockUser = () => {
-		alert(`님을 차단했습니다.`);
-		setShowPopup(false);
-	};
+  const handleBlockUser = () => {
+    alert(`님을 차단했습니다.`);
+    setShowPopup(false);
+  };
 
-	const handleReportUser = () => {
-		alert(`님을 신고했습니다.`);
-		setShowPopup(false);
-	};
+  const handleReportUser = () => {
+    alert(`님을 신고했습니다.`);
+    setShowPopup(false);
+  };
 
   const handleOpenAccSet = () => {
     setIsOpenAccSet(!isOpenAccSet);
@@ -39,18 +39,19 @@ const SettingPopup: React.FC<SettingPopupProps> = ({ showPopup, setShowPopup,tog
   }
 
   const handleLogout = () => {
+    navigate("/");
     cookies.remove("access_token", { path: "/" });
+    cookies.remove("refresh_token", { path: "/" });
     dispatch(setIsAuthenticated(false));
     dispatch(setUserId(''));
     dispatch(setRole(''));
-    navigate("/");
   };
 
-	return (
-		<PopupOverlay showPopup={showPopup} onClick={togglePopup}>
-			<PopupContainer showPopup={showPopup} onClick={(e) => e.stopPropagation()}>
-				<PopupButton onClick={handleBlockUser}>버전 업데이트 내역</PopupButton>
-				<PopupButton onClick={handleReportUser}>개발진 정보</PopupButton>
+  return (
+    <PopupOverlay showPopup={showPopup} onClick={togglePopup}>
+      <PopupContainer showPopup={showPopup} onClick={(e) => e.stopPropagation()}>
+        <PopupButton onClick={handleBlockUser}>버전 업데이트 내역</PopupButton>
+        <PopupButton onClick={handleReportUser}>개발진 정보</PopupButton>
         <PopupButton onClick={handleOpenAccSet} isOpen={isOpenAccSet}>
           계정 관리
           {isOpenAccSet ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
@@ -59,11 +60,11 @@ const SettingPopup: React.FC<SettingPopupProps> = ({ showPopup, setShowPopup,tog
           <SpecialPopupButton onClick={handleChangePassowrd}>비밀번호 수정</SpecialPopupButton>
           <SpecialPopupButton logout onClick={handleLogout}>로그아웃</SpecialPopupButton>
         </AccountManageContainer>
-				
-        
-			</PopupContainer>
-		</PopupOverlay>
-	)
+
+
+      </PopupContainer>
+    </PopupOverlay>
+  )
 }
 
 const AccountManageContainer = styled.div<{ isOpen: boolean }>`
@@ -117,7 +118,7 @@ const PopupButton = styled.button<{ isOpen?: boolean }>`
   transition: background 0.3s ease-in-out;
 `;
 
-const SpecialPopupButton = styled(PopupButton)<{ logout?: boolean }>`
+const SpecialPopupButton = styled(PopupButton) <{ logout?: boolean }>`
   background: ${({ logout }) => (logout ? "#ffeded" : "#e0f7fa")}; /* 🔥 로그아웃은 붉은색, 비밀번호 수정은 파란색 */
   color: ${({ logout }) => (logout ? "#d32f2f" : "#00796b")}; /* 🔥 로그아웃 글씨는 빨간색, 비밀번호 수정은 파란색 */
   font-weight: bold;
