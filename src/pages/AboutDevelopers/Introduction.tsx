@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { IconButton } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router-dom";
-import AboutClub from "./components/AboutClub";
+import SlideFunction from "./SlidingFunction"
 
 const Introduction: React.FC =() => {
     const navigate= useNavigate();
@@ -19,7 +19,7 @@ const Introduction: React.FC =() => {
                 <Title>Soon-Market</Title>
             </Header>
             <FormWrapper>
-                <AboutClub />
+                <SlideFunction/>
             </FormWrapper>
         </IntroductionContainer>
     );
