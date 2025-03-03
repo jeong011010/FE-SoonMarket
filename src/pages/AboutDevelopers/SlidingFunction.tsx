@@ -49,7 +49,19 @@ const SlideFunction: React.FC = () => {
     );
 };
 
-// 스타일링
+// Styled
+const StyledButtonGroup = styled(ButtonGroup)`
+    display: flex;
+    justify-content: flex-start; /* 버튼 그룹을 왼쪽 정렬 */
+    margin-top: 0px;
+    margin-bottom: 20px;
+`;
+
+const StyledButton = styled(Button)`
+    font-family: 'SUIT', sans-serif; 
+    text-align: left;
+`;
+
 const SlidingContainer = styled.div<{ value: number }>`
     display: flex;
     width: 200%; /* 두 개의 패널을 수용할 수 있도록 설정 */
@@ -63,20 +75,9 @@ const SlidingPanel = styled.div<{ isActive: boolean }>`
     flex-shrink: 0; /* 크기 고정 */
     padding: 16px; /* 내부 여백 */
     box-sizing: border-box; /* 패딩 포함 크기 계산 */
-    display: ${({ isActive }) => (isActive ? "block" : "none")}; /* 활성화된 패널만 표시 */
-`;
-
-// Styled
-const StyledButtonGroup = styled(ButtonGroup)`
-    display: flex;
-    justify-content: flex-start; /* 버튼 그룹을 왼쪽 정렬 */
-    margin-top: 0px;
-    margin-bottom: 20px;
-`;
-
-const StyledButton = styled(Button)`
-    font-family: 'SUIT', sans-serif; 
-    text-align: left;
+    opacity: ${({ isActive }) => (isActive ? 1 : 0)};
+    visibility: ${({ isActive }) => (isActive ? 'visible' : 'hidden')}; /* 활성화된 패널만 표시 */
+    transition: opacity 0.5s ease-in-out; /* 부드러운 전환 효과 */
 `;
 
 const GroupWrapper = styled.div`
