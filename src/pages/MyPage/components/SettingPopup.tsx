@@ -22,7 +22,7 @@ const SettingPopup: React.FC<SettingPopupProps> = ({ showPopup, setShowPopup, to
   };
 
   const handleReportUser = () => {
-    alert(`님을 신고했습니다.`);
+    navigate("/Introduction");
     setShowPopup(false);
   };
 
