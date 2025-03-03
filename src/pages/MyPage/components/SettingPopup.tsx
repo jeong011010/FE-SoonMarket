@@ -60,8 +60,6 @@ const SettingPopup: React.FC<SettingPopupProps> = ({ showPopup, setShowPopup, to
           <SpecialPopupButton onClick={handleChangePassowrd}>비밀번호 수정</SpecialPopupButton>
           <SpecialPopupButton logout onClick={handleLogout}>로그아웃</SpecialPopupButton>
         </AccountManageContainer>
-
-
       </PopupContainer>
     </PopupOverlay>
   )
