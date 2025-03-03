@@ -26,6 +26,7 @@ import { jwtDecode } from "jwt-decode";
 import EditPostPage from "./pages/EditPost/EditPostPage";
 import ChatRoomPage from "./pages/ChatRoom/ChatRoomPage";
 import ChatListPage from "./pages/ChatList/ChatListPage";
+import UserPage from "./pages/UserPage/UserPage";
 
 const theme = createTheme({
   typography: {
@@ -106,6 +107,7 @@ function App(): JSX.Element {
     { path: "/main", element: <Main />, private: true },
     { path: "/post/:id", element: <PostPage />, private: true },
     { path: "/search", element: <Search />, private: true },
+    { path: "/user:id", element: <UserPage />, private: true },
     { path: "/signup", element: <SignUp /> },
     { path: "/findpassword", element: <FindPw /> },
     { path: "/reset-password", element: <ChangePassword /> },
