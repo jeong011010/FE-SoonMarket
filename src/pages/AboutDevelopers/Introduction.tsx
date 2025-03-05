@@ -17,6 +17,7 @@ const Introduction: React.FC =() => {
                     </IconButton>
                 </BackButton>
                 <Title>Soon-Market</Title>
+                <UnderLine />
             </Header>
             <FormWrapper>
                 <SlideFunction/>
@@ -53,6 +54,14 @@ const Title = styled.h1`
   font-family: 'SUIT', sans-serif; /* 폰트 설정 */
   font-size: 37px;
   `;
+
+const UnderLine = styled.div `
+    width: 100%;
+  height: 5px; /* 선의 두께 */
+  background-color: #D9E9F9;
+  margin-bottom: 3px;
+`;
+
 const FormWrapper = styled.div`
   width: 100%;
   max-width: 390px; 
