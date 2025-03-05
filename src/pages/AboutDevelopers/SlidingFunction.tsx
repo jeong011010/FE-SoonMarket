@@ -20,7 +20,7 @@ const SlideFunction: React.FC = () => {
                 <StyledButton
                     onClick={() => handleButtonClick("clubInfo")}
                     style={{
-                        backgroundColor: activeButton === "clubInfo" ? "#2D61A6" : "gray",
+                        backgroundColor: activeButton === "clubInfo" ? "#92A5FA" : "#D3D3D3",
                         color: "white",
                     }}
                 >
@@ -29,7 +29,7 @@ const SlideFunction: React.FC = () => {
                 <StyledButton
                     onClick={() => handleButtonClick("devTeam")}
                     style={{
-                        backgroundColor: activeButton === "devTeam" ? "#2D61A6" : "gray",
+                        backgroundColor: activeButton === "devTeam" ? "#92A5FA" : "#D3D3D3",
                         color: "white",
                     }}
                 >
