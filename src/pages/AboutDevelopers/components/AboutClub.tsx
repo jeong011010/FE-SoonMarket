@@ -54,7 +54,7 @@ const Contents = styled.div<{ scrollPosition: number }>`
     flex-direction: column; /* 세로 방향으로 정렬 */
     align-items: center; /* 중앙 정렬 */
     overflow-y: auto; /* 세로 스크롤 가능 */
-    max-height: 47vh; /* 최대 높이를 화면 높이에서 50px 줄임 (하단 바 고려) */
+    max-height: 49vh; /* 최대 높이를 화면 높이에서 50px 줄임 (하단 바 고려) */
     width: 100%; /* 너비를 100%로 설정 */
     padding-bottom: 10px; /* 하단 바와의 간격을 위해 여백 추가 */
 `;
