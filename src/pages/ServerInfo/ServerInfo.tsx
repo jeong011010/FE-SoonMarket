@@ -52,6 +52,9 @@ const Container = styled.div`
     background-color: #f9f9f9;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 `;
 
 const Header = styled.div`
@@ -60,10 +63,11 @@ const Header = styled.div`
     flex-direction: column;
     align-items: center;
     position: relative;
+    margin-bottom: 0px;
 `;
 
 const BackButton = styled.div`
-    position: absolute;
+    position: fixed; /* 위치를 고정으로 변경 */
     left: 16px;
     top: 16px;
 `;
