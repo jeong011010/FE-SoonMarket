@@ -1,39 +1,52 @@
 import React from "react";
 import styled from "styled-components";
+import { IconButton } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useNavigate } from "react-router-dom";
 
 const ServerInfo: React.FC = () => {
+    const navigate = useNavigate();
+
     const versions = [
         {
             number: "1.0",
             date: "2025-03-07",
-            changes: [
-            ],
+            changes: [],
         },
-        
         // 추가 버전 정보를 여기에 넣어주세요.
     ];
 
     return (
         <Container>
-            <Title>버전 정보</Title>
-            {versions.map((version) => (
-                <VersionInfo key={version.number}>
-                    <VersionItem>
-                        <VersionNumber>{`버전 ${version.number}`}</VersionNumber>
-                        <ReleaseDate>{`날짜: ${version.date}`}</ReleaseDate>
-                        <ChangeLog>
-                            {version.changes.map((change, index) => (
-                                <ChangeItem key={index}>- {change}</ChangeItem>
-                            ))}
-                        </ChangeLog>
-                    </VersionItem>
-                </VersionInfo>
-            ))}
+            <Header>
+                <BackButton>
+                    <IconButton onClick={() => navigate("/mypage")}>
+                        <ArrowBackIcon />
+                    </IconButton>
+                </BackButton>
+                <Title>Soon-Market</Title>
+            </Header>
+            <VersionContainer>
+                <VersionTitle>버전 정보</VersionTitle>
+                {versions.map((version) => (
+                    <VersionInfo key={version.number}>
+                        <VersionItem>
+                            <VersionNumber>{`버전 ${version.number}`}</VersionNumber>
+                            <ReleaseDate>{`날짜: ${version.date}`}</ReleaseDate>
+                            <ChangeLog>
+                                {version.changes.map((change, index) => (
+                                    <ChangeItem key={index}>- {change}</ChangeItem>
+                                ))}
+                            </ChangeLog>
+                        </VersionItem>
+                    </VersionInfo>
+                ))}
+            </VersionContainer>
         </Container>
     );
 };
 
-// styled-components 정의를 하단으로 옮겼습니다.
+// styled-components 정의
 const Container = styled.div`
     padding: 20px;
     background-color: #f9f9f9;
@@ -41,7 +54,32 @@ const Container = styled.div`
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 `;
 
+const Header = styled.div`
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+`;
+
+const BackButton = styled.div`
+    position: absolute;
+    left: 16px;
+    top: 16px;
+`;
+
 const Title = styled.h1`
+    margin-top: 40px;
+    margin-bottom: 20px;
+    font-family: 'SUIT', sans-serif;
+    font-size: 37px;
+`;
+
+const VersionContainer = styled.div`
+    margin-top: 20px;
+`;
+
+const VersionTitle = styled.h2`
     font-size: 24px;
     color: #333;
 `;
