@@ -17,7 +17,7 @@ const SettingPopup: React.FC<SettingPopupProps> = ({ showPopup, setShowPopup, to
   const [isOpenAccSet, setIsOpenAccSet] = useState(false);
 
   const handleBlockUser = () => {
-    alert(`님을 차단했습니다.`);
+    alert(`/ServerInfo`);
     setShowPopup(false);
   };
 
