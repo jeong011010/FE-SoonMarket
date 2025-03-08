@@ -48,18 +48,20 @@ const PostMaster: React.FC<{ postId: number, postUserId: number, like: boolean, 
 
   return (
     <UserBox>
-      <ProfileImg imageUrl={userInfo?.image?.imageUrl} />
-      <ProfileText>
-        <p style={{ margin: 1 }}>{userInfo?.nickname}</p>
-        <p style={{ margin: 1 }}>신고 횟수 0</p>
-      </ProfileText>
-      { Number(userId) === postUserId ? (
+      <div onClick={() => navigate(`/user/${postUserId}`)} style={{ display: "flex", alignItems: "center" }}>
+        <ProfileImg imageUrl={userInfo?.image?.imageUrl} />
+        <ProfileText>
+          <p style={{ margin: 1 }}>{userInfo?.nickname}</p>
+          <p style={{ margin: 1 }}>신고 횟수 0</p>
+        </ProfileText>
+      </div>
+      {Number(userId) === postUserId ? (
         <BtnBox>
           <Button onClick={editBtnClick}>수정</Button>
           /
           <Button onClick={deleteBtnClick}>삭제</Button>
         </BtnBox>
-      ): (
+      ) : (
         <BtnBox>
           <IconButton onClick={likeBtnClick}>
             {
@@ -71,7 +73,7 @@ const PostMaster: React.FC<{ postId: number, postUserId: number, like: boolean, 
           </IconButton>
         </BtnBox>
       )}
-      
+
     </UserBox >
   )
 }
