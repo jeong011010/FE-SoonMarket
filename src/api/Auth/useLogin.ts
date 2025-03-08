@@ -23,15 +23,18 @@ const useLogin = () => {
 
 			cookies.set("access_token", accessToken, {
 				path: "/",
-				httpOnly: false,
-				secure: false,
+				httpOnly: false, // 클라이언트에서 접근 가능
+				secure: false, // HTTPS 환경에서 true로 설정 권장
 				sameSite: "strict",
+				expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 🔹 7일 동안 유지
 			});
+
 			cookies.set("refresh_token", refreshToken, {
 				path: "/",
 				httpOnly: false,
 				secure: false,
 				sameSite: "strict",
+				expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 🔹 30일 동안 유지
 			});
 
 			dispatch(setIsAuthenticated(true));
