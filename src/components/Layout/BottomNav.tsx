@@ -28,7 +28,7 @@ const BottomNav = () => {
       case '/search':
         return 5;
       default:
-        return 0;
+        return -1;
     }
   };
 
