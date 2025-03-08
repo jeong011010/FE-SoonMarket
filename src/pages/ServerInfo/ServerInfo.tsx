@@ -8,12 +8,8 @@ const ServerInfo: React.FC = () => {
     const navigate = useNavigate();
 
     const versions = [
-        {
-            number: "1.0",
-            date: "2025-03-07",
-            changes: [],
-        },
-        // 추가 버전 정보를 여기에 넣어주세요.
+        { number: "1.0", date: "2025-03-07", changes: [] },
+        //버전 추가
     ];
 
     return (
@@ -28,7 +24,7 @@ const ServerInfo: React.FC = () => {
             </Header>
             <VersionContainer>
                 <VersionTitle>버전 정보</VersionTitle>
-                {versions.map((version) => (
+                {versions.slice().reverse().map((version) => (
                     <VersionInfo key={version.number}>
                         <VersionItem>
                             <VersionNumber>{`버전 ${version.number}`}</VersionNumber>
@@ -81,6 +77,8 @@ const Title = styled.h1`
 
 const VersionContainer = styled.div`
     margin-top: 20px;
+    max-height: 640px; /* 최대 높이 설정 */
+    overflow-y: auto; /* 세로 스크롤 활성화 */
 `;
 
 const VersionTitle = styled.h2`
