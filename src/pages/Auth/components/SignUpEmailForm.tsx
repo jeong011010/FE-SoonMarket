@@ -57,9 +57,10 @@ const SignUpEmailForm: React.FC<SignUpEmailFormProps> = ({ onNext }) => {
       setCodeError("인증 번호를 입력해주세요.");
       return;
     } try {
-      const statusCode = await sendCode(email, authCode);
+      const fullEmail = `${email}@sch.ac.kr`;
+      const statusCode = await sendCode(fullEmail, authCode);
       if (statusCode === 200) {
-        dispatch(setUserEmail(email));
+        dispatch(setUserEmail(fullEmail));
         onNext();
       } else if (statusCode === 400) {
         setCodeError("인증 번호를 입력해주세요.");
