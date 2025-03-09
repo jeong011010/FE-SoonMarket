@@ -22,10 +22,17 @@ const TopBar: React.FC = () => {
 	const [postImgList, setPostImgList] = useState<PostImage[]>([]);
 	const navigate = useNavigate();
 	const [loading, setLoading] = useState<boolean>(true);
+	const [showNewNotification, setShowNewNotification] = useState(false);
 
 	useEffect(() => {
 		getNotificationList();
 	}, [getNotificationList]);
+
+	useEffect(() => {
+		if (notifications.length > 0) {
+			getNotificationList(); // 실시간 알림이 오면 최신 알림 리스트를 가져옴
+		}
+	}, [notifications, getNotificationList]); // notifications이 변경될 때마다 호출
 
 	useEffect(() => {
 		const fetchPostImages = async () => {
@@ -49,6 +56,15 @@ const TopBar: React.FC = () => {
 		}
 	}, [notificationList, getPost]);
 
+	useEffect(() => {
+		if (notifications.length > 0) {
+			setShowNewNotification(true);
+			setTimeout(() => {
+				setShowNewNotification(false);
+			}, 5000); // 5초 후 자동으로 숨김
+		}
+	}, [notifications]);
+
 	const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		navigate(`/search?query=${searchQuery}`);
@@ -71,6 +87,9 @@ const TopBar: React.FC = () => {
 
 	return (
 		<TopBarContainer>
+			{showNewNotification && (
+				<NewNotificationMessage>새로운 알림이 왔습니다</NewNotificationMessage>
+			)}
 			{loading ? <p>Loading...</p> : (
 				<>
 					<SearchBarContainer onSubmit={handleSearch}>
@@ -119,6 +138,26 @@ const TopBar: React.FC = () => {
 		</TopBarContainer>
 	);
 };
+
+const NewNotificationMessage = styled.div`
+	position: absolute;
+	top: 50px;
+	background-color: #ff9800;
+	color: white;
+	padding: 8px 16px;
+	border-radius: 8px;
+	font-size: 14px;
+	font-weight: bold;
+	box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+	animation: fadeInOut 5s ease-in-out;
+
+	@keyframes fadeInOut {
+		0% { opacity: 0; transform: translateY(-10px); }
+		10% { opacity: 1; transform: translateY(0); }
+		90% { opacity: 1; transform: translateY(0); }
+		100% { opacity: 0; transform: translateY(-10px); }
+	}
+`;
 
 const SearchBarContainer = styled.form`
   display: flex;
