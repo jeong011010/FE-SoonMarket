@@ -73,6 +73,8 @@ const TopBar: React.FC = () => {
 		if (!read) setNotificationRead(notificationId);
 	}
 
+	const unreadCount = notificationList.filter((notification) => !notification.read).length;
+
 	return (
 		<TopBarContainer>
 			{loading ? <p>Loading...</p> : (
@@ -85,7 +87,7 @@ const TopBar: React.FC = () => {
 					</SearchBarContainer>
 
 					<IconButton onClick={handleOpen}>
-						<AlarmBadge badgeContent={notifications.length + notificationList.length} color="error">
+						<AlarmBadge badgeContent={unreadCount} color="error">
 							<NotificationsNoneOutlinedIcon sx={{ width: "30px", height: "30px" }} />
 						</AlarmBadge>
 					</IconButton>
