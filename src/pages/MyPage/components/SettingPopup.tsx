@@ -16,10 +16,10 @@ interface SettingPopupProps {
   togglePopup: () => void;
 }
 
-const SettingPopup: React.FC<SettingPopupProps> = ({ showPopup, setShowPopup, togglePopup }) => {
+const SettingPopup: React.FC<SettingPopupProps> = ({ showPopup, togglePopup }) => {
   const [isOpenAccSet, setIsOpenAccSet] = useState(false);
   const { setNotification } = useSetNotification();
-  const { isNotificationAllow, getIsNotificationAllow } = useGetIsNotificationAllow();
+  const { isNotificationAllow } = useGetIsNotificationAllow();
 
   const [notificationStatus, setNotificationStatus] = useState<boolean>(false); // 로컬 상태 추가
 
@@ -55,7 +55,7 @@ const SettingPopup: React.FC<SettingPopupProps> = ({ showPopup, setShowPopup, to
   return (
     <PopupOverlay showPopup={showPopup} onClick={togglePopup}>
       <PopupContainer showPopup={showPopup} onClick={(e) => e.stopPropagation()}>
-        <PopupButton onClick={() => alert(`/ServerInfo`)}>버전 업데이트 내역</PopupButton>
+        <PopupButton onClick={() => navigate("/ServerInfo")}>버전 업데이트 내역</PopupButton>
         <PopupButton onClick={() => navigate("/Introduction")}>개발진 정보</PopupButton>
 
         {/* 계정 관리 */}
