@@ -17,12 +17,12 @@ const SettingPopup: React.FC<SettingPopupProps> = ({ showPopup, setShowPopup, to
   const [isOpenAccSet, setIsOpenAccSet] = useState(false);
 
   const handleBlockUser = () => {
-    alert(`님을 차단했습니다.`);
+    alert(`/ServerInfo`);
     setShowPopup(false);
   };
 
   const handleReportUser = () => {
-    alert(`님을 신고했습니다.`);
+    navigate("/Introduction");
     setShowPopup(false);
   };
 
