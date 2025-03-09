@@ -25,6 +25,11 @@ const MyPage: React.FC = () => {
   const [nickname, setNickname] = useState(userInfo?.nickname || "");
   const [showPopup, setShowPopup] = useState(false);
 
+  useEffect(() => {
+    console.log(userId);
+    if (userId !== undefined) getUserInfo(userId);
+  }, []);
+
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
@@ -39,24 +44,24 @@ const MyPage: React.FC = () => {
   const handleEditClick = () => {
     setIsEditingNickname(true);
   };
-  
+
   const handleBlur = () => {
     setIsEditingNickname(false);
     setNickname(""); // 🔥 수정 취소 시 원래 닉네임 복원
   };
-  
+
   const handleNickNameChange = async () => {
     if (!nickname.trim() || nickname === userInfo?.nickname) {
       setIsEditingNickname(false);
       return;
     }
-  
+
     if (userInfo) {
       try {
         const response = await fetch(userInfo.image.imageUrl);
         const blob = await response.blob();
         const file = new File([blob], "profile-image", { type: blob.type });
-  
+
         await handleSubmit(file, nickname);
         setIsEditingNickname(false);
       } catch (error) {
@@ -97,62 +102,58 @@ const MyPage: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    getUserInfo(userId);
-  }, [getUserInfo, userId]);
-
   return (
     <StyledBackground>
       <MyPageContainer>
         <Header>
           <Title>회원정보</Title>
           <IconButton color="default">
-            <SettingsIcon onClick={togglePopup}/>
+            <SettingsIcon onClick={togglePopup} />
           </IconButton>
         </Header>
         <Body>
-        <ProfileSection>
-          <ProfileImgContainer
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            onClick={() => document.getElementById("image-upload")?.click()} // 클릭하면 파일 선택 창 열기
-          >
-            <ProfileImg imageUrl={userInfo?.image?.imageUrl} />
-            <EditOverlay visible={isHovered}>
-              <EditIcon fontSize="large" />
-            </EditOverlay>
-            <input
-              id="image-upload"
-              type="file"
-              accept="image/*"
-              style={{ display: "none" }}
-              onChange={handleImageChange}
-            />
-          </ProfileImgContainer>
-          <NicknameContainer>
-            {isEditingNickname ? (
-              <StyledTextFieldWrapper isEditing={isEditingNickname}>
-                <StyledTextField
-                  value={nickname}
-                  onChange={(e) => setNickname(e.target.value)}
-                  onBlur={() => setTimeout(handleBlur, 100)}
-                  onKeyDown={(e) => e.key === "Enter" && handleNickNameChange()}
-                  autoFocus
-                  variant="standard"
-                />
-                <SaveButton onClick={handleNickNameChange}>저장</SaveButton>
-              </StyledTextFieldWrapper>
-            ) : (
-              <NicknameWrapper>
-                <Typography variant="h6">{userInfo?.nickname || "순붕이"}</Typography>
-                <EditIconButton onClick={handleEditClick} size="small">
-                  <EditIcon style={{position:"absolute"}} fontSize="small" />
-                </EditIconButton>
-              </NicknameWrapper>
-            )}
-          </NicknameContainer>
+          <ProfileSection>
+            <ProfileImgContainer
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+              onClick={() => document.getElementById("image-upload")?.click()} // 클릭하면 파일 선택 창 열기
+            >
+              <ProfileImg imageUrl={userInfo?.image?.imageUrl} />
+              <EditOverlay visible={isHovered}>
+                <EditIcon fontSize="large" />
+              </EditOverlay>
+              <input
+                id="image-upload"
+                type="file"
+                accept="image/*"
+                style={{ display: "none" }}
+                onChange={handleImageChange}
+              />
+            </ProfileImgContainer>
+            <NicknameContainer>
+              {isEditingNickname ? (
+                <StyledTextFieldWrapper isEditing={isEditingNickname}>
+                  <StyledTextField
+                    value={nickname}
+                    onChange={(e) => setNickname(e.target.value)}
+                    onBlur={() => setTimeout(handleBlur, 100)}
+                    onKeyDown={(e) => e.key === "Enter" && handleNickNameChange()}
+                    autoFocus
+                    variant="standard"
+                  />
+                  <SaveButton onClick={handleNickNameChange}>저장</SaveButton>
+                </StyledTextFieldWrapper>
+              ) : (
+                <NicknameWrapper>
+                  <Typography variant="h6">{userInfo?.nickname || "순붕이"}</Typography>
+                  <EditIconButton onClick={handleEditClick} size="small">
+                    <EditIcon style={{ position: "absolute" }} fontSize="small" />
+                  </EditIconButton>
+                </NicknameWrapper>
+              )}
+            </NicknameContainer>
 
-        </ProfileSection>
+          </ProfileSection>
           <TabBox>
             <StyledTabs value={value} onChange={handleChange} centered>
               <StyledTab label="내가 올린 게시물" {...a11yProps(1)} />
