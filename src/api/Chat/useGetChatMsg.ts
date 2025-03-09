@@ -11,10 +11,9 @@ const useGetChatMsg = (roomId: string | null) => {
   const fetchMsg = useCallback(async () => {
     if (!roomId) return;
     try {
-      console.log(`채팅 메시지를 불러오는 중... Room ID: ${roomId}`);
+      const response = await axiosInstance.get<ChatMessage[]>(`/chat/room/${roomId}/messages`);
       const response = await axiosInstance.get<ChatMessage[]>(`/chat/room/${roomId}/messages`); // ✅ 백엔드 API 경로 확인
 
-      console.log("불러온 메시지 데이터:", response);
       setMessages(response.data);
     } catch (err) {
       console.error("채팅 메시지 불러오기 실패:", err);

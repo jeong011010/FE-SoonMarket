@@ -26,7 +26,6 @@ const MyPage: React.FC = () => {
   const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
-    console.log(userId);
     if (userId !== undefined) getUserInfo(userId);
   }, []);
 

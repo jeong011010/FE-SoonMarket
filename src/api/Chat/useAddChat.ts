@@ -7,7 +7,6 @@ const useAddChat = () => {
   const addChat = async (postId: Number) => {
     try {
       await axiosInstace.post(`/posts/${postId}/room`);
-      console.log('채팅방 생성 완료');
       navigate(`/chat-list`);
     } catch (error: any) {
       if (error.response && error.response.data && error.response.data.error) {

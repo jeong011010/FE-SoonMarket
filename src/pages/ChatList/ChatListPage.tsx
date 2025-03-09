@@ -19,7 +19,6 @@ const ChatListPage: React.FC = () => {
   useEffect(() => {
     getUserInfo(userId);
   }, [getUserInfo, userId]);
-  console.log(chatList);
 
   return (
     <ChatListPageContainer>

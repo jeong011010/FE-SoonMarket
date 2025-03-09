@@ -56,14 +56,12 @@ const FindPwDetailForm: React.FC = () => {
       const token = urlParams.get("token");
       if (!token) {
         changePassword(password);
-        console.log("비밀번호 재설정 성공");
         alert("비밀번호가 성공적으로 변경되었습니다.");
         navigate(-1);
 
       }
       else {
-        const message = await resetPassword(token, password);
-        console.log("비밀번호 재설정 성공:", message);
+        await resetPassword(token, password);
         alert("비밀번호가 성공적으로 변경되었습니다.");
         navigate("/");
 

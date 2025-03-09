@@ -12,8 +12,6 @@ const useNotificationListener = () => {
 
   useEffect(() => {
     const unsubscribe = onMessage(messaging, (payload) => {
-      console.log("📩 Foreground message received:", payload);
-
       // 새로운 알림을 리스트에 추가
       setNotifications((prev) => [
         ...prev,

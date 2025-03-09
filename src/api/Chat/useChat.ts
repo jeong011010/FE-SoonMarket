@@ -17,7 +17,6 @@ const useChat = (roomId: string) => {
     client.connect(
       {},
       () => {
-        console.log("WebSocket 연결됨");
         stompClient.current = client;
         isConnected.current = true; // 연결 완료 플래그
 
@@ -36,7 +35,6 @@ const useChat = (roomId: string) => {
     return () => {
       if (stompClient.current) {
         stompClient.current.disconnect(() => {
-          console.log("WebSocket 연결 종료됨");
           stompClient.current = null;
           isConnected.current = false;
         });

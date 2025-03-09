@@ -28,6 +28,5 @@ export const getFCMToken = async (): Promise<string | null> => {
 };
 
 onMessage(messaging, (payload) => {
-	console.log("Message received. ", payload);
 	if (payload.notification) alert(`알림: ${payload.notification.title}`);
 });

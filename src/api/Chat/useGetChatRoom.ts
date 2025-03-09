@@ -11,9 +11,8 @@ const useGetChatRoom = () => {
     setLoading(true);
     setError(null); // 에러 초기화
     try {
-      console.log(roomId);
+      const response = await axiosInstance.get(`/chat/room/${roomId}`);
       const response = await axiosInstance.get(`/chat/room/${roomId}`); // 채팅방 API 요청
-      console.log(response);
       setChatRoom(response.data); // 응답 데이터 상태에 저장
     } catch (error: any) {
       console.error("채팅방 데이터를 불러오는 중 오류 발생:", error);

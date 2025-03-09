@@ -14,8 +14,6 @@ const UserPage: React.FC = () => {
     }
   }, [getUserInfo, id]);
 
-  console.log(userInfo);
-
   return (
     <>
       <Header>

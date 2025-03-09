@@ -31,10 +31,8 @@ const TopBar: React.FC = () => {
 		const fetchPostImages = async () => {
 			const images: PostImage[] = [];
 			for (const notification of notificationList) {
-				console.log(notification);
 				if (notification.postId) {
 					const postData = await getPost(notification.postId);
-					console.log(postData);
 					if (postData && postData.images && postData.images.length > 0) {
 						images.push(postData.images[0]);
 					}
@@ -51,9 +49,6 @@ const TopBar: React.FC = () => {
 		}
 	}, [notificationList, getPost]);
 
-
-	console.log(postImgList);
-
 	const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		navigate(`/search?query=${searchQuery}`);
@@ -68,7 +63,6 @@ const TopBar: React.FC = () => {
 	};
 
 	const handleNotificationClick = (notificationId: string | number, postId: string | number, message: string, read: boolean) => {
-		console.log(notificationId, postId);
 		message.includes("좋아요") ? navigate(`/post/${postId}`) : navigate(`/chat-list`);
 		if (!read) setNotificationRead(notificationId);
 	}

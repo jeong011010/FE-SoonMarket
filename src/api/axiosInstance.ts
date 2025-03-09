@@ -43,7 +43,6 @@ axiosInstance.interceptors.response.use(
   (response) => response, // 정상적인 응답은 그대로 반환
   async (error) => {
     const originalRequest = error.config;
-    console.log(error.response);
     if (error.response?.status === 401 && !originalRequest._retry) {
       if (isRefreshing) {
         // 이미 갱신 중이라면 대기
@@ -58,9 +57,7 @@ axiosInstance.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        console.log("리프레쉬 토큰 진행");
         const currentRefreshToken = cookies.get('refresh_token');
-        console.log(currentRefreshToken);
 
         await axios.post(
           `${import.meta.env.VITE_API_URL}/users/reissue`,
@@ -71,7 +68,6 @@ axiosInstance.interceptors.response.use(
             }
           }
         ).then(response => {
-          console.log("쿠키 리업데이트");
           // 새 access_token을 쿠키에 저장
           const newAccessToken = response.data.accessToken;
 

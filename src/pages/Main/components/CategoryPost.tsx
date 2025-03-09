@@ -10,10 +10,8 @@ const CategoryPost: React.FC = () => {
   const { searchPostList, getSearchPostList } = useGetSearchPostList();
   const observerRef = useRef<IntersectionObserver | null>(null);
   const lastPostRef = useRef<HTMLDivElement | null>(null);
-  console.log(searchPostList);
 
   useEffect(() => {
-    console.log("카테고리 변경")
     setPage(0);
     selectedCategory === "전체" ? getSearchPostList("", "", 10, 0) : getSearchPostList("", selectedCategory, 10, 0);
   }, [selectedCategory, getSearchPostList]);

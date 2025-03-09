@@ -35,11 +35,9 @@ const ChatRoomPage: React.FC = () => {
   useEffect(() => {
     if (!chatRoom) return;
     if (chatRoom.postId === null) return;
-    console.log(chatRoom.postId);
     getPost(chatRoom.postId.toString());
     getUserInfo(userId);
 
-    console.log(post);
     const opponentId = chatRoom.authorId === userId ? chatRoom.buyerId : chatRoom.authorId;
 
     getUserInfo(opponentId).then((user) => {

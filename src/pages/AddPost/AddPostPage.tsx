@@ -51,12 +51,6 @@ const AddPostPage: React.FC = () => {
       "request",
       new Blob([JSON.stringify(description)], { type: "application/json" })
     );
-
-    // FormData 출력 확인용 (디버깅)
-    for (const entry of formData.entries()) {
-      console.log(entry);
-    }
-
     // 게시글 추가 함수 호출
     addPost(formData);
   };

@@ -10,8 +10,6 @@ const useResetPassword = () => {
    */
   const resetPassword = async (token: string, newPassword: string): Promise<string> => {
     try {
-    
-      console.log(newPassword);
       const response = await axios.patch<string>(
         `${apiUrl}/auth/reset-password`,
         {newPassword},

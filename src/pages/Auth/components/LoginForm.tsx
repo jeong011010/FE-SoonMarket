@@ -34,7 +34,6 @@ const LoginForm: React.FC = () => {
       try {
         const fullEmail = `${id}@sch.ac.kr`;
         await login(fullEmail, password); // FCM 토큰 없이 로그인 호출
-        console.log(ErrorMessage);
       } catch (error) {
         setLoginError("아이디 또는 비밀번호가 정확하지 않습니다.");
         console.error(error);
