@@ -17,7 +17,7 @@ const SettingPopup: React.FC<SettingPopupProps> = ({ showPopup, setShowPopup, to
   const [isOpenAccSet, setIsOpenAccSet] = useState(false);
 
   const handleBlockUser = () => {
-    alert(`/ServerInfo`);
+    alert("/ServerInfo");
     setShowPopup(false);
   };
 
