@@ -11,7 +11,6 @@ const useGetChatMsg = (roomId: string | null) => {
   const fetchMsg = useCallback(async () => {
     if (!roomId) return;
     try {
-      const response = await axiosInstance.get<ChatMessage[]>(`/chat/room/${roomId}/messages`);
       const response = await axiosInstance.get<ChatMessage[]>(`/chat/room/${roomId}/messages`); // ✅ 백엔드 API 경로 확인
 
       setMessages(response.data);
