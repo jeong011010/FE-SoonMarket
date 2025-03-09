@@ -1,5 +1,5 @@
 import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
-import { Button, IconButton, TextField } from "@mui/material";
+import { Button, IconButton, InputAdornment, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
@@ -23,18 +23,9 @@ const SignUpEmailForm: React.FC<SignUpEmailFormProps> = ({ onNext }) => {
   const sendCode = useSendCode();
   const checkEmail = useCheckEmail();
 
-  const validateEmail = (value: string) => /^[a-zA-Z0-9._%+-]+@sch\.ac\.kr$/.test(value);
   const dispatch = useDispatch();
 
-  const handleEmailBlur = () => {
-    setEmailError(!email ? "" : !validateEmail(email) ? "이메일은 @sch.ac.kr 도메인만 허용됩니다." : "");
-  };
-
   const handleSendEmail = async () => {
-    if (!validateEmail(email)) {
-      setEmailError("이메일은 @sch.ac.kr 도메인만 허용됩니다.");
-      return;
-    }
     if (email === "") {
       setEmailError("이메일을 입력해주세요.");
       return;
@@ -44,13 +35,15 @@ const SignUpEmailForm: React.FC<SignUpEmailFormProps> = ({ onNext }) => {
     setIsSending(true);
 
     try {
-      const statusCode = await checkEmail(email);
+      const fullEmail = `${email}@sch.ac.kr`;
+      const statusCode = await checkEmail(fullEmail);
       if (statusCode !== 200) {
         setEmailError("이미 사용중인 이메일입니다.");
         setIsSending(false);
         return;
       }
-      await sendEmail(email);
+      
+      await sendEmail(fullEmail);
       setIsEmailSent(true);
     } catch {
       setIsEmailSent(false);
@@ -99,9 +92,22 @@ const SignUpEmailForm: React.FC<SignUpEmailFormProps> = ({ onNext }) => {
           variant="filled"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          onBlur={handleEmailBlur}
           error={!!emailError}
           onKeyDown={(e) => handleKeyDown(e, "email")}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment 
+                position="end"
+                style={{
+                  color: "gray",
+                  display: "flex",
+                  alignItems: "center",
+                  marginBottom: "-15px", // 텍스트를 아래로 조금 내림
+                }}>
+                @sch.ac.kr
+              </InputAdornment>
+            ),
+          }}
         />
         <IconButton onClick={() => setEmail("")}>
           <HighlightOffOutlinedIcon />
