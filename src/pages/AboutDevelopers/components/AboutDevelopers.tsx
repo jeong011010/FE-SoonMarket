@@ -7,12 +7,12 @@ const AboutDevelopers: React.FC = () => {
     const [selectedDeveloper, setSelectedDeveloper] = useState<number | null>(null);
 
     const developers = [
-        { name: "신유승", description: "🙂 안녕하세요! 프론트엔드 개발자 신유승입니다! 아무쪼록 저희 서비스 잘 활용해주세요!", github: "https://github.com/SinYusi" },
-        { name: "김정훈", description: "김정훈의 한 줄 설명입니다.", github: "https://github.com/jeong011010" },
-        { name: "이준서", description: "개발자 꿈나무입니다🌱", github: "https://github.com/Junse0lee" },
-        { name: "신동화", description: "DevOps 와 백엔드 개발을 공부하며 개발자를 꿈꾸는 신동화 입니다!", github: "https://github.com/ghwa112" },
-        { name: "김재우", description: "개발자 희망하는 김재우입니다", github: "https://github.com/Po0i037E" },
-        { name: "이승호", description: "카페인을 코드로 바꾸는 능력을 가진 공대생 이승호입니다.", github: "https://github.com/CaffeineLIL" },
+        { name: "신유승", description: <>🙂 안녕하세요! <br />프론트엔드 개발자 신유승입니다! <br />아무쪼록 저희 서비스 잘 활용해주세요!</>, github: "https://github.com/SinYusi" },
+        { name: "김정훈", description: <>개발과 창작에 열정이 넘치는 <br />풀스택 개발자 김정훈입니다</>, github: "https://github.com/jeong011010" },
+        { name: "이준서", description: <>개발자 꿈나무입니다🌱</>, github: "https://github.com/Junse0lee" },
+        { name: "신동화", description: <>DevOps 와 백엔드 개발을 공부하며<br/> 개발자를 꿈꾸는 신동화 입니다!</>, github: "https://github.com/ghwa112" },
+        { name: "김재우", description: <>개발자 희망하는 김재우입니다</>, github: "https://github.com/Po0i037E" },
+        { name: "이승호", description: <>카페인을 코드로 바꾸는 능력을 가진 <br/>공대생 이승호입니다.</>, github: "https://github.com/CaffeineLIL" },
     ];
 
     const toggleDeveloper = (index: number) => {
