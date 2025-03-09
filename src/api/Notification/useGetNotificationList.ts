@@ -6,7 +6,7 @@ const useGetNotificationList = () => {
 	const [notificationList, setNotificationList] = useState<NotificationType[]>([]);
 
 	const getNotificationList = useCallback(async () => {
-		await axiosInstance.get("/notification")
+		await axiosInstance.get("/notification/recent")
 			.then((response) => {
 				setNotificationList(response.data);
 			})
