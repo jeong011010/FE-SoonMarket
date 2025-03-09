@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled, { keyframes } from "styled-components";
-import SelectedGroup from "../../../assets/SelectedGroup.png";
-import UnselectedGroup from "../../../assets/UnselectedGroup.png";
+import SelectedBox from "../../../assets/SelectedBox.png";
+import UnselectedBox from "../../../assets/UnselectedBox.png"
 
 const AboutDevelopers: React.FC = () => {
     const [selectedDeveloper, setSelectedDeveloper] = useState<number | null>(null);
@@ -33,7 +33,7 @@ const AboutDevelopers: React.FC = () => {
                         onClick={() => toggleDeveloper(index)} 
                         isSelected={selectedDeveloper === index}
                         style={{ 
-                            backgroundImage: `url(${selectedDeveloper === index ? SelectedGroup : UnselectedGroup})`, 
+                            backgroundImage: `url(${selectedDeveloper === index ? SelectedBox : UnselectedBox})`, 
                             backgroundSize: '104% 120%', // 버튼 크기에 맞게 이미지 크기 조정
                             backgroundPosition: 'center', // 중앙 정렬
                             backgroundRepeat: 'no-repeat' // 반복 방지
@@ -95,7 +95,7 @@ const DeveloperList = styled.div`
 
 const DeveloperItem = styled.div<{ isSelected: boolean }>`
     background-color: ${({ isSelected }) => (isSelected ? '#FFCC00' : 'lightgray')};
-    margin: 19px 0;
+    margin: 15px 0;
     padding: 10px; // 상하 패딩
     border-radius: 5px;
     width: 80%; // 버튼 너비
@@ -104,7 +104,7 @@ const DeveloperItem = styled.div<{ isSelected: boolean }>`
     transition: background-color 0.1s, transform 0.2s; // transform 추가
 
     &:hover {
-        background-color: ${({ isSelected }) => (isSelected ? '#FFCC00' : 'rgba(200, 200, 200, 0.8)')};
+        background-color: ${({ isSelected }) => (isSelected ? '#FFCC00' : 'rgba(240, 234, 234, 0.8)')};
     }
 
     &:active {
