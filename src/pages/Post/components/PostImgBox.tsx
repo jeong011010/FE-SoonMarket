@@ -21,31 +21,28 @@ const PostImgBox: React.FC<PostImgBoxProps> = ({ images }) => {
   const handleTouchMove = (e: TouchEvent<HTMLDivElement>) => {
     if (images.length > 1) {
       const distance = e.touches[0].clientX - startX;
-      const maxDrag = 370; // 최대 드래그 허용 범위 (1개의 이미지 크기)
+      const maxDrag = 370;
 
-      // 드래그 거리를 제한
       if (
-        (currentImageIndex === 0 && distance > 0) || // 첫 이미지에서 왼쪽 드래그
-        (currentImageIndex === images.length - 1 && distance < 0) // 마지막 이미지에서 오른쪽 드래그
+        (currentImageIndex === 0 && distance > 0) ||
+        (currentImageIndex === images.length - 1 && distance < 0)
       ) {
-        setDragDistance(Math.max(Math.min(distance/ 20, 200), -200)); // 감속 효과 적용
+        setDragDistance(Math.max(Math.min(distance/ 20, 200), -200));
       } else {
-        setDragDistance(Math.max(Math.min(distance/ 2, maxDrag), -maxDrag)); // 최대값 제한
+        setDragDistance(Math.max(Math.min(distance/ 2, maxDrag), -maxDrag));
       }
     }
   };
 
   const handleTouchEnd = () => {
     if (images.length > 1) {
-      const threshold = 50; // 드래그 임계값
+      const threshold = 50;
       if (dragDistance > threshold && currentImageIndex > 0) {
-        // 이전 이미지로 이동
         setCurrentImageIndex((prev) => prev - 1);
       } else if (dragDistance < -threshold && currentImageIndex < images.length - 1) {
-        // 다음 이미지로 이동
         setCurrentImageIndex((prev) => prev + 1);
       }
-      setDragDistance(0); // 드래그 거리 초기화
+      setDragDistance(0);
     }
   };
 
@@ -60,7 +57,7 @@ const PostImgBox: React.FC<PostImgBoxProps> = ({ images }) => {
           <>
             <SliderWrapper
               currentIndex={currentImageIndex}
-              dragDistance={dragDistance} // 드래그 거리 전달
+              dragDistance={dragDistance}
             >
               {images.map((image, index) => (
                 <ImgWrapper key={index}>
@@ -68,7 +65,7 @@ const PostImgBox: React.FC<PostImgBoxProps> = ({ images }) => {
                 </ImgWrapper>
               ))}
             </SliderWrapper>
-            {images.length > 1 && ( // 이미지가 2개 이상일 때만 페이지네이션 표시
+            {images.length > 1 && (
             <Pagination>
               {images.map((_, index) => (
                 <Dot key={index} active={index === currentImageIndex} />
@@ -94,7 +91,7 @@ const ImageContainer = styled.div`
   margin: 20px;
   width: 90%;
   max-width: 390px;
-  aspect-ratio: 1 / 1; /* 1대1 비율 유지 */
+  aspect-ratio: 1 / 1;
 
   &::after {
     content: "";
@@ -128,13 +125,13 @@ const Img = styled.img`
 `;
 
 const ImgWrapper = styled.div`
-  aspect-ratio: 1 / 1; /* 1대1 비율 유지 */
+  aspect-ratio: 1 / 1;
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #f0f0f0; /* 배경색 추가 */
+  background: #f0f0f0;
 `;
 
 const SliderWrapper = styled.div<{ currentIndex: number; dragDistance: number }>`

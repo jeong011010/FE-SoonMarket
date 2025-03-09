@@ -1,15 +1,15 @@
-import axiosInstance from "../axiosInstance"
+import axiosInstance from "../axiosInstance";
 
 const useSetNotification = () => {
   const setNotification = async (isGranted: boolean) => {
-    if (isGranted) {
-      await axiosInstance.put(`${import.meta.env.VITE_API_URL}/notification/allow`)
-        .catch(error => {
-          console.error("알림 허용 실패:", error)
-        })
+    try {
+      await axiosInstance.put(`/notification/allow`, { isGranted }); // 🔹 `true` 또는 `false` 값 전달
+    } catch (error) {
+      console.error("알림 설정 변경 실패:", error);
     }
-  }
-  return setNotification;
-}
+  };
+
+  return { setNotification }; // 🔹 객체로 반환 (일관성 유지)
+};
 
 export default useSetNotification;
