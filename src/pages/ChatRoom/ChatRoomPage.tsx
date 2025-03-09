@@ -18,7 +18,7 @@ const ChatRoomPage: React.FC = () => {
   const { id: roomId } = useParams();
   const { chatRoom, getChatRoom, error, loading } = useGetChatRoom();
   const { messages: fetchedMessages } = useGetChatMsg(roomId || "");
-  const { post, getPost } = useGetPost();
+  const { getPost } = useGetPost();
   const { userInfo, getUserInfo } = useGetUserInfo();
   const { messages: stompMessages, sendMessage } = useChat(roomId || "");
   const [showPopup, setShowPopup] = useState(false);
