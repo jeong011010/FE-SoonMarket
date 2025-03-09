@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/firebase-env.js",
+      "destination": "/public/firebase-env.js"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
