@@ -6,7 +6,7 @@ import CategoryPost from "./components/CategoryPost";
 import useSetNotification from "../../api/Notification/useSetNotification";
 
 const Main: React.FC = () => {
-  const setNotification = useSetNotification();
+  const {setNotification} = useSetNotification();
 
   useEffect(() => {
     const requestNotificationPermission = async () => {
