@@ -28,7 +28,7 @@ const Introduction: React.FC = () => {
 
 // Styled Components
 const IntroductionContainer = styled.div`
-    background-color: rgb(76, 109, 142); /* 파란색 배경 */
+    background-color: rgb(121, 165, 210); /* 파란색 배경 */
     height: 100vh; /* 화면 전체 높이 */
     display: flex;
     flex-direction: column;
