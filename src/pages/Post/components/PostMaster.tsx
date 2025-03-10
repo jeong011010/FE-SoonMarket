@@ -52,7 +52,7 @@ const PostMaster: React.FC<{ postId: number, postUserId: number, like: boolean, 
         <ProfileImg imageUrl={userInfo?.image?.imageUrl} />
         <ProfileText>
           <p style={{ margin: 1 }}>{userInfo?.nickname}</p>
-          <p style={{ margin: 1 }}>신고 횟수 0</p>
+          <p style={{ margin: 1 }}>신고 횟수 {userInfo?.reportCount}</p>
         </ProfileText>
       </div>
       {Number(userId) === postUserId ? (
