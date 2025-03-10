@@ -55,12 +55,5 @@ const ProfileImg = styled.img`
   border-radius: 50%;
 `
 
-const PostSection = styled.div`
-  width: 100%;
-  padding: 0 20px;
-  margin-top: 20px;
-  text-align: center;
-`;
-
 
 export default UserPage;
