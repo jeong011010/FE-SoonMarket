@@ -10,14 +10,8 @@ interface ImageCropPopupProps {
 }
 
 const ImageCropPopup: React.FC<ImageCropPopupProps> = ({ src, onClose, onCropComplete }) => {
-  const [crop, setCrop] = useState<Crop>({
-    unit: "%",
-    x: 0,
-    y: 0,
-    width: 50,
-    height: 50,
-  });
-  const [completedCrop, setCompletedCrop] = useState<PixelCrop | null>(null);
+  const [crop, setCrop] = useState<PixelCrop>({ unit: "px", x: 25, y: 25, width: 300, height: 300 });
+  const [completedCrop, setCompletedCrop] = useState<PixelCrop | null>({ unit: "px", x: 25, y: 25, width: 300, height: 300 });
   const imgRef = useRef<HTMLImageElement | null>(null);
   const previewCanvasRef = useRef<HTMLCanvasElement | null>(null);
 
