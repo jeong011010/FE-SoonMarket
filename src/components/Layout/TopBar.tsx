@@ -1,4 +1,4 @@
-import { Badge, Divider, IconButton, Menu, MenuItem } from "@mui/material";
+import { Badge, IconButton, Menu, MenuItem } from "@mui/material";
 import styled from "styled-components";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import SearchIcon from "@mui/icons-material/Search";
@@ -108,24 +108,16 @@ const TopBar: React.FC = () => {
 					<NotificationMenu anchorEl={anchorEl} open={open} onClose={handleClose} onClick={handleClose}>
 						{/* 기존 알림 리스트 */}
 						{notificationList.map((notification, idx) => (
-							<NotificationContent read={notification.read}>
+							<NotificationItem
+								key={notification.id}
+								onClick={() => handleNotificationClick(notification.id, notification.postId, notification.message, notification.read)}
+							>
 								{postImgList[idx] && <img src={postImgList[idx].imageUrl} alt="미리보기" width={60} height={60} style={{ margin: "15px 10px 15px 10px" }} />}
-								<NotificationItem
-									key={notification.id}
-									onClick={() => handleNotificationClick(notification.id, notification.postId, notification.message, notification.read)}
-								>
+								<ItemContent>
 									{notification.message}
 									<p style={{ margin: 0 }}>{getTimeAgo(new Date(notification.createdAt))}</p>
-								</NotificationItem>
-							</NotificationContent>
-						))}
-
-						{/* 포그라운드에서 받은 실시간 알림 */}
-						{notifications.map((notification) => (
-							<div key={notification.id}>
-								<MenuItem>{notification.message}</MenuItem>
-								<Divider />
-							</div>
+								</ItemContent>
+							</NotificationItem>
 						))}
 
 						{/* 알림이 없을 경우 */}
@@ -205,25 +197,21 @@ const NotificationMenu = styled(Menu)`
 	&& .MuiPaper-root {
 		width: 360px;
 		display: flex;
-		flex-direction: column;
 		align-items: stretch;
+		overflow-y: auto;
 	}
+
+	&& .MuiPaper-root::-webkit-scrollbar {
+    display: none;
+  }
 
 	&& .MuiMenu-list {
     padding: 0;
   }
 `
 
-const NotificationContent = styled.div <{ read: boolean }> `
-	display: flex;
-	background-color: ${(props) => props.read ? "#f5f5f5" : "#fff"};
-	align-items: center;
-`
-
 const NotificationItem = styled(MenuItem)`
   && {
-    width: 100%;
-		flex-direction: column;
     transition: background-color 0.3s ease;
     padding: 10px 0px 0px 10px;
 		align-items: flex-start;
@@ -233,6 +221,10 @@ const NotificationItem = styled(MenuItem)`
     }
   }
 `;
+
+const ItemContent = styled.div`
+	margin: 23px 0px 0px 5px;
+`
 
 
 export default TopBar;
