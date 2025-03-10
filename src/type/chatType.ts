@@ -1,4 +1,5 @@
 export interface ChatList {
+  createTime: string
   roomId : string;
   postImageUrl : string;
   latestMessageTime : string;

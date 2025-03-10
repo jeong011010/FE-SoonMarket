@@ -44,7 +44,7 @@ const ChatListPageContainer = styled.div`
   flex-direction: column;
   height: 100vh; /* 전체 화면 높이 */
   overflow: hidden; /* 전체 페이지에서 스크롤 방지 */
-  
+  margin-bottom: 60px;
 `;
 
 const ChatListContainer = styled.div`

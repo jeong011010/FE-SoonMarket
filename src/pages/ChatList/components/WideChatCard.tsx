@@ -8,10 +8,8 @@ interface ChatProps {
 };
 
 const WideChatCard: React.FC<ChatProps> = ({ chatList }) => {
-  const lastMsgTime = new Date(chatList.latestMessageTime);
   const navigate = useNavigate();
-
-  const formattedDate = getTimeAgo(lastMsgTime);
+  const formattedDate = getTimeAgo(new Date(chatList.latestMessageTime ? chatList.latestMessageTime : chatList.createTime));
 
   return (
     <DataContainer onClick={() => navigate(`/chat/${chatList.roomId}`)}>
@@ -19,7 +17,7 @@ const WideChatCard: React.FC<ChatProps> = ({ chatList }) => {
       <Detail>
         <DetailTop>
           <h3>{chatList.opponentNickName}</h3>
-          <p style={{paddingLeft:"15px"}}>{formattedDate}</p>
+          <p style={{ paddingLeft: "15px" }}>{formattedDate}</p>
         </DetailTop>
         <PostDetail>
           {chatList.latestMessage === "" ? "채팅을 시작해보세요!" : chatList.latestMessage}
