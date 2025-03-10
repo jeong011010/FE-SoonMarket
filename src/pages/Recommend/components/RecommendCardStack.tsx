@@ -21,29 +21,36 @@ const RecommendCardStack: React.FC = () => {
   // 초기 데이터 로드
   useEffect(() => {
     getRecommendPosts();
-  }, [getRecommendPosts]);
+  }, []);
 
   useEffect(() => {
-    // 추천 게시물이 존재할 경우 새 카드 설정
-    if (recommendPosts.length > 0 && currentCards.length === 0) {
-      const uniqueCards = recommendPosts.filter(
-        (newCard) => !currentCards.some((card) => card.postId === newCard.postId)
-      );
-      setCurrentCards(uniqueCards);
-
-      // `tinderCardRefs`를 새로 초기화
-      tinderCardRefs.current = uniqueCards.map(() => React.createRef());
-    } else if (currentCards.length < 2 && recommendPosts.length > 1) {
-      const uniqueCards = recommendPosts.filter(
-        (newCard) => !currentCards.some((card) => card.postId === newCard.postId)
-      );
-      setCurrentCards((prevCards) => [...uniqueCards, ...prevCards]); // 기존 카드 아래에 추가
-      tinderCardRefs.current = [
-        ...uniqueCards.map(() => React.createRef<TinderCardAPI>()),
-        ...tinderCardRefs.current,
-      ];
+    if (currentCards.length <= 2) {
+      console.log("🟡 카드가 2개 이하로 남음. 새로운 추천 게시물 요청.");
+      getRecommendPosts();
     }
-  }, [recommendPosts, currentCards]);
+  }, [currentCards.length]); // `currentCards.length`가 변할 때만 실행
+
+  // 새로운 추천 게시물을 불러왔을 때 처리
+  useEffect(() => {
+
+    if (recommendPosts.length === 0) {
+      return; // 📌 카드가 없으면 업데이트하지 않음
+    }
+
+    const uniqueCards = recommendPosts.filter(
+      (newCard) => !currentCards.some((card) => card.postId === newCard.postId)
+    );
+
+    if (uniqueCards.length === 0) {
+      return; // 📌 새로운 카드가 없으면 업데이트하지 않음
+    }
+
+    setCurrentCards((prevCards) => [...prevCards, ...uniqueCards]);
+    tinderCardRefs.current = [
+      ...tinderCardRefs.current,
+      ...uniqueCards.map(() => React.createRef<TinderCardAPI>()),
+    ];
+  }, [recommendPosts]);
 
   const handleSwipe = (direction: string, cardIndex: number) => {
     const card = currentCards[cardIndex];
@@ -53,9 +60,16 @@ const RecommendCardStack: React.FC = () => {
   };
 
   const handleCardLeftScreen = (cardId: string) => {
-    setCurrentCards((prevCards) =>
-      prevCards.filter((card) => card.postId.toString() !== cardId)
-    );
+    setCurrentCards((prevCards) => {
+      const updatedCards = prevCards.filter((card) => card.postId.toString() !== cardId);
+  
+      if (updatedCards.length === 0) {
+        getRecommendPosts(); // 새 추천 목록 요청
+      }
+  
+  
+      return updatedCards;
+    });
   };
 
   const isTopCard = (index: number) => index === currentCards.length - 1;
@@ -72,7 +86,8 @@ const RecommendCardStack: React.FC = () => {
 
   return (
     <CardStack>
-      {currentCards.length > 0 ? (
+      <NoRecommendCard>추천해 드릴 게시글이 없어요.</NoRecommendCard>
+      {
         currentCards.map((card, index) => (
           <div
             key={card.postId}
@@ -100,12 +115,7 @@ const RecommendCardStack: React.FC = () => {
               />
             </TinderCard>
           </div>
-        ))
-      ) : (
-        <NoRecommendCard>
-          추천해 드릴 게시글이 없어요.
-        </NoRecommendCard>
-      )}
+        ))}
     </CardStack>
   );
 };
@@ -126,20 +136,23 @@ const CardStack = styled.div`
 const NoRecommendCard = styled.div`
   border-radius: 2px;
   width: 260px;
-  height: 470px;
-  position: relative;
-  display: flex;
+  height: 440px;
   margin: 10px 5px;
   padding: 0px 20px;
   flex-direction: column;
-  align-items: center;
-  background: white;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
   overflow: hidden;
   transition: transform 0.2s ease-in-out;
-  justify-content: center;
   text-align: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
   font-size: 16px;
+  z-index: 0; /* 🔹 항상 가장 아래에 위치 */
 
   @media (max-width: 400px) or (max-height: 850px) {
     padding: 10px;
