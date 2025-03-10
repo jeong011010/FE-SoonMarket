@@ -110,6 +110,7 @@ const TopBar: React.FC = () => {
 						{notificationList.map((notification, idx) => (
 							<NotificationItem
 								key={notification.id}
+								$read={notification.read}
 								onClick={() => handleNotificationClick(notification.id, notification.postId, notification.message, notification.read)}
 							>
 								{postImgList[idx] && <img src={postImgList[idx].imageUrl} alt="미리보기" width={60} height={60} style={{ margin: "15px 10px 15px 10px" }} />}
@@ -210,11 +211,12 @@ const NotificationMenu = styled(Menu)`
   }
 `
 
-const NotificationItem = styled(MenuItem)`
+const NotificationItem = styled(MenuItem) <{ $read: boolean }>`
   && {
     transition: background-color 0.3s ease;
     padding: 10px 0px 0px 10px;
-		align-items: flex-start;
+    align-items: flex-start;
+    background-color: ${(props) => (props.$read ? "#f0f0f0" : "white")}; /* 읽은 알림이면 회색, 안 읽었으면 흰색 */
 
     &:hover {
       background-color: #e0e0e0;
