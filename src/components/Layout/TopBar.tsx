@@ -200,6 +200,7 @@ const NotificationMenu = styled(Menu)`
 		display: flex;
 		align-items: stretch;
 		overflow-y: auto;
+		height: 80%;
 	}
 
 	&& .MuiPaper-root::-webkit-scrollbar {
