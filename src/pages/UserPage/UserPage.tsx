@@ -3,6 +3,7 @@ import useGetUserInfo from "../../api/Auth/useGetUserInfo";
 import { useEffect } from "react";
 import styled from "styled-components";
 import { Typography } from "@mui/material";
+import UserPost from "./components/UserPost";
 
 const UserPage: React.FC = () => {
   const { id } = useParams();
@@ -24,6 +25,7 @@ const UserPage: React.FC = () => {
         <Typography variant="h5">{userInfo?.nickname || "순붕이"}</Typography>
         <p>신고당한 횟수: {userInfo?.reportCount}회</p>
       </UserContainer>
+      <UserPost userId={id} />
     </>
   );
 }
@@ -52,5 +54,13 @@ const ProfileImg = styled.img`
   height: 120px;
   border-radius: 50%;
 `
+
+const PostSection = styled.div`
+  width: 100%;
+  padding: 0 20px;
+  margin-top: 20px;
+  text-align: center;
+`;
+
 
 export default UserPage;
