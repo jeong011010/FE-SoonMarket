@@ -1,9 +1,17 @@
 import React from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import LoginForm from "./components/LoginForm";
+import { useCookies } from "react-cookie";
 
 const LoginPage: React.FC = () => {
+  const [cookies] = useCookies(['access_token']);
+  const token = cookies.access_token;
+
+  if (token) {
+    return <Navigate to="/main" replace />
+  }
+
   return (
     <LoginContainer>
       <Header>
