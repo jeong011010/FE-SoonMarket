@@ -11,13 +11,14 @@ import { RootState } from "../../../redux/store";
 import useDeletePost from "../../../api/Post/useDeletePost";
 import { useNavigate } from "react-router-dom";
 
-const PostMaster: React.FC<{ postId: number, postUserId: number, like: boolean, setIsClickedReportBtn: React.Dispatch<SetStateAction<boolean>> }> = ({ postId, postUserId, like, setIsClickedReportBtn }) => {
+const PostMaster: React.FC<{ postId: number, postUserId: number, like: boolean, setIsClickedReportBtn: React.Dispatch<SetStateAction<boolean>>, isReported: boolean, setIsReported: React.Dispatch<SetStateAction<boolean>> }> = ({ postId, postUserId, like, setIsClickedReportBtn, isReported, setIsReported }) => {
   const likePost = useLikePost();
   const deletePost = useDeletePost();
   const { userInfo, getUserInfo } = useGetUserInfo();
   const [likeState, setLikeState] = useState<boolean>(like);
   const userId = useSelector((state: RootState) => state.auth.userId);
   const navigate = useNavigate();
+  const [reportCount, setReportCount] = useState<number>(NaN);
 
   const editBtnClick = () => {
     navigate(`/editpost/${postId}`);
@@ -26,6 +27,17 @@ const PostMaster: React.FC<{ postId: number, postUserId: number, like: boolean, 
   useEffect(() => {
     getUserInfo(postUserId);
   }, [getUserInfo, postUserId])
+
+  useEffect(() => {
+    if (userInfo) setReportCount(userInfo?.reportCount);
+  }, [userInfo, setReportCount])
+
+  useEffect(() => {
+    if (isReported && reportCount) {
+      setReportCount(prev => prev + 1)
+      setIsReported(false);
+    }
+  }, [isReported])
 
   const likeBtnClick = () => {
     setLikeState(prev => !prev);
@@ -52,7 +64,7 @@ const PostMaster: React.FC<{ postId: number, postUserId: number, like: boolean, 
         <ProfileImg imageUrl={userInfo?.image?.imageUrl} />
         <ProfileText>
           <p style={{ margin: 1 }}>{userInfo?.nickname}</p>
-          <p style={{ margin: 1 }}>신고 횟수 0</p>
+          <p style={{ margin: 1 }}>신고 횟수 {reportCount}</p>
         </ProfileText>
       </div>
       {Number(userId) === postUserId ? (
@@ -73,7 +85,6 @@ const PostMaster: React.FC<{ postId: number, postUserId: number, like: boolean, 
           </IconButton>
         </BtnBox>
       )}
-
     </UserBox >
   )
 }

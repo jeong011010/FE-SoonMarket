@@ -1,4 +1,4 @@
-import { Button, FormControlLabel, IconButton, Switch } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import styled from "styled-components";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate, useParams } from "react-router-dom";
@@ -22,7 +22,7 @@ const EditPostPage: React.FC = () => {
   });
 
   useEffect(() => {
-    if(id)
+    if (id)
       getPost(id); // id를 기반으로 게시물 가져오기
   }, [getPost, id]);
 
@@ -46,13 +46,6 @@ const EditPostPage: React.FC = () => {
       description.price > 0 &&
       description.category.trim() !== ""
     );
-  };
-
-  const toggleSoldStatus = () => {
-    setDescription((prev) => ({
-      ...prev,
-      sold: !prev.sold, // true <-> false 전환
-    }));
   };
 
   const handleEditPost = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -86,17 +79,6 @@ const EditPostPage: React.FC = () => {
         <ProductDescriptionInputBox
           description={description}
           setDescription={setDescription}
-        />
-        <FormControlLabel
-          control={
-            <Switch
-              checked={description.sold}
-              onChange={toggleSoldStatus}
-              color="primary"
-            />
-          }
-          label={description.sold ? "판매 완료" : "판매 중"}
-          style={{ marginTop: "10px", fontWeight: "bold" }}
         />
         <StyledButton
           variant="contained"

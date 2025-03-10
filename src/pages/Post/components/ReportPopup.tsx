@@ -78,7 +78,7 @@ const fadeInDown = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.3 } }
 };
 
-const ReportForm: React.FC<{ postId: string, setIsClickedReportBtn: React.Dispatch<SetStateAction<boolean>> }> = ({ postId, setIsClickedReportBtn }) => {
+const ReportForm: React.FC<{ postId: string, setIsClickedReportBtn: React.Dispatch<SetStateAction<boolean>>, setIsReported: React.Dispatch<SetStateAction<boolean>> }> = ({ postId, setIsClickedReportBtn, setIsReported }) => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(null);
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
@@ -101,6 +101,7 @@ const ReportForm: React.FC<{ postId: string, setIsClickedReportBtn: React.Dispat
   const handleSubmit = () => {
     if (selectedCategory && selectedSubcategory && selectedCategoryId) {
       report(postId, reportText, selectedCategoryId);
+      setIsReported(true);
       setIsClickedReportBtn(false);
     } else {
       alert('신고 카테고리를 설정해주세요.');
